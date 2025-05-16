@@ -2,6 +2,7 @@
 
 2025 마스터즈 팀 프로젝트 이슈 트래커
 
+✅ [배포 링크](http://3.35.149.171/)
 ✅ [팀 저장소 링크](https://github.com/codesquad-masters2025-team04/issue-tracker)
 
 <hr style="height:3px; background-color:#333; border:none;">
