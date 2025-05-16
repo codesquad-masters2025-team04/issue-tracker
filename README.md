@@ -37,6 +37,13 @@
 
 <hr style="height:3px; background-color:#333; border:none;">
 
+## ERD
+![image](https://github.com/user-attachments/assets/6c554924-f4dc-47e8-b756-79178cbc7628)
+
+## 인프라 구조
+![bbz_infra drawio (1)](https://github.com/user-attachments/assets/98ec18dd-7097-46f2-af38-e9383a3c2bd5)
+
+
 ## 🤝 그라운드 룰
 
 |                         정해진 규칙                          |
