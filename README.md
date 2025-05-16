@@ -2,8 +2,7 @@
 
 2025 마스터즈 팀 프로젝트 이슈 트래커
 
-저장소 링크
-https://github.com/codesquad-masters2025-team04/issue-tracker
+✅ [팀 저장소 링크](https://github.com/codesquad-masters2025-team04/issue-tracker)
 
 <hr style="height:3px; background-color:#333; border:none;">
 
@@ -37,10 +36,6 @@ https://github.com/codesquad-masters2025-team04/issue-tracker
 - React
 
 <hr style="height:3px; background-color:#333; border:none;">
-
-## ERD
-![erd.png](docs/erd.png)
-
 
 ## 🤝 그라운드 룰
 
@@ -84,7 +79,7 @@ main
 | :--------: | :---------------------------------------------------------------------------------------------------------------: |
 |  Backlog   | [Notion Backlog](https://www.notion.so/1f100b3b8482806d89f8f4710cd95521?v=1f100b3b84828175a92d000ce39e2a75&pvs=4) |
 | API 명세서 |      [Notion API 명세서](https://unmarred-screw-441.notion.site/API-1ed00b3b848280539480e7d84518f34c?pvs=4)       |
-
+=======
 
 ## 팀별 저장소 링크
 
@@ -95,4 +90,5 @@ main
 | 3팀  |      |             |
 | 4팀  | 빙빙, 브리, 지초     | https://github.com/codesquad-masters2025-team04/issue-tracker |
 | 5팀  |      |             |
+
 
