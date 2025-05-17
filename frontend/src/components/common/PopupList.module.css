@@ -1,11 +1,19 @@
 .dropdownPanel {
   width: 240px;
   position: absolute;
-  top: 100%;
-  right: 0;
   z-index: 1000;
   border: solid 1px var(--neutral-border-default);
   border-radius: 16px;
+}
+
+.filterBarPosition {
+  top: 100%;
+  right: 0;
+}
+
+.sideBarPosition {
+  top: 100%;
+  left: -10px;
 }
 
 .dropdownPanelTitle {
@@ -37,18 +45,19 @@
   align-items: center;
 }
 
-.userInfo {
+.optionInfo {
   display: flex;
   gap: 8px;
   flex-direction: row;
   align-items: center;
 }
-.userImage {
+
+.userImageSmall {
   width: 20px;
   height: 20px;
-  background-image: url("../../assets/images/userImage.png");
-  background-size: cover;
+  border-radius: 50%;
 }
+
 .checkOffIcon {
   width: 16px;
   height: 16px;

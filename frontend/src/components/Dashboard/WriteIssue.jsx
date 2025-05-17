@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./WriteIssue.module.css";
 import IssueTable from "./IssueTable";
 import ControlHeader from "../ControlHeader/ControlHeader";
 import PopupList from "../common/PopupList";
 import { API_URL } from "../../constants/link";
 
-const handleClick = (title, content, file, setWriteIssue) => {
+const changeFilterName = {
+  담당자: "users",
+  레이블: "labels",
+  마일스톤: "milestones",
+  작성자: "users", // TODO 추후 담당자와 구분지을 예정
+};
+
+const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
   const issueData = {
     title: title,
     content: content,
     authorId: 1,
+    assigneeIds: selectedFilters["담당자"].map((item) => item.id),
+    labelIds: selectedFilters["레이블"].map((item) => item.id),
+    milestoneId: selectedFilters["마일스톤"]?.id || null,
   };
 
-  // TODO 추후 받아온 file 처리 예정
   const fileData = file;
 
   const formData = new FormData();
@@ -37,8 +46,8 @@ const handleClick = (title, content, file, setWriteIssue) => {
   setWriteIssue(false);
 };
 
-// TODO 컴포넌트 분리
-function WriteIssue({ setWriteIssue }) {
+// TODO 컴포넌트 분리 + filterData를 통해 filtersContainer부분 수정하기
+function WriteIssue({ setWriteIssue, filterData }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedcancelButton, setselectedcancelButton] = useState(false);
@@ -48,6 +57,21 @@ function WriteIssue({ setWriteIssue }) {
     title: false,
     content: false,
   });
+  // 각 필터에 대해 선택된 항목을 저장하는 상태
+  // TODO 백엔드 분들에게 id하나만 전달해도 []배열로 전달하는 것인지 물어보기
+  const [selectedFilters, setSelectedFilters] = useState({
+    담당자: [],
+    레이블: [],
+    마일스톤: null,
+  });
+
+  // ✅ useRef로 최신 selectedFilters 값 유지
+  const selectedFiltersRef = useRef(selectedFilters);
+
+  // ✅ selectedFilters 값이 바뀔 때마다 ref도 동기화
+  useEffect(() => {
+    selectedFiltersRef.current = selectedFilters;
+  }, [selectedFilters]);
 
   const handleClickcancelButton = (isSelected) => {
     setselectedcancelButton(isSelected);
@@ -71,6 +95,26 @@ function WriteIssue({ setWriteIssue }) {
     );
   }
 
+  // PopupList에서 항목 선택 시 해당 필터에 맞게 상태를 업데이트하는 함수
+  const handleOptionSelect = (filter, item) => {
+    setSelectedFilters((prev) => {
+      if (filter === "마일스톤") {
+        return {
+          ...prev,
+          [filter]: item, // ✅ 단일 객체로 저장
+        };
+      }
+
+      const alreadySelected = prev[filter].some((el) => el.id === item.id);
+      if (alreadySelected) return prev;
+
+      return {
+        ...prev,
+        [filter]: [...prev[filter], item],
+      };
+    });
+  };
+
   const handleSubmit = () => {
     const hasTitle = title.trim() !== "";
     const hasContent = content.trim() !== "";
@@ -82,7 +126,7 @@ function WriteIssue({ setWriteIssue }) {
 
     if (!hasTitle || !hasContent) return;
 
-    handleClick(title, content, file, setWriteIssue);
+    handleClick(title, content, file, setWriteIssue, selectedFilters);
   };
 
   return (
@@ -119,20 +163,46 @@ function WriteIssue({ setWriteIssue }) {
             {["담당자", "레이블", "마일스톤"].map((filter) => {
               return (
                 <div
-                  key={filter}
-                  className={styles.filterButton}
-                  onClick={() => handleFilterClick(filter)}
+                  className={styles.filterBox}
+                  key={changeFilterName[filter]}
                 >
-                  <span className={styles.filterButtonTitle}>
-                    {filter}
-                    {activeFilter === filter && (
-                      <PopupList
-                        filterName={filter}
-                        className={styles.activeFilter}
-                      />
+                  <div
+                    key={filter}
+                    className={styles.filterButton}
+                    onClick={() => handleFilterClick(filter)}
+                  >
+                    <span className={styles.filterButtonTitle}>
+                      {filter}
+                      {activeFilter === filter && (
+                        <PopupList
+                          filterName={filter}
+                          className={styles.activeFilter}
+                          data={filterData?.[changeFilterName[filter]] ?? []}
+                          onSelect={(item) => handleOptionSelect(filter, item)} // 항목 클릭 시 실행
+                        />
+                      )}
+                    </span>
+
+                    <div className={styles.plusIcon} />
+                  </div>
+                  {filter === "마일스톤" && selectedFilters[filter] && (
+                    <div className={styles.selectedList}>
+                      <div className={styles.selectedItem}>
+                        {selectedFilters[filter].name}
+                      </div>
+                    </div>
+                  )}
+
+                  {filter !== "마일스톤" &&
+                    selectedFilters[filter]?.length > 0 && (
+                      <div className={styles.selectedList}>
+                        {selectedFilters[filter].map((item) => (
+                          <div key={item.id} className={styles.selectedItem}>
+                            {item.name}
+                          </div>
+                        ))}
+                      </div>
                     )}
-                  </span>
-                  <div className={styles.plusIcon} />
                 </div>
               );
             })}

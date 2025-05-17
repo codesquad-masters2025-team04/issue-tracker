@@ -32,7 +32,7 @@ function IssueList({ isOpen }) {
     <div className={styles.issueListContainer}>
       {issues.map((issue) => (
         <div className={styles.IssueContainer} key={issue.id}>
-          <div className={styles.mainInfo} key={issue.id}>
+          <div className={styles.mainInfo}>
             <button className={styles.checkbox} />
             <div className={styles.issueItem}>
               <div className={styles.issueDetails}>
@@ -40,10 +40,10 @@ function IssueList({ isOpen }) {
                 <div className={styles.issueTitle}>{issue.title}</div>
 
                 {issue.labels &&
-                  issue.labels.map((label) => (
+                  issue.labels.map((label, index) => (
                     <div
                       className={styles.issueLabel}
-                      key={label.id}
+                      key={index}
                       style={{
                         backgroundColor: label.color,
                         marginRight: "4px",
