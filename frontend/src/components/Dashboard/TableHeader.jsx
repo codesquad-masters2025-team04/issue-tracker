@@ -4,13 +4,19 @@ import IssueTabButton from "../common/IssueTabButton";
 import FilterTabButton from "../common/FilterTabButton";
 import PopupList from "../common/PopupList";
 
-function TableHeader({ isOpen, setIsOpen, issueCount }) {
+const changeFilterName = {
+  담당자: "users",
+  레이블: "labels",
+  마일스톤: "milestones",
+  작성자: "users", // TODO 추후 담당자와 구분지을 예정
+};
+// TODO 추후 컴포넌트 분리 예정
+function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
   const [activeFilter, setActiveFilter] = useState(null);
 
   const handleFilterClick = (filterName) => {
     setActiveFilter((prev) => (prev === filterName ? null : filterName));
   };
-
   return (
     <div className={styles.tableHeader}>
       <div className={styles.issueViewControls}>
@@ -40,7 +46,11 @@ function TableHeader({ isOpen, setIsOpen, issueCount }) {
               onClick={() => handleFilterClick(name)}
             />
             {activeFilter === name && (
-              <PopupList filterName={name} actionLocation={"filterBar"} />
+              <PopupList
+                filterName={name}
+                actionLocation={"filterBar"}
+                data={filterData?.[changeFilterName[name]] ?? []}
+              />
             )}
           </div>
         ))}

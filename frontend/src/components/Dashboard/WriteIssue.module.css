@@ -61,15 +61,20 @@
   color: var(--neutral-text-default);
 }
 
+.filterBox {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--neutral-border-default);
+  box-sizing: border-box;
+  background-color: var(--neutral-surface-strong);
+  padding: 32px;
+}
+
 .filterButton {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--neutral-border-default);
-  box-sizing: border-box;
-  background-color: var(--neutral-surface-strong);
   cursor: pointer;
-  padding: 32px;
 }
 
 .filterButtonTitle {
@@ -104,4 +109,20 @@
 
 .errorInput {
   border: 1px solid red;
+}
+
+.activeFilter {
+  position: absolute;
+  left: 50%;
+}
+
+.selectedList {
+  display: flex;
+  flex-direction: column;
+  font: var(--display-medium12);
+  color: var(--neutral-text-strong);
+}
+
+.selectedItem {
+  margin: 16px 0 0 0;
 }

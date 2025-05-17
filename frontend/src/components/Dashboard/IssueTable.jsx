@@ -6,7 +6,7 @@ import { API_URL } from "../../constants/link";
 import IssueList from "./IssueList";
 import TableHeader from "./TableHeader";
 
-function IssueTable() {
+function IssueTable({ filterData }) {
   const [isOpen, setIsOpen] = useState(true);
   const [issueCount, setIssueCount] = useState(0);
 
@@ -28,6 +28,7 @@ function IssueTable() {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           issueCount={issueCount}
+          filterData={filterData}
         />
       </div>
       <div className={styles.issueListContainer}>
