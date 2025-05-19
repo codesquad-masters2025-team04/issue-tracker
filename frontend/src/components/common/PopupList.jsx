@@ -61,7 +61,7 @@ function PopupList({
                     style={{ backgroundColor: `#${item.color}` }}
                   ></div>
                 )}
-                <span>{item.name}</span>
+                <span>{item.title}</span>
               </div>
 
               <img
