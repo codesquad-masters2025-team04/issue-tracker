@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./WriteIssue.module.css";
 import IssueTable from "./IssueTable";
-import ControlHeader from "../ControlHeader/IssueToolBar";
+import IssueToolBar from "../ControlHeader/IssueToolBar";
 import PopupList from "../common/PopupList";
 import { API_URL } from "../../constants/link";
 
@@ -12,7 +12,14 @@ const changeFilterName = {
   작성자: "users", // TODO 추후 담당자와 구분지을 예정
 };
 
-const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
+const handleClick = (
+  title,
+  content,
+  file,
+  setWriteIssue,
+  selectedFilters,
+  setDetailIssue
+) => {
   const issueData = {
     title: title,
     content: content,
@@ -44,10 +51,11 @@ const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
     .catch((err) => console.error("에러:", err));
 
   setWriteIssue(false);
+  setDetailIssue(true);
 };
 
 // TODO 컴포넌트 분리 + filterData를 통해 filtersContainer부분 수정하기
-function WriteIssue({ setWriteIssue, filterData }) {
+function WriteIssue({ setWriteIssue, filterData, setDetailIssue }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedcancelButton, setselectedcancelButton] = useState(false);
@@ -89,7 +97,7 @@ function WriteIssue({ setWriteIssue, filterData }) {
   if (selectedcancelButton) {
     return (
       <>
-        <ControlHeader />
+        <IssueToolBar />
         <IssueTable />
       </>
     );
@@ -132,7 +140,14 @@ function WriteIssue({ setWriteIssue, filterData }) {
 
     if (!hasTitle || !hasContent) return;
 
-    handleClick(title, content, file, setWriteIssue, selectedFilters);
+    handleClick(
+      title,
+      content,
+      file,
+      setWriteIssue,
+      selectedFilters,
+      setDetailIssue
+    );
   };
 
   return (
