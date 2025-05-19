@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./WriteIssue.module.css";
 import IssueTable from "./IssueTable";
-import ControlHeader from "../ControlHeader/ControlHeader";
+import ControlHeader from "../ControlHeader/IssueToolBar";
 import PopupList from "../common/PopupList";
 import { API_URL } from "../../constants/link";
 
@@ -99,15 +99,21 @@ function WriteIssue({ setWriteIssue, filterData }) {
   const handleOptionSelect = (filter, item) => {
     setSelectedFilters((prev) => {
       if (filter === "마일스톤") {
+        // 마일스톤은 단일 선택이므로 같은 항목을 다시 클릭하면 제거
         return {
           ...prev,
-          [filter]: item, // ✅ 단일 객체로 저장
+          [filter]: prev[filter]?.id === item.id ? null : item,
         };
       }
 
       const alreadySelected = prev[filter].some((el) => el.id === item.id);
-      if (alreadySelected) return prev;
-
+      if (alreadySelected) {
+        // 선택되어 있으면 제거
+        return {
+          ...prev,
+          [filter]: prev[filter].filter((el) => el.id !== item.id),
+        };
+      }
       return {
         ...prev,
         [filter]: [...prev[filter], item],
@@ -178,7 +184,8 @@ function WriteIssue({ setWriteIssue, filterData }) {
                           filterName={filter}
                           className={styles.activeFilter}
                           data={filterData?.[changeFilterName[filter]] ?? []}
-                          onSelect={(item) => handleOptionSelect(filter, item)} // 항목 클릭 시 실행
+                          onSelect={(item) => handleOptionSelect(filter, item)}
+                          selectedItems={selectedFilters[filter]}
                         />
                       )}
                     </span>

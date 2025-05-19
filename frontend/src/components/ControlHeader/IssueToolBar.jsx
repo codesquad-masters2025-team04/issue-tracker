@@ -1,4 +1,4 @@
-import styles from "./ControlHeader.module.css";
+import styles from "./IssueToolBar.module.css";
 
 function ControlHeader({ onClick }) {
   return (

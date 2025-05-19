@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import IssueTable from "../../components/Dashboard/IssueTable";
-import ControlHeader from "../../components/ControlHeader/ControlHeader";
+import IssueToolBar from "../../components/ControlHeader/IssueToolBar";
 import WriteIssue from "../../components/Dashboard/WriteIssue";
 import { API_URL } from "../../constants/link";
 
@@ -34,7 +34,7 @@ function Home() {
   return (
     <>
       <Header />
-      {!writeIssue ? <ControlHeader onClick={() => setWriteIssue(true)} /> : ""}
+      {!writeIssue ? <IssueToolBar onClick={() => setWriteIssue(true)} /> : ""}
       {writeIssue ? (
         <WriteIssue setWriteIssue={setWriteIssue} filterData={filterData} />
       ) : (
