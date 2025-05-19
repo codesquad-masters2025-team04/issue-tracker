@@ -11,7 +11,7 @@ const getIssueIconByStatus = (status) => {
   }
 };
 
-function IssueList({ isOpen }) {
+function IssueList({ isOpen, setDetailIssue }) {
   const [issues, setIssues] = useState([]);
 
   // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
@@ -37,7 +37,12 @@ function IssueList({ isOpen }) {
             <div className={styles.issueItem}>
               <div className={styles.issueDetails}>
                 {getIssueIconByStatus(isOpen)}
-                <div className={styles.issueTitle}>{issue.title}</div>
+                <div
+                  className={styles.issueTitle}
+                  onClick={() => setDetailIssue(true)}
+                >
+                  {issue.title}
+                </div>
 
                 {issue.labels &&
                   issue.labels.map((label, index) => (

@@ -1,0 +1,109 @@
+.postInformation {
+  min-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.titleAndButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.issueTitleAndIssueId {
+  font: var(--display-bold32);
+  display: flex;
+  gap: 8px;
+}
+
+.issueTitle {
+  color: var(--neutral-text-strong);
+}
+
+.issueId {
+  color: var(--neutral-text-weak);
+}
+
+.buttonsInHeader {
+  display: flex;
+  gap: 16px;
+  text-align: center;
+}
+
+.outLineS {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--brand-border-default);
+  font: var(--available-medium12);
+  color: var(--brand-text-weak);
+}
+
+.editIcon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/edit.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.closedIssueIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/archive.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.buttonTitle {
+  padding: 0 4px;
+}
+
+.statesInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.informationTag {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background-color: var(--palette-blue);
+  padding: 0 16px;
+  border-radius: var(--radius-large);
+}
+
+.openIssueIcon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/alertCircle.svg");
+  background-color: var(--brand-text-default);
+}
+
+.state {
+  padding: 0 4px;
+  font: var(--display-medium12);
+  color: var(--brand-text-default);
+}
+
+.explainState {
+  display: flex;
+  gap: 32px;
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+}
+
+.line {
+  min-width: 1280px;
+  height: 1px;
+  border: 1px solid var(--neutral-border-default);
+  margin-top: 24px;
+}

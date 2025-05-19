@@ -49,7 +49,7 @@ function Home() {
       ) : detailIssue ? (
         <DetailIssue />
       ) : (
-        <IssueTable filterData={filterData} />
+        <IssueTable filterData={filterData} setDetailIssue={setDetailIssue} />
       )}
     </>
   );
