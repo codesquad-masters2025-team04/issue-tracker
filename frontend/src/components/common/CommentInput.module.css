@@ -1,5 +1,5 @@
 .wrapper {
-  background-color: #f4f5f8;
+  background-color: var(--neutral-surface-bold);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -20,7 +20,8 @@
 }
 
 .textarea::placeholder {
-  color: #8b8b8b;
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
 }
 
 .footer {
@@ -35,7 +36,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #6e6e6e;
   font-size: 13px;
   cursor: pointer;
 }

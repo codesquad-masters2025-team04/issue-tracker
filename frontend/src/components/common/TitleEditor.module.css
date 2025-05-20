@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  background-color: var(--neutral-surface-bold);
+  height: 40px;
+  border-radius: var(--radius-medium);
+  padding: 0 16px;
+}
+
+.label {
+  font: var(--display-medium12);
+  color: var(--neutral-text-weak);
+  width: 64px;
+}
+
+.input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font: var(--display-medium16);
+  color: var(--neutral-text-default);
+  width: 100%;
+}
+
+.buttonsInHeader {
+  display: flex;
+  gap: 16px;
+  text-align: center;
+}
+
+.outLineS {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--brand-border-default);
+  font: var(--available-medium12);
+  color: var(--brand-text-weak);
+}
+
+.containedS {
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--brand-surface-default);
+  color: var(--brand-text-default);
+  font: var(--available-medium12);
+  opacity: 32%;
+}
+
+.cancelIcon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/xSquare.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.editIcon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/edit.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.buttonTitle {
+  padding: 0 4px;
+}
+
+.changeButtonStyle {
+  opacity: 100%;
+}

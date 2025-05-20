@@ -4,65 +4,6 @@
   gap: 16px;
 }
 
-.titleAndButtons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.issueTitleAndIssueId {
-  font: var(--display-bold32);
-  display: flex;
-  gap: 8px;
-}
-
-.issueTitle {
-  color: var(--neutral-text-strong);
-}
-
-.issueId {
-  color: var(--neutral-text-weak);
-}
-
-.buttonsInHeader {
-  display: flex;
-  gap: 16px;
-  text-align: center;
-}
-
-.outLineS {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 128px;
-  height: 40px;
-  border-radius: var(--radius-medium);
-  border: 1px solid var(--brand-border-default);
-  font: var(--available-medium12);
-  color: var(--brand-text-weak);
-}
-
-.editIcon {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  mask-image: url("../../assets/icons/edit.svg");
-  mask-size: cover;
-  background-color: var(--brand-text-weak);
-}
-
-.closedIssueIcon {
-  width: 16px;
-  height: 16px;
-  mask-image: url("../../assets/icons/archive.svg");
-  mask-size: cover;
-  background-color: var(--brand-text-weak);
-}
-
-.buttonTitle {
-  padding: 0 4px;
-}
-
 .statesInfo {
   display: flex;
   flex-direction: row;
@@ -87,6 +28,14 @@
   background-color: var(--brand-text-default);
 }
 
+.closedIssueIcon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/archive.svg");
+  background-color: var(--brand-text-default);
+}
+
 .state {
   padding: 0 4px;
   font: var(--display-medium12);
@@ -95,7 +44,7 @@
 
 .explainState {
   display: flex;
-  gap: 32px;
+  gap: 8px;
   font: var(--display-medium16);
   color: var(--neutral-text-weak);
 }
