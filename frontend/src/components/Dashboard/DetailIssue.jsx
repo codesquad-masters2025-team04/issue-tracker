@@ -1,6 +1,17 @@
 import styles from "./DetailIssue.module.css";
+import FilterBox from "../common/FilterBox";
+import useFilterBox from "../../hooks/useFilterBox";
+import Comment from "../common/Comment";
+import CommentInput from "../common/CommentInput";
 
-function DetailIssue() {
+function DetailIssue({ filterData }) {
+  const { selectedFilters, activeFilter, toggleFilter, selectOption } =
+    useFilterBox({
+      담당자: [],
+      레이블: [],
+      마일스톤: null,
+    });
+
   return (
     <>
       <div className={styles.postInformation}>
@@ -23,7 +34,7 @@ function DetailIssue() {
           </div>
         </div>
         <div className={styles.statesInfo}>
-          <div className={styles.informationTag}>
+          <div className={styles.issueStateTag}>
             <div className={styles.openIssueIcon} />
             <span className={styles.state}>열린 이슈</span>
           </div>
@@ -35,7 +46,31 @@ function DetailIssue() {
         <div className={styles.line} />
       </div>
 
-      <div className="comentArea">comentArea</div>
+      <div className={styles.commentsAreaAndFilterBox}>
+        <div className={styles.commentsArea}>
+          <Comment />
+          <Comment />
+          <CommentInput />
+
+          <button className={styles.newCommentButton}>
+            <span className={styles.plusIcon} />
+            <span className={styles.newCommentText}>코멘트 작성</span>
+          </button>
+        </div>
+        <div className={styles.rightPanel}>
+          <FilterBox
+            activeFilter={activeFilter}
+            selectedFilters={selectedFilters}
+            toggleFilter={toggleFilter}
+            selectOption={selectOption}
+            filterData={filterData}
+          />
+          <button className={styles.issueDelete}>
+            <div className={styles.deleteIcon} />
+            <span className={styles.buttonTitle}>이슈 삭제</span>
+          </button>
+        </div>
+      </div>
     </>
   );
 }

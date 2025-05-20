@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <>
-      <Header />
+      <Header setWriteIssue={setWriteIssue} setDetailIssue={setDetailIssue} />
       {!writeIssue && !detailIssue ? (
         <IssueToolBar onClick={() => setWriteIssue(true)} />
       ) : (
@@ -47,7 +47,7 @@ function Home() {
           setDetailIssue={setDetailIssue}
         />
       ) : detailIssue ? (
-        <DetailIssue />
+        <DetailIssue filterData={filterData} />
       ) : (
         <IssueTable filterData={filterData} setDetailIssue={setDetailIssue} />
       )}

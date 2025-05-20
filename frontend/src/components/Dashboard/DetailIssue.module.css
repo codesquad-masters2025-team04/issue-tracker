@@ -1,5 +1,4 @@
 .postInformation {
-  min-width: 1280px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -71,7 +70,7 @@
   gap: 8px;
 }
 
-.informationTag {
+.issueStateTag {
   display: flex;
   align-items: center;
   height: 32px;
@@ -105,5 +104,67 @@
   min-width: 1280px;
   height: 1px;
   border: 1px solid var(--neutral-border-default);
-  margin-top: 24px;
+  margin: 24px 0;
+}
+
+.commentsAreaAndFilterBox {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+}
+
+.commentsArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.newCommentButton {
+  width: 128px;
+  height: 40px;
+  background-color: var(--brand-surface-default);
+  opacity: 32%;
+  border-radius: var(--radius-medium);
+  color: var(--brand-text-default);
+  font: var(--available-medium12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+}
+
+.plusIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/plus.svg");
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: var(--brand-text-default);
+}
+
+.newCommentText {
+  padding: 0 4px;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.issueDelete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 32px;
+  color: var(--danger-text-default);
+  font: var(--available-medium12);
+  padding-right: 16px;
+}
+
+.deleteIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/trash.svg");
+  background-color: var(--danger-text-default);
 }
