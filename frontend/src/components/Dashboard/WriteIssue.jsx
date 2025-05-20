@@ -210,7 +210,7 @@ function WriteIssue({ setWriteIssue, filterData, setDetailIssue }) {
                   {filter === "마일스톤" && selectedFilters[filter] && (
                     <div className={styles.selectedList}>
                       <div className={styles.selectedItem}>
-                        {selectedFilters[filter].name}
+                        {selectedFilters[filter].title}
                       </div>
                     </div>
                   )}
@@ -220,7 +220,7 @@ function WriteIssue({ setWriteIssue, filterData, setDetailIssue }) {
                       <div className={styles.selectedList}>
                         {selectedFilters[filter].map((item) => (
                           <div key={item.id} className={styles.selectedItem}>
-                            {item.name}
+                            {item.title}
                           </div>
                         ))}
                       </div>
