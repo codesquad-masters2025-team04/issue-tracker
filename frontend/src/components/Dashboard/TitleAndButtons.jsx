@@ -5,12 +5,13 @@ function TitleAndButtons({
   issueTitle,
   isOpenIssue,
   setIsOpenIssue,
+  issueId,
 }) {
   return (
     <div className={styles.titleAndButtons}>
       <div className={styles.issueTitleAndIssueId}>
         <span className={styles.issueTitle}>{issueTitle}</span>
-        <span className={styles.issueId}>#2</span>
+        <span className={styles.issueId}>#{issueId}</span>
       </div>
       <div className={styles.buttonsInHeader}>
         <button

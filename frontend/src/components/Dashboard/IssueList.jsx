@@ -11,12 +11,14 @@ const getIssueIconByStatus = (status) => {
   }
 };
 
-function IssueList({ isOpen, setDetailIssue }) {
+function IssueList({
+  isOpen,
+  setDetailIssue,
+  setDetailData,
+  setIssueTitleAndId,
+}) {
   const [issues, setIssues] = useState([]);
 
-  // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
-  // GET 요청을 통해 이슈 데이터를 가져옴
-  // isOpen이 변경될 때마다 API 호출
   useEffect(() => {
     fetch(`${API_URL}/api/issues?is_open=${isOpen}`)
       .then((response) => response.json())
@@ -27,6 +29,27 @@ function IssueList({ isOpen, setDetailIssue }) {
         console.error("Error fetching issue data:", error);
       });
   }, [isOpen]);
+
+  const handleClickIssueTitle = (issue, setDetailIssue, setIssueTitleAndId) => {
+    console.log(issue);
+    setIssueTitleAndId({
+      title: issue.title,
+      id: issue.id,
+      authorId: issue.author.id,
+    });
+
+    // TODO 이슈 데이터 fetch 코드 추가 예정
+    // fetch 처리 후 응답 받은 값을 setDetailIssue
+    fetch(`${API_URL}/api/issues/${issue.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setDetailData(data);
+        setDetailIssue(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching issue detail data:", error);
+      });
+  };
 
   return (
     <div className={styles.issueListContainer}>
@@ -39,7 +62,13 @@ function IssueList({ isOpen, setDetailIssue }) {
                 {getIssueIconByStatus(isOpen)}
                 <div
                   className={styles.issueTitle}
-                  onClick={() => setDetailIssue(true)}
+                  onClick={() =>
+                    handleClickIssueTitle(
+                      issue,
+                      setDetailIssue,
+                      setIssueTitleAndId
+                    )
+                  }
                 >
                   {issue.title}
                 </div>

@@ -6,7 +6,12 @@ import { API_URL } from "../../constants/link";
 import IssueList from "./IssueList";
 import TableHeader from "./TableHeader";
 
-function IssueTable({ filterData, setDetailIssue }) {
+function IssueTable({
+  filterData,
+  setDetailIssue,
+  setDetailData,
+  setIssueTitleAndId,
+}) {
   const [isOpen, setIsOpen] = useState(true);
   const [issueCount, setIssueCount] = useState(0);
 
@@ -32,7 +37,12 @@ function IssueTable({ filterData, setDetailIssue }) {
         />
       </div>
       <div className={styles.issueListContainer}>
-        <IssueList isOpen={isOpen} setDetailIssue={setDetailIssue} />
+        <IssueList
+          isOpen={isOpen}
+          setDetailIssue={setDetailIssue}
+          setDetailData={setDetailData}
+          setIssueTitleAndId={setIssueTitleAndId}
+        />
       </div>
     </div>
   );

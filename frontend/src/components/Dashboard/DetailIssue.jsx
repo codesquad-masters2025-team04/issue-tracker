@@ -8,7 +8,7 @@ import CommentInput from "../common/CommentInput";
 import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 
-function DetailIssue({ filterData }) {
+function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
@@ -16,9 +16,8 @@ function DetailIssue({ filterData }) {
       마일스톤: null,
     });
   const [editIssueTitle, setEditIssueTitle] = useState(false);
-  const [issueTitle, setIssueTitle] = useState(
-    "FE 이슈트래커 디자인 시스템 구현"
-  ); // TODO 추후 이슈 제목을 받아와 초기값을 설정할 예정
+  // TODO 추후 이슈 제목을 받아와 초기값을 설정할 예정
+  const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);
   const [isOpenIssue, setIsOpenIssue] = useState(true);
 
   return (
@@ -36,6 +35,7 @@ function DetailIssue({ filterData }) {
             issueTitle={issueTitle}
             isOpenIssue={isOpenIssue}
             setIsOpenIssue={setIsOpenIssue}
+            issueId={issueTitleAndId.id}
           />
         )}
         <div className={styles.statesInfo}>
@@ -51,11 +51,11 @@ function DetailIssue({ filterData }) {
           </div>
           <div className={styles.explainState}>
             <span>
-              이 이슈가 3분 전에 samsamis9님에 의해{" "}
-              {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
+              이 이슈가 3분 전에 {detailData.comments[0].author.nickname}님에
+              의해 {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
-            <span>코멘트 2개</span>
+            <span>코멘트 {detailData.commentSize}개</span>
           </div>
         </div>
         <div className={styles.line} />
@@ -63,8 +63,16 @@ function DetailIssue({ filterData }) {
 
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
-          <Comment />
-          <Comment />
+          {detailData.comments.map((comment) => (
+            <Comment
+              key={comment.commentId}
+              authorName={comment.author.nickname}
+              issueAuthorId={issueTitleAndId.authorId}
+              commentAuthorId={comment.author.id}
+              content={comment.content}
+            />
+          ))}
+
           <CommentInput />
 
           <button className={styles.newCommentButton}>
