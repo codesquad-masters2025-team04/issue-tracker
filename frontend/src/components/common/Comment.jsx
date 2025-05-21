@@ -1,7 +1,14 @@
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+
 import styles from "./Comment.module.css";
 import userImage from "../../assets/images/userImage.png";
 
 function Comment({ authorName, issueAuthorId, commentAuthorId, content }) {
+  const renderedContent = DOMPurify.sanitize(
+    marked(content.replace(/\n/g, "  \n"))
+  );
+
   return (
     <div className={styles.comment}>
       <div className={styles.commentHeader}>
@@ -27,7 +34,10 @@ function Comment({ authorName, issueAuthorId, commentAuthorId, content }) {
           </button>
         </div>
       </div>
-      <div className={styles.commentBody}>{content}</div>
+      <div
+        className={styles.commentBody}
+        dangerouslySetInnerHTML={{ __html: renderedContent }}
+      />
     </div>
   );
 }
