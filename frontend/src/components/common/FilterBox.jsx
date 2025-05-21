@@ -49,7 +49,7 @@ function FilterBox({
           {filter === "담당자" && selectedFilters[filter]?.length > 0 && (
             <div className={styles.selectedList}>
               {selectedFilters[filter].map((item) => (
-                <div className={styles.selectedAsignees}>
+                <div key={item.id} className={styles.selectedAsignees}>
                   {/* TODO 추후 img로 변경 예정*/}
                   <div
                     style={{

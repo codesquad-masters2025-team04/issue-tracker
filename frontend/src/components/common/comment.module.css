@@ -84,6 +84,30 @@
   color: var(--neutral-text-default);
 }
 
+.deleteCommentButton {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.commentButtonsIcon {
+  width: 16px;
+  height: 16px;
+  background-color: var(--neutral-text-default);
+}
+.deleteIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/xSquare.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.commentButtonsText {
+  font: var(--available-medium12);
+  color: var(--neutral-text-default);
+}
+
 .commentBody {
   padding: 16px 24px 24px 24px;
   background-color: var(--neutral-surface-strong);

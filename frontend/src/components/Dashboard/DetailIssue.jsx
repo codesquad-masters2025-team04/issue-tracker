@@ -9,6 +9,7 @@ import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 
 function DetailIssue({ filterData, detailData, issueTitleAndId }) {
+  const userId = 1;
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
@@ -66,7 +67,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
           {detailData.comments.map((comment) => (
             <Comment
               key={comment.commentId}
-              authorName={comment.author.nickname}
+              authorInfo={comment.author}
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author.id}
               content={comment.content}
