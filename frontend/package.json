@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dompurify": "^3.2.6",
     "install": "^0.13.0",
+    "marked": "^15.0.12",
     "npm": "^11.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -1,6 +1,6 @@
 import styles from "./IssueToolBar.module.css";
 
-function ControlHeader({ onClick }) {
+function IssueToolBar({ onClick }) {
   return (
     <>
       <button onClick={onClick} className={styles.writeIssueButton}>
@@ -10,4 +10,4 @@ function ControlHeader({ onClick }) {
   );
 }
 
-export default ControlHeader;
+export default IssueToolBar;

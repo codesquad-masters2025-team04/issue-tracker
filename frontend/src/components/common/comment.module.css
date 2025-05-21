@@ -1,0 +1,92 @@
+.comment {
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+}
+
+.commentHeader {
+  background-color: var(--neutral-surface-default);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--neutral-border-default);
+}
+
+.userInfo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font: var(--display-medium16);
+}
+
+.userName {
+  color: var(--neutral-text-default);
+}
+
+.timeGap {
+  color: var(--neutral-text-weak);
+}
+
+.labelAndButtons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.assigneeLabel {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  background-color: var(--neutral-surface-bold);
+  padding: 0 12px;
+  font: var(--display-medium12);
+  color: var(--neutral-text-weak);
+  border-radius: var(--radius-large);
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+}
+
+.editIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/edit.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.editText {
+  font: var(--available-medium12);
+  color: var(--neutral-text-default);
+}
+
+.reactionButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+}
+
+.reactionIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/smile.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.reactionText {
+  font: var(--available-medium12);
+  color: var(--neutral-text-default);
+}
+
+.commentBody {
+  padding: 16px 24px 24px 24px;
+  background-color: var(--neutral-surface-strong);
+  font: var(--display-medium16);
+  color: var(--neutral-text-default);
+}

@@ -1,0 +1,49 @@
+.filtersContainer {
+  display: flex;
+  flex-direction: column;
+  width: 288px;
+  font: var(--available-medium16);
+  color: var(--neutral-text-default);
+}
+
+.filterBox {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--neutral-border-default);
+  background-color: var(--neutral-surface-strong);
+  padding: 32px;
+}
+
+.filterButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filterButtonTitle {
+  position: relative;
+}
+
+.plusIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url("../../assets/icons/plus.svg");
+  background-size: cover;
+}
+
+.activeFilter {
+  position: absolute;
+  left: 50%;
+}
+
+.selectedList {
+  display: flex;
+  flex-direction: column;
+  font: var(--display-medium12);
+  color: var(--neutral-text-strong);
+}
+
+.selectedItem {
+  margin-top: 16px;
+}
