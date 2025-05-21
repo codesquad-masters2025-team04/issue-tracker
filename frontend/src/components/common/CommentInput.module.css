@@ -6,6 +6,12 @@
   flex-direction: column;
   gap: 8px;
   position: relative;
+  font: var(--display-medium16);
+}
+
+.focused {
+  background-color: var(--neutral-surface-strong);
+  border: 1px solid var(--neutral-border-default-active);
 }
 
 .textarea {

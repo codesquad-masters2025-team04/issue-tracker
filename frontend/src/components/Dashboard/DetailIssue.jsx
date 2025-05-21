@@ -9,7 +9,6 @@ import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 
 function DetailIssue({ filterData, detailData, issueTitleAndId }) {
-  const userId = 1;
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
@@ -20,6 +19,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   // TODO 추후 이슈 제목을 받아와 초기값을 설정할 예정
   const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);
   const [isOpenIssue, setIsOpenIssue] = useState(true);
+  const [newComment, setNewComment] = useState("");
 
   return (
     <>
@@ -74,9 +74,13 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             />
           ))}
 
-          <CommentInput />
+          <CommentInput setNewComment={setNewComment} />
 
-          <button className={styles.newCommentButton}>
+          <button
+            className={`${styles.newCommentButton} ${
+              newComment.trim() !== "" ? styles.activeButton : ""
+            }`}
+          >
             <span className={styles.plusIcon} />
             <span className={styles.newCommentText}>코멘트 작성</span>
           </button>

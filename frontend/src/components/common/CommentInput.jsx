@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput() {
+function CommentInput({ setNewComment }) {
   const fileInputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleAttachClick = () => {
     fileInputRef.current.click(); // 숨겨진 파일 input 클릭
@@ -17,8 +18,14 @@ function CommentInput() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <textarea className={styles.textarea} placeholder="코멘트를 입력하세요" />
+    <div className={`${styles.wrapper} ${isFocused ? styles.focused : ""}`}>
+      <textarea
+        className={styles.textarea}
+        placeholder="코멘트를 입력하세요"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(e) => setNewComment(e.target.value)}
+      />
       <div className={styles.footer}>
         <div className={styles.attach} onClick={handleAttachClick}>
           <span className={styles.fileIcon} />
