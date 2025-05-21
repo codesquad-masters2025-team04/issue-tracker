@@ -1,45 +1,28 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import styles from "./WriteIssue.module.css";
-import IssueTable from "./IssueTable";
-import IssueToolBar from "../ControlHeader/IssueToolBar";
-import PopupList from "../common/PopupList";
 import { API_URL } from "../../constants/link";
+import FilterBox from "../common/FilterBox";
+import useFilterBox from "../../hooks/useFilterBox";
 
-const changeFilterName = {
-  담당자: "users",
-  레이블: "labels",
-  마일스톤: "milestones",
-  작성자: "users", // TODO 추후 담당자와 구분지을 예정
-};
-
-const handleClick = (
-  title,
-  content,
-  file,
-  setWriteIssue,
-  selectedFilters,
-  setDetailIssue
-) => {
+// 서버에 POST 요청을 보내는 함수
+const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
   const issueData = {
-    title: title,
-    content: content,
+    title,
+    content,
     authorId: 1,
     assigneeIds: selectedFilters["담당자"].map((item) => item.id),
     labelIds: selectedFilters["레이블"].map((item) => item.id),
     milestoneId: selectedFilters["마일스톤"]?.id || null,
   };
 
-  const fileData = file;
-
   const formData = new FormData();
-  const issueBlob = new Blob([JSON.stringify(issueData)], {
-    type: "application/json",
-  });
+  formData.append(
+    "issue",
+    new Blob([JSON.stringify(issueData)], { type: "application/json" })
+  );
 
-  formData.append("issue", issueBlob);
-
-  if (fileData && fileData.length > 0) {
-    fileData.forEach((file) => formData.append("file", file));
+  if (file?.length) {
+    file.forEach((f) => formData.append("file", f));
   }
 
   fetch(`${API_URL}/api/issues`, {
@@ -51,84 +34,36 @@ const handleClick = (
     .catch((err) => console.error("에러:", err));
 
   setWriteIssue(false);
-  setDetailIssue(true);
 };
 
-// TODO 컴포넌트 분리 + filterData를 통해 filtersContainer부분 수정하기
-function WriteIssue({ setWriteIssue, filterData, setDetailIssue }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [selectedcancelButton, setselectedcancelButton] = useState(false);
-  const [file, setFile] = useState([]);
-  const [activeFilter, setActiveFilter] = useState(null);
+function WriteIssue({ setWriteIssue, filterData }) {
+  const [title, setTitle] = useState(""); // 제목 상태
+  const [content, setContent] = useState(""); // 내용 상태
+  const [file, setFile] = useState([]); // 첨부파일 상태
   const [errorFields, setErrorFields] = useState({
     title: false,
     content: false,
-  });
-  // 각 필터에 대해 선택된 항목을 저장하는 상태
-  // TODO 백엔드 분들에게 id하나만 전달해도 []배열로 전달하는 것인지 물어보기
-  const [selectedFilters, setSelectedFilters] = useState({
-    담당자: [],
-    레이블: [],
-    마일스톤: null,
-  });
+  }); // 에러 표시용 상태
 
-  // ✅ useRef로 최신 selectedFilters 값 유지
-  const selectedFiltersRef = useRef(selectedFilters);
+  // 커스텀 훅으로 필터 상태 및 함수 추출
+  const { selectedFilters, activeFilter, toggleFilter, selectOption } =
+    useFilterBox({
+      담당자: [],
+      레이블: [],
+      마일스톤: null,
+    });
 
-  // ✅ selectedFilters 값이 바뀔 때마다 ref도 동기화
-  useEffect(() => {
-    selectedFiltersRef.current = selectedFilters;
-  }, [selectedFilters]);
-
-  const handleClickcancelButton = (isSelected) => {
-    setselectedcancelButton(isSelected);
-    setWriteIssue(false);
-  };
-
+  // 첨부파일 변경 핸들러
   const handleFileChange = (e) => {
     setFile(Array.from(e.target.files));
   };
 
-  const handleFilterClick = (filterName) => {
-    setActiveFilter((prev) => (prev === filterName ? null : filterName));
+  // 작성 취소 버튼
+  const handleClickCancel = () => {
+    setWriteIssue(false);
   };
 
-  if (selectedcancelButton) {
-    return (
-      <>
-        <IssueToolBar />
-        <IssueTable />
-      </>
-    );
-  }
-
-  // PopupList에서 항목 선택 시 해당 필터에 맞게 상태를 업데이트하는 함수
-  const handleOptionSelect = (filter, item) => {
-    setSelectedFilters((prev) => {
-      if (filter === "마일스톤") {
-        // 마일스톤은 단일 선택이므로 같은 항목을 다시 클릭하면 제거
-        return {
-          ...prev,
-          [filter]: prev[filter]?.id === item.id ? null : item,
-        };
-      }
-
-      const alreadySelected = prev[filter].some((el) => el.id === item.id);
-      if (alreadySelected) {
-        // 선택되어 있으면 제거
-        return {
-          ...prev,
-          [filter]: prev[filter].filter((el) => el.id !== item.id),
-        };
-      }
-      return {
-        ...prev,
-        [filter]: [...prev[filter], item],
-      };
-    });
-  };
-
+  // 제출 버튼 클릭 시 실행
   const handleSubmit = () => {
     const hasTitle = title.trim() !== "";
     const hasContent = content.trim() !== "";
@@ -140,114 +75,57 @@ function WriteIssue({ setWriteIssue, filterData, setDetailIssue }) {
 
     if (!hasTitle || !hasContent) return;
 
-    handleClick(
-      title,
-      content,
-      file,
-      setWriteIssue,
-      selectedFilters,
-      setDetailIssue
-    );
+    handleClick(title, content, file, setWriteIssue, selectedFilters);
   };
 
   return (
-    <>
-      <div className={styles.writeIssueContainer}>
-        <h3 className={styles.headerName}>새로운 이슈 작성</h3>
-        <hr />
+    <div className={styles.writeIssueContainer}>
+      <h3 className={styles.headerName}>새로운 이슈 작성</h3>
+      <hr />
 
-        <div className={styles.inputArea}>
-          <div className={styles.userImage} />
-          <div className={styles.inputContainer}>
-            <div className={styles.inputTitleContainer}>
-              <input
-                type="text"
-                placeholder="제목"
-                className={`${styles.issueTitleInput} ${
-                  errorFields.title ? styles.errorInput : ""
-                }`}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className={styles.issueContentInputContainter}>
-              <textarea
-                placeholder="코멘트를 입력하세요"
-                className={`${styles.issueContentInput} ${
-                  errorFields.content ? styles.errorInput : ""
-                }`}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <input type="file" multiple onChange={handleFileChange} />
-            </div>
-          </div>
-          <div className={styles.filtersContainer}>
-            {["담당자", "레이블", "마일스톤"].map((filter) => {
-              return (
-                <div
-                  className={styles.filterBox}
-                  key={changeFilterName[filter]}
-                >
-                  <div
-                    key={filter}
-                    className={styles.filterButton}
-                    onClick={() => handleFilterClick(filter)}
-                  >
-                    <span className={styles.filterButtonTitle}>
-                      {filter}
-                      {activeFilter === filter && (
-                        <PopupList
-                          filterName={filter}
-                          className={styles.activeFilter}
-                          data={filterData?.[changeFilterName[filter]] ?? []}
-                          onSelect={(item) => handleOptionSelect(filter, item)}
-                          selectedItems={selectedFilters[filter]}
-                        />
-                      )}
-                    </span>
-
-                    <div className={styles.plusIcon} />
-                  </div>
-                  {filter === "마일스톤" && selectedFilters[filter] && (
-                    <div className={styles.selectedList}>
-                      <div className={styles.selectedItem}>
-                        {selectedFilters[filter].title}
-                      </div>
-                    </div>
-                  )}
-
-                  {filter !== "마일스톤" &&
-                    selectedFilters[filter]?.length > 0 && (
-                      <div className={styles.selectedList}>
-                        {selectedFilters[filter].map((item) => (
-                          <div key={item.id} className={styles.selectedItem}>
-                            {item.title}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                </div>
-              );
-            })}
+      <div className={styles.inputArea}>
+        <div className={styles.userImage} />
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="제목"
+            className={`${styles.issueTitleInput} ${
+              errorFields.title ? styles.errorInput : ""
+            }`}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className={styles.issueContentInputContainter}>
+            <textarea
+              placeholder="코멘트를 입력하세요"
+              className={`${styles.issueContentInput} ${
+                errorFields.content ? styles.errorInput : ""
+              }`}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <input type="file" multiple onChange={handleFileChange} />
           </div>
         </div>
 
-        <hr />
-        <div className={styles.buttonArea}>
-          <button
-            className={styles.cancelButton}
-            onClick={() => handleClickcancelButton(true)}
-          >
-            작성 취소
-          </button>
-          <button
-            className={`${styles.submitButton} ${styles.disabledButton}`}
-            onClick={handleSubmit}
-          >
-            완료
-          </button>
-        </div>
+        <FilterBox
+          activeFilter={activeFilter}
+          selectedFilters={selectedFilters}
+          toggleFilter={toggleFilter}
+          selectOption={selectOption}
+          filterData={filterData}
+        />
       </div>
-    </>
+
+      <hr />
+
+      <div className={styles.buttonArea}>
+        <button className={styles.cancelButton} onClick={handleClickCancel}>
+          작성 취소
+        </button>
+        <button className={styles.submitButton} onClick={handleSubmit}>
+          완료
+        </button>
+      </div>
+    </div>
   );
 }
 

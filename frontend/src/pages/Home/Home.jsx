@@ -10,6 +10,8 @@ function Home() {
   const [writeIssue, setWriteIssue] = useState(false);
   const [filterData, setFilterData] = useState({});
   const [detailIssue, setDetailIssue] = useState(false);
+  const [issueTitleAndId, setIssueTitleAndId] = useState({});
+  const [detailData, setDetailData] = useState({});
   useEffect(() => {
     //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
     // 각각의 장단점이 명확하므로 추후 회의를 통해 선택할 예정, 우선 불필요한 리렌더링을 줄이기 위해 Promise.all을 사용
@@ -34,7 +36,7 @@ function Home() {
 
   return (
     <>
-      <Header />
+      <Header setWriteIssue={setWriteIssue} setDetailIssue={setDetailIssue} />
       {!writeIssue && !detailIssue ? (
         <IssueToolBar onClick={() => setWriteIssue(true)} />
       ) : (
@@ -47,9 +49,18 @@ function Home() {
           setDetailIssue={setDetailIssue}
         />
       ) : detailIssue ? (
-        <DetailIssue />
+        <DetailIssue
+          filterData={filterData}
+          detailData={detailData}
+          issueTitleAndId={issueTitleAndId}
+        />
       ) : (
-        <IssueTable filterData={filterData} />
+        <IssueTable
+          filterData={filterData}
+          setDetailIssue={setDetailIssue}
+          setDetailData={setDetailData}
+          setIssueTitleAndId={setIssueTitleAndId}
+        />
       )}
     </>
   );

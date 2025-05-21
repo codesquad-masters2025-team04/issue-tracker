@@ -31,7 +31,6 @@ function PopupList({
         ) : (
           ""
         )}
-        {/*TODO API 명세서 name,title 중 무엇인지 확인해보기*/}
         {data.map((item) => {
           // 선택 여부 확인 (배열일 경우: 담당자, 레이블 / 객체일 경우: 마일스톤)
           const isSelected = Array.isArray(selectedItems)
@@ -51,7 +50,7 @@ function PopupList({
                   ""
                 ) : item.hasOwnProperty("profileImage") ? (
                   <img
-                    src={profileImage} // 실제로는 item.profileImage 로 대체 가능
+                    src={profileImage} // TODO 추후 변경 예정
                     className={styles.userImageSmall}
                     alt="사용자 프로필 이미지"
                   />
