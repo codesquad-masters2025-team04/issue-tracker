@@ -10,6 +10,7 @@
   background-image: url("logoMedium.svg");
   width: 199px;
   height: 40px;
+  cursor: pointer;
 }
 
 .userProfile {

@@ -22,8 +22,8 @@ function IssueList({
   useEffect(() => {
     fetch(`${API_URL}/api/issues?is_open=${isOpen}`)
       .then((response) => response.json())
-      .then((data) => {
-        setIssues(data.issues || []);
+      .then((res) => {
+        setIssues(res.data.issues || []);
       })
       .catch((error) => {
         console.error("Error fetching issue data:", error);
@@ -31,7 +31,6 @@ function IssueList({
   }, [isOpen]);
 
   const handleClickIssueTitle = (issue, setDetailIssue, setIssueTitleAndId) => {
-    console.log(issue);
     setIssueTitleAndId({
       title: issue.title,
       id: issue.id,
