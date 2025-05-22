@@ -47,20 +47,27 @@ function PopupList({
             >
               <div className={styles.optionInfo}>
                 {Object.keys(item).length === 2 ? (
-                  ""
+                  <>
+                    <span>{item.title}</span>
+                  </>
                 ) : item.hasOwnProperty("profileImage") ? (
-                  <img
-                    src={profileImage} // TODO 추후 변경 예정
-                    className={styles.userImageSmall}
-                    alt="사용자 프로필 이미지"
-                  />
+                  <>
+                    <img
+                      src={profileImage} // TODO 추후 변경 예정
+                      className={styles.userImageSmall}
+                      alt="사용자 프로필 이미지"
+                    />
+                    <span>{item.nickname}</span>
+                  </>
                 ) : (
-                  <div
-                    className={styles.userImageSmall}
-                    style={{ backgroundColor: `#${item.color}` }}
-                  ></div>
+                  <>
+                    <div
+                      className={styles.userImageSmall}
+                      style={{ backgroundColor: `${item.color}` }}
+                    ></div>
+                    <span>{item.name}</span>
+                  </>
                 )}
-                <span>{item.title}</span>
               </div>
 
               <img

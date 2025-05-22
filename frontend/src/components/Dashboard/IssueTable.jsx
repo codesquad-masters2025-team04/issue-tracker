@@ -18,8 +18,8 @@ function IssueTable({
   useEffect(() => {
     fetch(`${API_URL}/api/issues/count`)
       .then((response) => response.json())
-      .then((data) => {
-        setIssueCount(data);
+      .then((res) => {
+        setIssueCount(res.data);
       })
       .catch((error) => {
         console.error("Error fetching issue count data:", error);
