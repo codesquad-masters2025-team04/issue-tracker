@@ -30,10 +30,11 @@ const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
     body: formData,
   })
     .then((res) => res.json())
-    .then((data) => console.log("서버 응답:", data))
+    .then((data) => {
+      console.log("서버 응답:", data);
+      setWriteIssue(false);
+    })
     .catch((err) => console.error("에러:", err));
-
-  setWriteIssue(false);
 };
 
 function WriteIssue({ setWriteIssue, filterData }) {
