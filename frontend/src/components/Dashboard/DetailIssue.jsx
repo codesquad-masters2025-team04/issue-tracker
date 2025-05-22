@@ -23,12 +23,14 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   const [comments, setComments] = useState(detailData.comments);
   const [file, setFile] = useState([]);
   const [fatchTrigger, setFetchTrigger] = useState(0);
+  const [commentSize, setCommentSize] = useState(detailData.commentSize);
 
   useEffect(() => {
     fetch(`${API_URL}/api/issues/${issueTitleAndId.id}`)
       .then((response) => response.json())
       .then((res) => {
         setComments(res.data.comments);
+        setCommentSize(res.data.commentSize);
       })
       .catch((error) => {
         console.error("Error fetching issue detail data:", error);
@@ -50,7 +52,6 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
       new Blob([JSON.stringify(newCommentData)], { type: "application/json" })
     );
 
-    // TODO 추후 파일 처리까지 구현하여 POST요청 코드 작성 예정
     if (file?.length) {
       file.forEach((f) => formData.append("file", f));
     }
@@ -103,7 +104,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
               {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
-            <span>코멘트 {detailData.commentSize}개</span>
+            <span>코멘트 {commentSize}개</span>
           </div>
         </div>
         <div className={styles.line} />
