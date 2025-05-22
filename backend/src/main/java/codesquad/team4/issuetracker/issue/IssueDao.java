@@ -1,13 +1,17 @@
     package codesquad.team4.issuetracker.issue;
 
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.jdbc.core.JdbcTemplate;
+    import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+    import org.springframework.stereotype.Repository;
+
+    import java.util.*;
     import java.util.ArrayList;
     import java.util.List;
     import java.util.Map;
     import java.util.stream.Collectors;
-
     import lombok.RequiredArgsConstructor;
     import org.springframework.jdbc.core.JdbcTemplate;
-    import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
     import org.springframework.stereotype.Repository;
 
     @Repository
@@ -15,10 +19,8 @@
     public class IssueDao {
 
         private final JdbcTemplate jdbcTemplate;
-        private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-        public List<Map<String, Object>> findIssuesByOpenStatus(boolean isOpen, int page, int size){
-            int offset = Math.max(0, (page - 1) * size);
+        public List<Map<String, Object>> findIssuesByOpenStatus(boolean isOpen){
 
             String sql = """
                 SELECT i.issue_id AS issue_id,
@@ -37,15 +39,14 @@
                 FROM issue i
                 LEFT JOIN `user` u ON i.author_id = u.user_id
                 LEFT JOIN milestone m ON i.milestone_id = m.milestone_id
-                JOIN issue_label il ON i.issue_id = il.issue_id
+                LEFT JOIN issue_label il ON i.issue_id = il.issue_id
                 LEFT JOIN label l ON il.label_id = l.label_id
-                JOIN issue_assignee ia ON i.issue_id = ia.issue_id
+                LEFT JOIN issue_assignee ia ON i.issue_id = ia.issue_id
                 LEFT JOIN `user` a ON ia.assignee_id = a.user_id
                 WHERE i.is_open = ?
-                LIMIT ? OFFSET ?
             """;
 
-            return jdbcTemplate.queryForList(sql, isOpen, size, offset);
+            return jdbcTemplate.queryForList(sql, isOpen);
         }
 
         public int countIssuesByOpenStatus(boolean isOpen) {
@@ -56,12 +57,13 @@
             );
         }
 
-        public List<Long> findExistingIssueIds(List<Long> issueIds) {
+        public Set<Long> findExistingIssueIds(List<Long> issueIds) {
             String placeholders = issueIds.stream().map(id -> "?").collect(Collectors.joining(", "));
             String sql = "SELECT issue_id FROM issue WHERE issue_id IN (" + placeholders + ")";
-            return jdbcTemplate.query(sql,
-                    (rs, rowNum) -> rs.getLong("issue_id"),
-                    issueIds.toArray());
+            List<Long> results = jdbcTemplate.query(sql,
+                (rs, rowNum) -> rs.getLong("issue_id"),
+                issueIds.toArray());
+            return new HashSet<>(results);
         }
 
         public int updateIssueStatusByIds(boolean isOpen, List<Long> issueIds) {
@@ -79,17 +81,17 @@
             String sql = """
                 SELECT
                     i.content AS issue_content,
-                    i.image_url AS issue_image_url,
+                    i.file_url AS issue_file_url,
                     c.comment_id AS comment_id,
                     c.content AS comment_content,
-                    c.image_url AS comment_image_url,
+                    c.file_url AS comment_file_url,
                     c.created_at AS comment_created_at,
                     u.user_id AS author_id,
                     u.nickname AS author_nickname,
                     u.profile_image AS author_profile
                 FROM issue i
-                JOIN comment c ON i.issue_id = c.issue_id
-                JOIN user u ON u.user_id = c.author_id
+                LEFT JOIN comment c ON i.issue_id = c.issue_id
+                LEFT JOIN `user` u ON u.user_id = c.author_id
                 where i.issue_id = ?
             """;
 
