@@ -34,13 +34,14 @@ function IssueList({
     setIssueTitleAndId({
       title: issue.title,
       id: issue.id,
+      nickname: issue.author.nickname,
       authorId: issue.author.id,
     });
-
+    console.log(issue.author.nickname);
     fetch(`${API_URL}/api/issues/${issue.id}`)
       .then((response) => response.json())
-      .then((data) => {
-        setDetailData(data);
+      .then((res) => {
+        setDetailData(res.data);
         setDetailIssue(true);
       })
       .catch((error) => {

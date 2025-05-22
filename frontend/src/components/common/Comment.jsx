@@ -49,6 +49,7 @@ function Comment({ authorInfo, issueAuthorId, commentAuthorId, content }) {
           )}
         </div>
       </div>
+      {/* TODO 편집 버튼을 위한 상태처리 true,false에 따라 해당 코멘트 영역 처리 */}
       <div
         className={styles.commentBody}
         dangerouslySetInnerHTML={{ __html: renderedContent }}

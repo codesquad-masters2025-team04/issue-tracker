@@ -68,8 +68,8 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
           </div>
           <div className={styles.explainState}>
             <span>
-              이 이슈가 3분 전에 {detailData.comments[0].author.nickname}님에
-              의해 {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
+              이 이슈가 3분 전에 {issueTitleAndId.nickname}님에 의해{" "}
+              {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
             <span>코멘트 {detailData.commentSize}개</span>
@@ -80,6 +80,12 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
 
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
+          <Comment
+            authorInfo={issueTitleAndId}
+            issueAuthorId={issueTitleAndId.authorId}
+            commentAuthorId={issueTitleAndId.authorId}
+            content={detailData.content}
+          />
           {comments.map((comment) => (
             <Comment
               key={comment.commentId}
