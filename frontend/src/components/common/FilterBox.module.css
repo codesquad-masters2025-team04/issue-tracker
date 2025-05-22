@@ -38,12 +38,41 @@
 }
 
 .selectedList {
+  width: 244px;
   display: flex;
   flex-direction: column;
   font: var(--display-medium12);
   color: var(--neutral-text-strong);
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.selectedAsignees {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectedLabelList {
+  width: 244px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  font: var(--display-medium12);
+  color: var(--neutral-text-strong);
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
 .selectedItem {
-  margin-top: 16px;
+  display: inline-block;
+}
+
+.selectedLabelItem {
+  height: 24px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-large);
 }

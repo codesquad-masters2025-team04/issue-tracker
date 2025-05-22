@@ -45,10 +45,36 @@ function FilterBox({
             </div>
           )}
 
-          {filter !== "마일스톤" && selectedFilters[filter]?.length > 0 && (
+          {/* TODO 담당자 이미지 추가 예정*/}
+          {filter === "담당자" && selectedFilters[filter]?.length > 0 && (
             <div className={styles.selectedList}>
               {selectedFilters[filter].map((item) => (
-                <div key={item.id} className={styles.selectedItem}>
+                <div key={item.id} className={styles.selectedAsignees}>
+                  {/* TODO 추후 img로 변경 예정*/}
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      backgroundColor: "#ccc",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
+                  <div key={item.id} className={styles.selectedItem}>
+                    {item.title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {filter === "레이블" && selectedFilters[filter]?.length > 0 && (
+            <div className={styles.selectedLabelList}>
+              {selectedFilters[filter].map((item) => (
+                <div
+                  key={item.id}
+                  className={styles.selectedLabelItem}
+                  style={{ backgroundColor: `#${item.color}` }}
+                >
                   {item.title}
                 </div>
               ))}
