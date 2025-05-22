@@ -117,3 +117,7 @@
   mask-image: url("../../assets/icons/trash.svg");
   background-color: var(--danger-text-default);
 }
+
+.activeButton {
+  opacity: 100%;
+}

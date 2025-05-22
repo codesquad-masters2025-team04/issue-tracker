@@ -34,15 +34,14 @@ function IssueList({
     setIssueTitleAndId({
       title: issue.title,
       id: issue.id,
+      nickname: issue.author.nickname,
       authorId: issue.author.id,
     });
-
-    // TODO 이슈 데이터 fetch 코드 추가 예정
-    // fetch 처리 후 응답 받은 값을 setDetailIssue
+    console.log(issue.author.nickname);
     fetch(`${API_URL}/api/issues/${issue.id}`)
       .then((response) => response.json())
-      .then((data) => {
-        setDetailData(data);
+      .then((res) => {
+        setDetailData(res.data);
         setDetailIssue(true);
       })
       .catch((error) => {
@@ -73,10 +72,10 @@ function IssueList({
                 </div>
 
                 {issue.labels &&
-                  issue.labels.map((label, index) => (
+                  issue.labels.map((label) => (
                     <div
                       className={styles.issueLabel}
-                      key={index}
+                      key={label.id}
                       style={{
                         backgroundColor: label.color,
                         marginRight: "4px",
