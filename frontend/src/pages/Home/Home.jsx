@@ -25,9 +25,9 @@ function Home() {
     ])
       .then(([usersData, milestonesData, labelsData]) => {
         setFilterData({
-          users: usersData.users,
-          milestones: milestonesData.milestones,
-          labels: labelsData.labels,
+          users: usersData.data.users,
+          milestones: milestonesData.data.milestones,
+          labels: labelsData.data.labels,
         });
       })
       .catch((error) => {
