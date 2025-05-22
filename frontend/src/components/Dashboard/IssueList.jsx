@@ -37,7 +37,7 @@ function IssueList({
       nickname: issue.author.nickname,
       authorId: issue.author.id,
     });
-    console.log(issue.author.nickname);
+
     fetch(`${API_URL}/api/issues/${issue.id}`)
       .then((response) => response.json())
       .then((res) => {
