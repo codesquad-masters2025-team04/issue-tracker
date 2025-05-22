@@ -1,3 +1,4 @@
+import React from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
@@ -19,7 +20,6 @@ function Comment({ authorInfo, issueAuthorId, commentAuthorId, content }) {
           <span className={styles.timeGap}>3분 전</span>
         </div>
         <div className={styles.labelAndButtons}>
-          {/* TODO 추후 이슈 작성자와 코멘트 작성자 값 비교 후 작성자와 같을 경우 활성화, 다를 경우 비활성화 시킬 예정 */}
           {issueAuthorId === Number(commentAuthorId) ? (
             <div className={styles.assigneeLabel}>작성자</div>
           ) : (
@@ -57,4 +57,4 @@ function Comment({ authorInfo, issueAuthorId, commentAuthorId, content }) {
   );
 }
 
-export default Comment;
+export default React.memo(Comment);

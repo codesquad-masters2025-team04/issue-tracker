@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput({ setNewComment }) {
+function CommentInput({ newComment, setNewComment }) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -22,6 +22,7 @@ function CommentInput({ setNewComment }) {
       <textarea
         className={styles.textarea}
         placeholder="코멘트를 입력하세요"
+        value={newComment}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(e) => setNewComment(e.target.value)}

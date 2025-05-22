@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import styles from "./DetailIssue.module.css";
 import FilterBox from "../common/FilterBox";
 import useFilterBox from "../../hooks/useFilterBox";
@@ -9,6 +8,7 @@ import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 
 function DetailIssue({ filterData, detailData, issueTitleAndId }) {
+  // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
@@ -16,10 +16,26 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
       마일스톤: null,
     });
   const [editIssueTitle, setEditIssueTitle] = useState(false);
-  // TODO 추후 이슈 제목을 받아와 초기값을 설정할 예정
   const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);
   const [isOpenIssue, setIsOpenIssue] = useState(true);
   const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState(detailData.comments);
+
+  const handleAddComment = () => {
+    if (newComment.trim() === "") return;
+
+    const newCommentData = {
+      commentId: Date.now(),
+      author: {
+        id: "1",
+        nickname: "jicho",
+      },
+      content: newComment,
+    };
+    // TODO 추후 파일 처리까지 구현하여 POST요청 코드 작성 예정
+    setComments((prev) => [...prev, newCommentData]);
+    setNewComment("");
+  };
 
   return (
     <>
@@ -64,7 +80,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
 
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
-          {detailData.comments.map((comment) => (
+          {comments.map((comment) => (
             <Comment
               key={comment.commentId}
               authorInfo={comment.author}
@@ -74,12 +90,13 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             />
           ))}
 
-          <CommentInput setNewComment={setNewComment} />
+          <CommentInput newComment={newComment} setNewComment={setNewComment} />
 
           <button
             className={`${styles.newCommentButton} ${
               newComment.trim() !== "" ? styles.activeButton : ""
             }`}
+            onClick={handleAddComment}
           >
             <span className={styles.plusIcon} />
             <span className={styles.newCommentText}>코멘트 작성</span>
