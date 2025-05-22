@@ -1,48 +1,83 @@
-name: Deploy Backend to EC2
+name: Build and Deploy Backend
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
+    branches:
+      - main
   workflow_dispatch:
-
+   
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
 
-      - name: Deploy and Run on EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-          
-          # 로그 디렉토리 준비
-          sudo mkdir -p /var/log/issue-tracker
-          sudo chown $(whoami):$(whoami) /var/log/issue-tracker
+      - name: Build backend with Gradle
+        working-directory: ./backend
+        run: ./gradlew clean build
 
-          # 프로젝트 디렉토리로 이동
-          cd ~/issue-tracker
+      - name: List build/libs to check JAR
+        run: ls -l backend/build/libs
 
-          # 최신 코드 pull
-          git checkout main
-          git pull origin main
+      - name: Upload JAR artifact (optional)
+        uses: actions/upload-artifact@v2
+        with:
+          name: backend-jar
+          path: backend/build/libs/*.jar
 
-          # 빌드
-          chmod +x ./gradlew
-          ./gradlew -p backend build -x test
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download backend JAR artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: backend-jar
+          path: ./deploy-artifacts
 
-          # 기존 실행 중인 서버 종료
-          pkill -f 'java -jar' || true
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            PROJECT_NAME="issue-tracker"
+            DEPLOY_DIR="/home/ubuntu/$PROJECT_NAME"
+            LOG_DIR="$DEPLOY_DIR/logs"
+            LOG_FILE="$LOG_DIR/app.log"
+            JAR_NAME=$(ls ./deploy-artifacts/*.jar | xargs -n1 basename)
 
-          # 실행
-          nohup java -jar backend/build/libs/backend-0.0.1-SNAPSHOT.jar > /var/log/issue-tracker/app.log 2>&1 &
-          EOF
+            mkdir -p "$DEPLOY_DIR"
+            mkdir -p "$LOG_DIR"
+
+            echo "🛑 기존 프로세스 종료 중..."
+            PID=$(pgrep -f "$JAR_NAME" || true)
+            if [ -n "$PID" ]; then
+              kill -9 $PID
+              echo "✅ 종료 완료 (PID=$PID)"
+            else
+              echo "⚠️ 실행 중인 프로세스 없음"
+            fi
+
+            echo "🚀 새 백엔드 실행..."
+            nohup java -jar "$DEPLOY_DIR/$JAR_NAME" > "$LOG_FILE" 2>&1 &
+
+            echo "✅ 배포 완료 (PID=$!)"
+
+      - name: Copy JAR to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: ./deploy-artifacts/*.jar
+          target: /home/ubuntu/issue-tracker/
