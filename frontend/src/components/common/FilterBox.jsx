@@ -60,7 +60,7 @@ function FilterBox({
                     }}
                   ></div>
                   <div key={item.id} className={styles.selectedItem}>
-                    {item.title}
+                    {item.nickname}
                   </div>
                 </div>
               ))}
@@ -73,9 +73,9 @@ function FilterBox({
                 <div
                   key={item.id}
                   className={styles.selectedLabelItem}
-                  style={{ backgroundColor: `#${item.color}` }}
+                  style={{ backgroundColor: item.color }}
                 >
-                  {item.title}
+                  {item.name}
                 </div>
               ))}
             </div>
