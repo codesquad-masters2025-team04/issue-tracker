@@ -65,6 +65,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
         console.log("서버 응답:", data);
         setFetchTrigger((prev) => prev + 1);
         setNewComment("");
+        setFile([]);
       })
       .catch((err) => console.error("에러:", err));
   };
@@ -117,6 +118,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             issueAuthorId={issueTitleAndId.authorId}
             commentAuthorId={issueTitleAndId.authorId}
             content={detailData.content}
+            file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
           />
           {comments.map((comment) => (
             <Comment
@@ -125,6 +127,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author?.id}
               content={comment.content}
+              file={comment.fileUrl ? comment.fileUrl : ""}
             />
           ))}
 
@@ -132,6 +135,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             newComment={newComment}
             setNewComment={setNewComment}
             setFile={setFile}
+            file={file}
           />
 
           <button

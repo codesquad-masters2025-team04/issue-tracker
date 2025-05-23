@@ -5,7 +5,13 @@ import DOMPurify from "dompurify";
 import styles from "./Comment.module.css";
 import userImage from "../../assets/images/userImage.png";
 
-function Comment({ authorInfo, issueAuthorId, commentAuthorId, content }) {
+function Comment({
+  authorInfo,
+  issueAuthorId,
+  commentAuthorId,
+  content,
+  file,
+}) {
   const userId = 1;
   const renderedContent = DOMPurify.sanitize(
     marked(content.replace(/\n/g, "  \n"))
@@ -54,6 +60,7 @@ function Comment({ authorInfo, issueAuthorId, commentAuthorId, content }) {
         className={styles.commentBody}
         dangerouslySetInnerHTML={{ __html: renderedContent }}
       />
+      {file && <img src={file} alt="첨부 파일" />}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput({ newComment, setNewComment, setFile }) {
+function CommentInput({ newComment, setNewComment, setFile, file }) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -35,6 +35,18 @@ function CommentInput({ newComment, setNewComment, setFile }) {
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
+
+        <div className={styles.fileWrapper}>
+          {file && file.length > 0 && (
+            <div className={styles.fileList}>
+              {file.map((f, index) => (
+                <span key={index} className={styles.fileItem}>
+                  {f.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
