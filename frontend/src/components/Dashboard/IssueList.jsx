@@ -52,7 +52,7 @@ function IssueList({
 
   return (
     <div className={styles.issueListContainer}>
-      {issues.map((issue) => (
+      {[...issues].reverse().map((issue) => (
         <div className={styles.IssueContainer} key={issue.id}>
           <div className={styles.mainInfo}>
             <button className={styles.checkbox} />
