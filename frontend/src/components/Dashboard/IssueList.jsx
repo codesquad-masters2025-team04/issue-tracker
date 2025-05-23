@@ -53,7 +53,7 @@ function IssueList({
   const [issues, setIssues] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/issues?is_open=${isOpen}`)
+    fetch(`${API_URL}/api/issues?isOpen=${isOpen}`)
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
