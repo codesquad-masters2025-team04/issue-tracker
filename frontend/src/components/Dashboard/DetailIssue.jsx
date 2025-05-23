@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DetailIssue.module.css";
 import FilterBox from "../common/FilterBox";
 import useFilterBox from "../../hooks/useFilterBox";
@@ -6,6 +6,7 @@ import Comment from "../common/Comment";
 import CommentInput from "../common/CommentInput";
 import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
+import { API_URL } from "../../constants/link";
 
 function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
@@ -20,21 +21,52 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   const [isOpenIssue, setIsOpenIssue] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(detailData.comments);
+  const [file, setFile] = useState([]);
+  const [fatchTrigger, setFetchTrigger] = useState(0);
+  const [commentSize, setCommentSize] = useState(detailData.commentSize);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/issues/${issueTitleAndId.id}`)
+      .then((response) => response.json())
+      .then((res) => {
+        setComments(res.data.comments);
+        setCommentSize(res.data.commentSize);
+      })
+      .catch((error) => {
+        console.error("Error fetching issue detail data:", error);
+      });
+  }, [fatchTrigger]);
 
   const handleAddComment = () => {
     if (newComment.trim() === "") return;
 
     const newCommentData = {
-      commentId: Date.now(),
-      author: {
-        id: "1",
-        nickname: "jicho",
-      },
       content: newComment,
+      issueId: issueTitleAndId.id,
+      authorId: 3,
     };
-    // TODO 추후 파일 처리까지 구현하여 POST요청 코드 작성 예정
-    setComments((prev) => [...prev, newCommentData]);
-    setNewComment("");
+
+    const formData = new FormData();
+    formData.append(
+      "comment",
+      new Blob([JSON.stringify(newCommentData)], { type: "application/json" })
+    );
+
+    if (file?.length) {
+      file.forEach((f) => formData.append("file", f));
+    }
+
+    fetch(`${API_URL}/api/issues/comments`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("서버 응답:", data);
+        setFetchTrigger((prev) => prev + 1);
+        setNewComment("");
+      })
+      .catch((err) => console.error("에러:", err));
   };
 
   return (
@@ -72,7 +104,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
               {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
-            <span>코멘트 {detailData.commentSize}개</span>
+            <span>코멘트 {commentSize}개</span>
           </div>
         </div>
         <div className={styles.line} />
@@ -91,12 +123,16 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
               key={comment.commentId}
               authorInfo={comment.author}
               issueAuthorId={issueTitleAndId.authorId}
-              commentAuthorId={comment.author.id}
+              commentAuthorId={comment.author?.id}
               content={comment.content}
             />
           ))}
 
-          <CommentInput newComment={newComment} setNewComment={setNewComment} />
+          <CommentInput
+            newComment={newComment}
+            setNewComment={setNewComment}
+            setFile={setFile}
+          />
 
           <button
             className={`${styles.newCommentButton} ${

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput({ newComment, setNewComment }) {
+function CommentInput({ newComment, setNewComment, setFile }) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -10,11 +10,7 @@ function CommentInput({ newComment, setNewComment }) {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      console.log("선택한 파일:", file.name);
-      // TODO 추후 파일 업로드 로직 추가 예정
-    }
+    setFile(Array.from(e.target.files));
   };
 
   return (
