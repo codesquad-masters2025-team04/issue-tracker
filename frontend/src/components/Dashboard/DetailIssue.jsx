@@ -7,6 +7,7 @@ import CommentInput from "../common/CommentInput";
 import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 import { API_URL } from "../../constants/link";
+import { getTimeAgo } from "../../utils/getTimeAgo";
 
 function DetailIssue({ filterData, detailData, issueTitleAndId }) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
@@ -101,7 +102,8 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
           </div>
           <div className={styles.explainState}>
             <span>
-              이 이슈가 3분 전에 {issueTitleAndId.nickname}님에 의해{" "}
+              이 이슈가 {getTimeAgo(detailData.createdAt)}에{" "}
+              {issueTitleAndId.nickname}님에 의해{" "}
               {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
@@ -118,6 +120,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             issueAuthorId={issueTitleAndId.authorId}
             commentAuthorId={issueTitleAndId.authorId}
             content={detailData.content}
+            createdAt={detailData.createdAt}
             file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
           />
           {comments.map((comment) => (
@@ -127,6 +130,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author?.id}
               content={comment.content}
+              createdAt={comment.createdAt}
               file={comment.fileUrl ? comment.fileUrl : ""}
             />
           ))}

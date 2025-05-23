@@ -4,12 +4,14 @@ import DOMPurify from "dompurify";
 
 import styles from "./Comment.module.css";
 import userImage from "../../assets/images/userImage.png";
+import { getTimeAgo } from "../../utils/getTimeAgo";
 
 function Comment({
   authorInfo,
   issueAuthorId,
   commentAuthorId,
   content,
+  createdAt,
   file,
 }) {
   const userId = 1;
@@ -23,7 +25,7 @@ function Comment({
         <div className={styles.userInfo}>
           <img src={userImage} alt="사용자 이미지" />
           <span className={styles.userName}>{authorInfo.nickname}</span>
-          <span className={styles.timeGap}>3분 전</span>
+          <span className={styles.timeGap}>{getTimeAgo(createdAt)}</span>
         </div>
         <div className={styles.labelAndButtons}>
           {issueAuthorId === Number(commentAuthorId) ? (
