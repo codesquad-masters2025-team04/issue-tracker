@@ -25,63 +25,81 @@ function Comment({
   );
 
   return (
-    <div className={`${!isEditMode ? styles.comment : styles.editComment}`}>
-      <div className={styles.commentHeader}>
-        <div className={styles.userInfo}>
-          <img src={userImage} alt="사용자 이미지" />
-          <span className={styles.userName}>{authorInfo.nickname}</span>
-          <span className={styles.timeGap}>{getTimeAgo(createdAt)}</span>
-        </div>
-        <div className={styles.labelAndButtons}>
-          {issueAuthorId === Number(commentAuthorId) ? (
-            <div className={styles.assigneeLabel}>작성자</div>
-          ) : (
-            ""
-          )}
+    <>
+      <div className={`${!isEditMode ? styles.comment : styles.editComment}`}>
+        <div className={styles.commentHeader}>
+          <div className={styles.userInfo}>
+            <img src={userImage} alt="사용자 이미지" />
+            <span className={styles.userName}>{authorInfo.nickname}</span>
+            <span className={styles.timeGap}>{getTimeAgo(createdAt)}</span>
+          </div>
+          <div className={styles.labelAndButtons}>
+            {issueAuthorId === Number(commentAuthorId) ? (
+              <div className={styles.assigneeLabel}>작성자</div>
+            ) : (
+              ""
+            )}
 
-          {Number(authorInfo.id) === userId ? (
-            <button
-              className={styles.editButton}
-              onClick={() => setIsEditMode(!isEditMode)}
-            >
-              <div className={styles.editIcon} />
-              <span className={styles.commentButtonsText}>편집</span>
+            {Number(authorInfo.id) === userId ? (
+              <button
+                className={styles.editButton}
+                onClick={() => setIsEditMode(!isEditMode)}
+              >
+                <div className={styles.editIcon} />
+                <span className={styles.commentButtonsText}>편집</span>
+              </button>
+            ) : (
+              ""
+            )}
+            <button className={styles.reactionButton}>
+              <div className={styles.reactionIcon} />
+              <span className={styles.commentButtonsText}>반응</span>
             </button>
-          ) : (
-            ""
-          )}
-          <button className={styles.reactionButton}>
-            <div className={styles.reactionIcon} />
-            <span className={styles.commentButtonsText}>반응</span>
-          </button>
 
-          {Number(authorInfo.id) === userId ? (
-            <button className={styles.deleteCommentButton}>
-              <div className={styles.deleteIcon} />
-              <span className={styles.commentButtonsText}>삭제</span>
-            </button>
-          ) : (
-            ""
-          )}
+            {Number(authorInfo.id) === userId ? (
+              <button className={styles.deleteCommentButton}>
+                <div className={styles.deleteIcon} />
+                <span className={styles.commentButtonsText}>삭제</span>
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
+        {/* TODO 편집 버튼을 위한 상태처리 true,false에 따라 해당 코멘트 영역 처리 */}
+        {isEditMode ? (
+          <CommentInput
+            newComment={content}
+            setNewComment={setNewComment}
+            setFile={setFile}
+            file={file}
+            isEditMode={isEditMode}
+          />
+        ) : (
+          <div
+            className={styles.commentBody}
+            dangerouslySetInnerHTML={{ __html: renderedContent }}
+          />
+        )}
+        {file && !isEditMode && <img src={file} alt="첨부 파일" />}
       </div>
-      {/* TODO 편집 버튼을 위한 상태처리 true,false에 따라 해당 코멘트 영역 처리 */}
-      {isEditMode ? (
-        <CommentInput
-          newComment={content}
-          setNewComment={setNewComment}
-          setFile={setFile}
-          file={file}
-          isEditMode={isEditMode}
-        />
-      ) : (
-        <div
-          className={styles.commentBody}
-          dangerouslySetInnerHTML={{ __html: renderedContent }}
-        />
+      {isEditMode && (
+        <div className={styles.editButtons}>
+          {/* TODO outlineS, containedS 공통 컴포넌트로 추후 수정 예정 */}
+          <button
+            className={styles.cancelButton}
+            onClick={() => setIsEditMode(false)}
+          >
+            <span className={styles.cancelIcon} />
+            <span className={styles.cancelButtonText}>편집 취소</span>
+          </button>
+          <button className={styles.saveButton}>
+            <span className={styles.saveEditIcon} />
+            <span className={styles.saveButtonText}>편집 완료</span>
+          </button>
+        </div>
       )}
-      {file && !isEditMode && <img src={file} alt="첨부 파일" />}
-    </div>
+    </>
   );
 }
 
