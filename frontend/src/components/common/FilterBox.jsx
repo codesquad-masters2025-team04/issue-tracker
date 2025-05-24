@@ -1,4 +1,5 @@
 import styles from "./FilterBox.module.css";
+import { getTextColor } from "../../utils/colorUtils";
 import PopupList from "./PopupList";
 
 const changeFilterName = {
@@ -73,7 +74,10 @@ function FilterBox({
                 <div
                   key={item.id}
                   className={styles.selectedLabelItem}
-                  style={{ backgroundColor: item.color }}
+                  style={{
+                    backgroundColor: item.color,
+                    color: getTextColor(item.color),
+                  }}
                 >
                   {item.name}
                 </div>

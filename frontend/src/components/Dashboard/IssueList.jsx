@@ -2,6 +2,7 @@ import styles from "./IssueList.module.css";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../constants/link";
 import { getTimeAgo } from "../../utils/getTimeAgo";
+import { getTextColor } from "../../utils/colorUtils";
 
 const getIssueIconByStatus = (status) => {
   // 이슈 상태에 따라 아이콘을 반환하는 함수
@@ -79,6 +80,7 @@ function IssueList({
                       key={label.id}
                       style={{
                         backgroundColor: label.color,
+                        color: getTextColor(label.color),
                         marginRight: "4px",
                       }}
                     >
