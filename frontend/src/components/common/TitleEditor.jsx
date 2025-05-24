@@ -1,13 +1,35 @@
 import { useState } from "react";
 import styles from "./TitleEditor.module.css";
+import { API_URL } from "../../constants/link";
 
-function TitleEditor({ setEditIssueTitle, issueTitle, setIssueTitle }) {
+function TitleEditor({
+  setEditIssueTitle,
+  issueTitle,
+  setIssueTitle,
+  issueId,
+}) {
   const [tempTitle, setTempTitle] = useState(issueTitle);
 
   // TODO 추후 수정된 제목 fetch 요청 코드 작성 예정
   const handleSave = () => {
-    setIssueTitle(tempTitle);
-    setEditIssueTitle(false);
+    fetch(`${API_URL}/api/issues/${issueId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: tempTitle,
+      }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("서버 응답:", res);
+        setIssueTitle(tempTitle);
+        setEditIssueTitle(false);
+      })
+      .catch((err) => {
+        console.error("에러:", err);
+      });
   };
 
   return (
