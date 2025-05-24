@@ -104,6 +104,15 @@ function WriteIssue({ setWriteIssue, filterData }) {
               onChange={(e) => setContent(e.target.value)}
             />
             <input type="file" multiple onChange={handleFileChange} />
+            {file.length > 0 && (
+              <div className={styles.fileList}>
+                {file.map((f, index) => (
+                  <div key={index} className={styles.fileItem}>
+                    {f.name}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

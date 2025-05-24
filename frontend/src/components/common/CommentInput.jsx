@@ -14,7 +14,10 @@ function CommentInput({ newComment, setNewComment, setFile, file }) {
   };
 
   return (
-    <div className={`${styles.wrapper} ${isFocused ? styles.focused : ""}`}>
+    <div
+      className={`${styles.wrapper} ${isFocused ? styles.focused : ""}`}
+      style={{ height: "184px" }}
+    >
       <textarea
         className={styles.textarea}
         placeholder="코멘트를 입력하세요"
@@ -33,20 +36,19 @@ function CommentInput({ newComment, setNewComment, setFile, file }) {
           type="file"
           ref={fileInputRef}
           style={{ display: "none" }}
+          multiple
           onChange={handleFileChange}
         />
 
-        <div className={styles.fileWrapper}>
-          {file && file.length > 0 && (
-            <div className={styles.fileList}>
-              {file.map((f, index) => (
-                <span key={index} className={styles.fileItem}>
-                  {f.name}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        {file.length > 0 && (
+          <div className={styles.fileList}>
+            {file.map((f, index) => (
+              <div key={index} className={styles.fileItem}>
+                {f.name}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
