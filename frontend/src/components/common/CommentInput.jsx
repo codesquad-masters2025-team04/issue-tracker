@@ -1,7 +1,13 @@
 import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput({ newComment, setNewComment, setFile, file }) {
+function CommentInput({
+  newComment,
+  setNewComment,
+  setFile,
+  file,
+  isEditMode,
+}) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -15,8 +21,9 @@ function CommentInput({ newComment, setNewComment, setFile, file }) {
 
   return (
     <div
-      className={`${styles.wrapper} ${isFocused ? styles.focused : ""}`}
-      style={{ height: "184px" }}
+      className={`${styles.wrapper} ${isFocused ? styles.focused : ""} ${
+        isEditMode ? styles.editMode : styles.readMode
+      }`}
     >
       <textarea
         className={styles.textarea}

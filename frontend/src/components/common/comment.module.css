@@ -4,6 +4,12 @@
   overflow: hidden;
 }
 
+.editComment {
+  border: 1px solid var(--neutral-border-default-active);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+}
+
 .commentHeader {
   background-color: var(--neutral-surface-default);
   padding: 16px 24px;

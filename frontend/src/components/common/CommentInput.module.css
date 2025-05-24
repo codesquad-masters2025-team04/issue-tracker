@@ -1,6 +1,5 @@
 .wrapper {
   background-color: var(--neutral-surface-bold);
-  border-radius: 16px;
   padding: 16px 16px 0 16px;
   display: flex;
   flex-direction: column;
@@ -12,6 +11,16 @@
 .focused {
   background-color: var(--neutral-surface-strong);
   border: 1px solid var(--neutral-border-default-active);
+}
+
+.readMode {
+  height: 184px;
+  border-radius: 16px;
+}
+
+.editMode {
+  border-radius: none;
+  border: none;
 }
 
 .textarea {
@@ -43,7 +52,6 @@
   gap: 4px;
   font: var(--available-medium12);
   cursor: pointer;
-  padding: 10px 16px;
   height: 32px;
   align-items: center;
 }
