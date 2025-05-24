@@ -7,22 +7,60 @@ import styles from "./Comment.module.css";
 import userImage from "../../assets/images/userImage.png";
 import { getTimeAgo } from "../../utils/getTimeAgo";
 import CommentInput from "./CommentInput";
+import { API_URL } from "../../constants/link";
 
 function Comment({
+  commentId,
   authorInfo,
   issueAuthorId,
   commentAuthorId,
   content,
-  setNewComment,
   createdAt,
   file,
   setFile,
+  setFetchTrigger,
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [tempComment, setTempComment] = useState(content);
+
   const userId = 3;
   const renderedContent = DOMPurify.sanitize(
-    marked(content.replace(/\n/g, "  \n"))
+    marked(tempComment.replace(/\n/g, "  \n"))
   );
+
+  // TODO 추후 서버 연결 완료 후 주석 제거 예정
+  // const handleSaveComment = () => {
+  //   if (tempComment === content) {
+  //     setIsEditMode(!isEditMode);
+  //     return;
+  //   }
+
+  //   const updatedComment = {
+  //     content: tempComment,
+  //   };
+
+  //   fetch(`${API_URL}/api/issues/comments/${commentId}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(updatedComment),
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error("댓글 수정 실패"); // 추후 에러 처리 페이지 구현 예정
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("댓글 수정 성공:", data);
+  //       setIsEditMode(false);
+  //       setFetchTrigger((prev) => prev + 1);
+  //     })
+  //     .catch((err) => {
+  //       console.error("댓글 수정 중 오류 발생:", err);
+  //     });
+  // };
 
   return (
     <>
@@ -66,11 +104,10 @@ function Comment({
             )}
           </div>
         </div>
-        {/* TODO 편집 버튼을 위한 상태처리 true,false에 따라 해당 코멘트 영역 처리 */}
         {isEditMode ? (
           <CommentInput
-            newComment={content}
-            setNewComment={setNewComment}
+            newComment={tempComment}
+            setNewComment={setTempComment}
             setFile={setFile}
             file={file}
             isEditMode={isEditMode}
@@ -88,12 +125,20 @@ function Comment({
           {/* TODO outlineS, containedS 공통 컴포넌트로 추후 수정 예정 */}
           <button
             className={styles.cancelButton}
-            onClick={() => setIsEditMode(false)}
+            onClick={() => {
+              setIsEditMode(false);
+              setTempComment(content);
+            }}
           >
             <span className={styles.cancelIcon} />
             <span className={styles.cancelButtonText}>편집 취소</span>
           </button>
-          <button className={styles.saveButton}>
+          <button
+            className={`${styles.saveButton} ${
+              content !== tempComment ? styles.saveButtonActive : ""
+            }`}
+            // onClick={handleSaveComment}
+          >
             <span className={styles.saveEditIcon} />
             <span className={styles.saveButtonText}>편집 완료</span>
           </button>

@@ -159,6 +159,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 32%;
+}
+
+.saveButtonActive {
+  opacity: 100%;
 }
 
 .saveEditIcon {

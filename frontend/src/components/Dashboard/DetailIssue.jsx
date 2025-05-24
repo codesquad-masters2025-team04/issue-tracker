@@ -117,26 +117,28 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
           <Comment
+            commentId={issueTitleAndId.id}
             authorInfo={issueTitleAndId}
             issueAuthorId={issueTitleAndId.authorId}
             commentAuthorId={issueTitleAndId.authorId}
             content={detailData.content}
-            setNewComment={setNewComment}
             createdAt={detailData.createdAt}
             file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
             setFile={setFile}
+            setFetchTrigger={setFetchTrigger}
           />
           {comments.map((comment) => (
             <Comment
               key={comment.commentId}
+              commentId={comment.commentId}
               authorInfo={comment.author}
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author?.id}
               content={comment.content}
-              setNewComment={setNewComment}
               createdAt={comment.createdAt}
               file={comment.fileUrl ? comment.fileUrl : ""}
               setFile={setFile}
+              setFetchTrigger={setFetchTrigger}
             />
           ))}
 
