@@ -3,7 +3,12 @@ import logo from "../../assets/images/logoMedium.svg";
 import userProfile from "../../assets/images/userImage.png";
 // TODO userProfile 이미지를 불러오는 코드는 추후 변경되어야할 부분
 
-function Header({ setWriteIssue, setDetailIssue }) {
+function Header({
+  setWriteIssue,
+  setDetailIssue,
+  setIsLabelPage,
+  setIsMilestonePage,
+}) {
   return (
     <div className={styles.headerWrapper}>
       <img
@@ -13,6 +18,8 @@ function Header({ setWriteIssue, setDetailIssue }) {
         onClick={() => {
           setWriteIssue(false);
           setDetailIssue(false);
+          setIsLabelPage(false);
+          setIsMilestonePage(false);
         }}
       />
 
