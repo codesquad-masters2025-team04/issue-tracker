@@ -134,3 +134,7 @@
 .addText {
   padding: 0 4px;
 }
+
+.active {
+  opacity: 100%;
+}

@@ -4,10 +4,19 @@ import styles from "./AddLabel.module.css";
 
 function AddLabel({ setAddLabel }) {
   const [inputLabelContent, setInputLabelContent] = useState({
-    labelName: "미리보기",
+    labelName: "",
     labelDescription: "",
     labelColor: "#000000",
   });
+
+  const handleCancel = () => {
+    setAddLabel(false);
+    setInputLabelContent({
+      labelName: "",
+      labelDescription: "",
+      labelColor: "#000000",
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +39,7 @@ function AddLabel({ setAddLabel }) {
               color: getTextColor(`${inputLabelContent.labelColor}`),
             }}
           >
-            {inputLabelContent.labelName}
+            {inputLabelContent.labelName || "preview"}
           </span>
         </div>
         <div className={styles.inputContainer}>
@@ -67,15 +76,18 @@ function AddLabel({ setAddLabel }) {
         </div>
       </div>
       <div className={styles.buttonsInAddLabel}>
-        <button
-          className={styles.cancelButton}
-          onClick={() => setAddLabel(false)}
-        >
+        <button className={styles.cancelButton} onClick={handleCancel}>
           <span className={styles.cancelIcon} />
           <span className={styles.cancelText}>취소</span>
         </button>
 
-        <button className={styles.addButton}>
+        <button
+          className={`${styles.addButton} ${
+            inputLabelContent.labelName &&
+            inputLabelContent.labelColor &&
+            styles.active
+          }`}
+        >
           <span className={styles.addIcon} />
           <span className={styles.addText}>완료</span>
         </button>
