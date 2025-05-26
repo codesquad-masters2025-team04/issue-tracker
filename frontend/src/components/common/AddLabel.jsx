@@ -3,15 +3,21 @@ import { getTextColor } from "../../utils/colorUtils";
 import styles from "./AddLabel.module.css";
 
 function AddLabel({
+  labelId = null,
+  labelName = "",
+  labelDescription = "",
+  labelColor = "#000000",
   setAddLabel,
   isLabelEditMode = false,
   setIsLabelEditMode = () => {},
 }) {
   const [inputLabelContent, setInputLabelContent] = useState({
-    labelName: "",
-    labelDescription: "",
-    labelColor: "#000000",
+    labelName: labelName,
+    labelDescription: labelDescription,
+    labelColor: labelColor,
   });
+  const tempLabelName = labelName;
+  const tempLabelColor = labelColor;
 
   const handleCancel = () => {
     setAddLabel(false);
@@ -107,9 +113,10 @@ function AddLabel({
 
         <button
           className={`${styles.addButton} ${
-            inputLabelContent.labelName &&
-            inputLabelContent.labelColor &&
-            styles.active
+            inputLabelContent.labelName !== tempLabelName ||
+            inputLabelContent.labelColor !== tempLabelColor
+              ? styles.active
+              : ""
           }`}
         >
           <span className={styles.addIcon} />
