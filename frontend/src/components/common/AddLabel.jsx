@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getTextColor } from "../../utils/colorUtils";
 import styles from "./AddLabel.module.css";
 
-function AddLabel({ setAddLabel }) {
+function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
   const [inputLabelContent, setInputLabelContent] = useState({
     labelName: "",
     labelDescription: "",
@@ -11,6 +11,7 @@ function AddLabel({ setAddLabel }) {
 
   const handleCancel = () => {
     setAddLabel(false);
+    setIsLabelEditMode(!isLabelEditMode);
     setInputLabelContent({
       labelName: "",
       labelDescription: "",
@@ -28,8 +29,16 @@ function AddLabel({ setAddLabel }) {
     });
   };
   return (
-    <div className={styles.addLabelContainer}>
-      <h3 className={styles.addLabelTitle}>새로운 레이블 추가</h3>
+    <div
+      className={`${styles.addLabelContainer} ${
+        isLabelEditMode && styles.editLabelContainer
+      }`}
+    >
+      {!isLabelEditMode ? (
+        <h3 className={styles.addLabelTitle}>새로운 레이블 추가</h3>
+      ) : (
+        <h3 className={styles.editLabel}> 레이블 수정</h3>
+      )}
       <div className={styles.addLabelForm}>
         <div className={styles.previewLabelBox}>
           <span
