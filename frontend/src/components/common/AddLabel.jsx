@@ -2,7 +2,11 @@ import { useState } from "react";
 import { getTextColor } from "../../utils/colorUtils";
 import styles from "./AddLabel.module.css";
 
-function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
+function AddLabel({
+  setAddLabel,
+  isLabelEditMode = false,
+  setIsLabelEditMode = () => {},
+}) {
   const [inputLabelContent, setInputLabelContent] = useState({
     labelName: "",
     labelDescription: "",
