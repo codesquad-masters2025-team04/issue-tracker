@@ -77,7 +77,7 @@ function Home() {
       ) : isLabelPage ? (
         <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
       ) : isMilestonePage ? (
-        <MilestonePage />
+        <MilestonePage milestonesCount={filterData.milestones.length} />
       ) : (
         <IssueTable
           filterData={filterData}

@@ -21,6 +21,7 @@ function IssueToolBar({
           setIsLabelPage={setIsLabelPage}
           isMilestonePage={isMilestonePage}
           setIsMilestonePage={setIsMilestonePage}
+          setAddLabel={setAddLabel}
         />
         {!isLabelPage && !isMilestonePage && (
           <button onClick={onClick} className={styles.writeIssueButton}>

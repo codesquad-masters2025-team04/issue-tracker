@@ -6,14 +6,17 @@ function LabelAndMilestone({
   setIsLabelPage,
   isMilestonePage,
   setIsMilestonePage,
+  setAddLabel,
 }) {
   const handleLabelClick = () => {
     setIsLabelPage(true);
     setIsMilestonePage(false);
+    setAddLabel(false);
   };
   const handleMilestoneClick = () => {
     setIsMilestonePage(true);
     setIsLabelPage(false);
+    setAddLabel(false);
   };
 
   return (
