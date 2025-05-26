@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function LabelPage({ addLabel, setAddLabel }) {
   const [isLabelEditMode, setIsLabelEditMode] = useState(false);
+
   return (
     <>
       {addLabel && <AddLabel setAddLabel={setAddLabel} />}

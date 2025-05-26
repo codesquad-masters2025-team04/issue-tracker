@@ -52,6 +52,7 @@
   gap: 16px;
   width: 100%;
 }
+
 .inputText {
   height: 40px;
   display: flex;
@@ -59,20 +60,21 @@
   background-color: var(--neutral-surface-bold);
   border-radius: var(--radius-medium);
   gap: 8px;
-  padding: 0 16px;
 }
 
 .inputLabelName,
 .inputLabelDescription {
-  width: 100%;
   font: var(--display-medium16);
   color: var(--neutral-text-weak);
+  flex-grow: 1;
+  padding-right: 16px;
 }
 
 .label {
   width: 64px;
   font: var(--display-medium12);
   color: var(--neutral-text-weak);
+  padding-left: 16px;
 }
 
 .inputColor {
@@ -82,7 +84,21 @@
   border-radius: var(--radius-medium);
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  gap: 8px;
+}
+
+.inputLabelColor {
+  width: 112px;
+  font: var(--display-medium16);
+  color: var(--neutral-text-default);
+}
+
+.refreshIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/refreshCcw.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
 }
 
 .buttonsInAddLabel {

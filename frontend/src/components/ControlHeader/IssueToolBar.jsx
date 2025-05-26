@@ -6,7 +6,7 @@ function IssueToolBar({
   filterData,
   isLabelPage,
   setIsLabelPage,
-  IsMilestonePage,
+  isMilestonePage,
   setIsMilestonePage,
   addLabel,
   setAddLabel,
@@ -19,23 +19,25 @@ function IssueToolBar({
           filterData={filterData}
           isLabelPage={isLabelPage}
           setIsLabelPage={setIsLabelPage}
-          IsMilestonePage={IsMilestonePage}
+          isMilestonePage={isMilestonePage}
           setIsMilestonePage={setIsMilestonePage}
         />
-        {!isLabelPage && !IsMilestonePage && (
+        {!isLabelPage && !isMilestonePage && (
           <button onClick={onClick} className={styles.writeIssueButton}>
             <span className={styles.writeIssueIcon} />
             <span className={styles.writeIssueText}>이슈 작성</span>
           </button>
         )}
       </div>
-      {isLabelPage || IsMilestonePage ? (
+      {isLabelPage || isMilestonePage ? (
         <button
           className={`${styles.addLabelButton} ${addLabel && styles.disabled}`}
           onClick={() => setAddLabel(true)}
         >
           <span className={styles.addLabelIcon} />
-          <span className={styles.addLabelText}>레이블 추가</span>
+          <span className={styles.addLabelText}>
+            {isLabelPage ? "레이블 추가" : "마일스톤 추가"}
+          </span>
         </button>
       ) : (
         ""

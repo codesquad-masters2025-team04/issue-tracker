@@ -4,7 +4,7 @@ function LabelAndMilestone({
   filterData,
   isLabelPage,
   setIsLabelPage,
-  IsMilestonePage,
+  isMilestonePage,
   setIsMilestonePage,
 }) {
   const handleLabelClick = () => {
@@ -27,7 +27,7 @@ function LabelAndMilestone({
           <span>레이블({filterData.labels.length})</span>
         </button>
         <button
-          className={`${styles.milestones} ${IsMilestonePage && styles.active}`}
+          className={`${styles.milestones} ${isMilestonePage && styles.active}`}
           onClick={handleMilestoneClick}
         >
           <span className={styles.milestoneIcon} />

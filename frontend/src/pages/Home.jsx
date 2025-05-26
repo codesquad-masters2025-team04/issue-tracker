@@ -19,7 +19,7 @@ function Home() {
   const [issueTitleAndId, setIssueTitleAndId] = useState({});
   const [detailData, setDetailData] = useState({});
   const [isLabelPage, setIsLabelPage] = useState(false);
-  const [IsMilestonePage, setIsMilestonePage] = useState(false);
+  const [isMilestonePage, setIsMilestonePage] = useState(false);
   const [addLabel, setAddLabel] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function Home() {
           filterData={filterData}
           isLabelPage={isLabelPage}
           setIsLabelPage={setIsLabelPage}
-          IsMilestonePage={IsMilestonePage}
+          isMilestonePage={isMilestonePage}
           setIsMilestonePage={setIsMilestonePage}
           addLabel={addLabel}
           setAddLabel={setAddLabel}
@@ -76,7 +76,7 @@ function Home() {
         />
       ) : isLabelPage ? (
         <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
-      ) : IsMilestonePage ? (
+      ) : isMilestonePage ? (
         <MilestonePage />
       ) : (
         <IssueTable

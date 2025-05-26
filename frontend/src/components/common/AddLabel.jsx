@@ -19,6 +19,14 @@ function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
     });
   };
 
+  const handleRefresh = () => {
+    setInputLabelContent((prev) => {
+      return {
+        ...prev,
+        labelColor: "#000000",
+      };
+    });
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputLabelContent((prev) => {
@@ -60,6 +68,7 @@ function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
               name="labelName"
               value={inputLabelContent.labelName}
               onChange={handleChange}
+              placeholder="레이블 이름을 입력하세요"
             />
           </div>
           <div className={styles.inputText}>
@@ -70,6 +79,7 @@ function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
               name="labelDescription"
               value={inputLabelContent.labelDescription}
               onChange={handleChange}
+              placeholder="레이블에 대한 설명을 입력하세요"
             />
           </div>
           <div className={styles.inputColor}>
@@ -81,6 +91,7 @@ function AddLabel({ setAddLabel, isLabelEditMode, setIsLabelEditMode }) {
               value={inputLabelContent.labelColor}
               onChange={handleChange}
             />
+            <span className={styles.refreshIcon} onClick={handleRefresh} />
           </div>
         </div>
       </div>
