@@ -20,6 +20,7 @@ function Home() {
   const [detailData, setDetailData] = useState({});
   const [isLabelPage, setIsLabelPage] = useState(false);
   const [IsMilestonePage, setIsMilestonePage] = useState(false);
+  const [addLabel, setAddLabel] = useState(false);
 
   useEffect(() => {
     //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
@@ -59,6 +60,8 @@ function Home() {
           setIsLabelPage={setIsLabelPage}
           IsMilestonePage={IsMilestonePage}
           setIsMilestonePage={setIsMilestonePage}
+          addLabel={addLabel}
+          setAddLabel={setAddLabel}
         />
       ) : (
         ""
@@ -72,7 +75,7 @@ function Home() {
           issueTitleAndId={issueTitleAndId}
         />
       ) : isLabelPage ? (
-        <LabelPage />
+        <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
       ) : IsMilestonePage ? (
         <MilestonePage />
       ) : (

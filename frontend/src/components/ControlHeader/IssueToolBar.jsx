@@ -8,6 +8,8 @@ function IssueToolBar({
   setIsLabelPage,
   IsMilestonePage,
   setIsMilestonePage,
+  addLabel,
+  setAddLabel,
 }) {
   return (
     // TODO 버튼 재사용 컴포넌트로 분리 후 적용시킬 것
@@ -28,7 +30,10 @@ function IssueToolBar({
         )}
       </div>
       {isLabelPage || IsMilestonePage ? (
-        <button className={styles.addLabelButton}>
+        <button
+          className={`${styles.addLabelButton} ${addLabel && styles.disabled}`}
+          onClick={() => setAddLabel(true)}
+        >
           <span className={styles.addLabelIcon} />
           <span className={styles.addLabelText}>레이블 추가</span>
         </button>
