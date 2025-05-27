@@ -77,6 +77,20 @@ function DetailIssue({
       .catch((err) => console.error("에러:", err));
   };
 
+  const handleDeleteIssue = () => {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      fetch(`${API_URL}/api/issues/${issueTitleAndId.id}`, {
+        method: "DELETE",
+      })
+        .then(async (res) => {
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
+          console.log("서버 응답:", data);
+          setDetailIssue(false);
+        })
+        .catch((err) => console.error("에러:", err));
+    }
+  };
   return (
     <>
       <div className={styles.postInformation}>
@@ -173,7 +187,7 @@ function DetailIssue({
             selectOption={selectOption}
             filterData={filterData}
           />
-          <button className={styles.issueDelete}>
+          <button className={styles.issueDelete} onClick={handleDeleteIssue}>
             <div className={styles.deleteIcon} />
             <span className={styles.buttonTitle}>이슈 삭제</span>
           </button>
