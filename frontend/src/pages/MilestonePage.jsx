@@ -2,6 +2,7 @@ import { useState } from "react";
 import IssueTabButton from "../components/common/IssueTabButton";
 import styles from "../pages/MilestonePage.module.css";
 import MilestoneElement from "../components/common/MilestoneElement";
+import AddMilestone from "../components/common/AddMilestone";
 
 function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
   const [isOpenMilestone, setIsOpenMilestone] = useState(true);
@@ -27,28 +28,36 @@ function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
     },
   ]);
   return (
-    <div className={styles.milestoneContainer}>
-      <div className={styles.milestoneHeader}>
-        <IssueTabButton
-          isActive={isOpenMilestone === true}
-          onClick={() => setIsOpenMilestone(true)}
-          iconClassName={"openIssueIcon"}
-          issueName={`열린 마일스톤(${milestonesCount})`}
-        />
+    <>
+      {addMilestone && <AddMilestone setAddMilestone={setAddMilestone} />}
+      <div className={styles.milestoneContainer}>
+        <div className={styles.milestoneHeader}>
+          <IssueTabButton
+            isActive={isOpenMilestone === true}
+            onClick={() => setIsOpenMilestone(true)}
+            iconClassName={"openIssueIcon"}
+            issueName={`열린 마일스톤(${milestonesCount})`}
+          />
 
-        <IssueTabButton
-          isActive={isOpenMilestone === false}
-          onClick={() => setIsOpenMilestone(false)}
-          iconClassName={"closedIssueIcon"}
-          issueName={`닫힌 마일스톤(${closedMilestone})`}
-        />
+          <IssueTabButton
+            isActive={isOpenMilestone === false}
+            onClick={() => setIsOpenMilestone(false)}
+            iconClassName={"closedIssueIcon"}
+            issueName={`닫힌 마일스톤(${closedMilestone})`}
+          />
+        </div>
+        <div className={styles.milestoneList}>
+          {milestoneData.map((milestone) => (
+            <MilestoneElement
+              key={milestone.id}
+              milestone={milestone}
+              addMilestone={addMilestone}
+              setAddMilestone={setAddMilestone}
+            />
+          ))}
+        </div>
       </div>
-      <div className={styles.milestoneList}>
-        {milestoneData.map((milestone) => (
-          <MilestoneElement key={milestone.id} milestone={milestone} />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
 

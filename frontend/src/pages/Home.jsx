@@ -63,6 +63,8 @@ function Home() {
           setIsMilestonePage={setIsMilestonePage}
           addLabel={addLabel}
           setAddLabel={setAddLabel}
+          addMilestone={addMilestone}
+          setAddMilestone={setAddMilestone}
         />
       ) : (
         ""

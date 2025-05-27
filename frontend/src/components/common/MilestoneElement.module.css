@@ -96,7 +96,7 @@
 .closedIcon {
   width: 16px;
   height: 16px;
-  mask-image: url("../assets/icons/archive.svg");
+  mask-image: url("../../assets/icons/archive.svg");
   mask-size: cover;
   background-color: var(--neutral-text-default);
 }
@@ -110,7 +110,7 @@
 .editIcon {
   width: 16px;
   height: 16px;
-  mask-image: url("../assets/icons/edit.svg");
+  mask-image: url("../../assets/icons/edit.svg");
   mask-size: cover;
   background-color: var(--neutral-text-default);
 }
@@ -118,7 +118,7 @@
 .deleteIcon {
   width: 16px;
   height: 16px;
-  mask-image: url("../assets/icons/trash.svg");
+  mask-image: url("../../assets/icons/trash.svg");
   mask-size: cover;
   background-color: var(--danger-text-default);
 }

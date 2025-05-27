@@ -20,8 +20,9 @@ function AddLabel({
   const tempLabelColor = labelColor;
 
   const handleCancel = () => {
-    setAddLabel(false);
-    setIsLabelEditMode(!isLabelEditMode);
+    if (isLabelEditMode) setIsLabelEditMode(!isLabelEditMode);
+    else setAddLabel(false);
+
     setInputLabelContent({
       labelName: "",
       labelDescription: "",
