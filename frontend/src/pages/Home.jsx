@@ -21,6 +21,7 @@ function Home() {
   const [isLabelPage, setIsLabelPage] = useState(false);
   const [isMilestonePage, setIsMilestonePage] = useState(false);
   const [addLabel, setAddLabel] = useState(false);
+  const [addMilestone, setAddMilestone] = useState(false);
 
   useEffect(() => {
     //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
@@ -78,7 +79,11 @@ function Home() {
       ) : isLabelPage ? (
         <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
       ) : isMilestonePage ? (
-        <MilestonePage milestonesCount={filterData.milestones.length} />
+        <MilestonePage
+          milestonesCount={filterData.milestones.length}
+          addMilestone={addMilestone}
+          setAddMilestone={setAddMilestone}
+        />
       ) : (
         <IssueTable
           filterData={filterData}
