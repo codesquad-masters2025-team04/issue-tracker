@@ -152,6 +152,7 @@ function DetailIssue({
               key={comment.commentId}
               commentId={comment.commentId}
               authorInfo={comment.author}
+              issueId={issueTitleAndId.id}
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author?.id}
               content={comment.content}

@@ -12,6 +12,7 @@ import { API_URL } from "../../constants/link";
 function Comment({
   commentId,
   authorInfo,
+  issueId = -1,
   issueAuthorId,
   commentAuthorId,
   content,
@@ -62,6 +63,21 @@ function Comment({
   //     });
   // };
 
+  const handleDeleteComment = () => {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      fetch(`${API_URL}/api/issues/comments/${issueId}/${commentId}`, {
+        method: "DELETE",
+      })
+        .then(async (res) => {
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
+          console.log("서버 응답:", data);
+          setFetchTrigger((prev) => prev + 1);
+        })
+        .catch((err) => console.error("에러:", err));
+    }
+  };
+
   return (
     <>
       <div className={`${!isEditMode ? styles.comment : styles.editComment}`}>
@@ -95,7 +111,10 @@ function Comment({
             </button>
 
             {Number(authorInfo.id) === userId ? (
-              <button className={styles.deleteCommentButton}>
+              <button
+                className={styles.deleteCommentButton}
+                onClick={handleDeleteComment}
+              >
                 <div className={styles.deleteIcon} />
                 <span className={styles.commentButtonsText}>삭제</span>
               </button>
