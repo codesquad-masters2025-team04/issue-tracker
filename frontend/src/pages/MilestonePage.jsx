@@ -3,7 +3,7 @@ import IssueTabButton from "../components/common/IssueTabButton";
 import styles from "../pages/MilestonePage.module.css";
 
 function MilestonePage({ milestonesCount }) {
-  const [isOpenMilestone, setIsOpenMilestone] = useState(false);
+  const [isOpenMilestone, setIsOpenMilestone] = useState(true);
   const [closedMilestone, setClosedMilestone] = useState(0);
   const [milestoneData, setMilestoneData] = useState([
     {

@@ -18,7 +18,7 @@ function FilterBox({
   return (
     <div className={styles.filtersContainer}>
       {["담당자", "레이블", "마일스톤"].map((filter) => (
-        <div className={styles.filterBox} key={filter}>
+        <div className={styles.filterBox} key={changeFilterName[filter]}>
           <div
             className={styles.filterButton}
             onClick={() => toggleFilter(filter)}

@@ -9,13 +9,19 @@ import { API_URL } from "../../constants/link";
 import { getTimeAgo } from "../../utils/getTimeAgo";
 import CommentInput from "../common/CommentInput";
 
-function DetailIssue({ filterData, detailData, issueTitleAndId }) {
+function DetailIssue({
+  filterData,
+  detailData,
+  issueTitleAndId,
+  setDetailIssue,
+}) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
+  // labels, milestone은 적용 완료 => assignee 추후 적용 예정
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
-      레이블: [],
-      마일스톤: null,
+      레이블: issueTitleAndId.labels || [],
+      마일스톤: issueTitleAndId.milestone || null,
     });
   const [editIssueTitle, setEditIssueTitle] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);

@@ -38,6 +38,8 @@ function IssueList({
       id: issue.id,
       nickname: issue.author.nickname,
       authorId: issue.author.id,
+      labels: issue.labels,
+      milestone: issue.milestone,
     });
 
     fetch(`${API_URL}/api/issues/${issue.id}`)

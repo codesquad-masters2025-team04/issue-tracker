@@ -73,6 +73,7 @@ function Home() {
           filterData={filterData}
           detailData={detailData}
           issueTitleAndId={issueTitleAndId}
+          setDetailIssue={setDetailIssue}
         />
       ) : isLabelPage ? (
         <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
