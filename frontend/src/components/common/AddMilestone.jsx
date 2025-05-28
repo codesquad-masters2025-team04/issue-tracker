@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./AddMilestone.module.css";
+import { API_URL } from "../../constants/link";
 
 function AddMilestone({
   milestoneId = null,
@@ -11,9 +12,9 @@ function AddMilestone({
   setIsMilestoneEditMode = () => {},
 }) {
   const [inputMilestoneContent, setInputMilestoneContent] = useState({
-    MilestoneName: milestoneName,
-    MilestoneDueDate: milestoneDate.replace(/\-/g, ". "),
-    MilestoneDescription: milestoneDescription,
+    name: milestoneName,
+    dueDate: milestoneDate.replace(/\-/g, ". "),
+    description: milestoneDescription,
   });
   const tempMilestoneName = milestoneName;
 
@@ -48,15 +49,68 @@ function AddMilestone({
     );
   };
 
-  const handleSave = () => {
-    const isValid = isVaildDate(inputMilestoneContent.MilestoneDueDate);
+  const handleAddMilestoneSave = () => {
+    const isValid = isVaildDate(inputMilestoneContent.dueDate);
 
-    if (!isValid) {
+    if (inputMilestoneContent.dueDate && !isValid) {
       confirm(
         "날짜 형식이 올바르지 않습니다. YYYY. MM. DD 형식으로 입력해주세요."
       );
       return;
     }
+    fetch(`${API_URL}/milestones`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: inputMilestoneContent.name,
+        description: inputMilestoneContent.description,
+        endDate: inputMilestoneContent.dueDate.replace(/\./g, "-"),
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`서버 오류: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("응답 데이터: ", data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleEditMilestoneSave = () => {
+    const isValid = isVaildDate(inputMilestoneContent.dueDate);
+
+    if (inputMilestoneContent.dueDate && !isValid) {
+      confirm(
+        "날짜 형식이 올바르지 않습니다. YYYY. MM. DD 형식으로 입력해주세요."
+      );
+      return;
+    }
+    fetch(`${API_URL}/milestones/${milestoneId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: inputMilestoneContent.name,
+        description: inputMilestoneContent.description,
+        endDate: inputMilestoneContent.dueDate.replace(/\./g, "-"),
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`서버 오류: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("응답 데이터: ", data);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -76,8 +130,8 @@ function AddMilestone({
               className={styles.inputMilestoneName}
               type="text"
               placeholder="마일스톤의 이름을 입력하세요"
-              name="MilestoneName"
-              value={inputMilestoneContent.MilestoneName}
+              name="name"
+              value={inputMilestoneContent.name}
               onChange={handleChange}
             />
           </div>
@@ -87,8 +141,8 @@ function AddMilestone({
               className={styles.inputMilestoneDate}
               type="text"
               placeholder="YYYY. MM. DD"
-              name="MilestoneDueDate"
-              value={inputMilestoneContent.MilestoneDueDate}
+              name="dueDate"
+              value={inputMilestoneContent.dueDate}
               onChange={handleChange}
             />
           </div>
@@ -99,8 +153,8 @@ function AddMilestone({
             type="text"
             className={styles.inputMilestoneDescription}
             placeholder="마일스톤에 대한 설명을 입력하세요"
-            name="MilestoneDescription"
-            value={inputMilestoneContent.MilestoneDescription}
+            name="description"
+            value={inputMilestoneContent.description}
             onChange={handleChange}
           />
         </div>
@@ -112,11 +166,15 @@ function AddMilestone({
         </button>
         <button
           className={`${styles.saveButton} ${
-            inputMilestoneContent.MilestoneName !== tempMilestoneName
+            inputMilestoneContent.name !== tempMilestoneName
               ? styles.active
               : ""
           }`}
-          onClick={handleSave}
+          onClick={
+            !isMilestoneEditMode
+              ? handleAddMilestoneSave
+              : handleEditMilestoneSave
+          }
         >
           <span className={styles.saveIcon} />
           <span className={styles.buttonText}>완료</span>

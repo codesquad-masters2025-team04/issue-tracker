@@ -29,15 +29,17 @@ function LabelElement({
   return (
     <>
       {isLabelEditMode ? (
-        <AddLabel
-          labelId={labelId}
-          labelName={labelName}
-          labelDescription={labelDescription}
-          labelColor={labelColor}
-          setAddLabel={setAddLabel}
-          isLabelEditMode={isLabelEditMode}
-          setIsLabelEditMode={setIsLabelEditMode}
-        />
+        <div className={styles.editContainer}>
+          <AddLabel
+            labelId={labelId}
+            labelName={labelName}
+            labelDescription={labelDescription}
+            labelColor={labelColor}
+            setAddLabel={setAddLabel}
+            isLabelEditMode={isLabelEditMode}
+            setIsLabelEditMode={setIsLabelEditMode}
+          />
+        </div>
       ) : (
         <div className={styles.labelContent}>
           <div className={styles.labelName}>

@@ -1,9 +1,24 @@
 import { useState } from "react";
 import styles from "./MilestoneElement.module.css";
 import AddMilestone from "./AddMilestone";
+import { API_URL } from "../../constants/link";
 
 function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
   const [isMilestoneEditMode, setIsMilestoneEditMode] = useState(false);
+
+  const handleDelete = () => {
+    if (confirm("해당 마일스톤을 삭제하시겠습니까?")) {
+    }
+    fetch(`${API_URL}/api/milestones/${milestone.id}`, {
+      method: "DELETE",
+    })
+      .then(async (res) => {
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
+        console.log("서버 응답:", data);
+      })
+      .catch((error) => console.error("에러:", error));
+  };
   return (
     <>
       {isMilestoneEditMode ? (
@@ -50,7 +65,7 @@ function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
                 <span className={styles.editIcon} />
                 <span className={styles.editText}>편집</span>
               </button>
-              <button className={styles.deleteButton}>
+              <button className={styles.deleteButton} onClick={handleDelete}>
                 <span className={styles.deleteIcon} />
                 <span className={styles.deleteText}>삭제</span>
               </button>

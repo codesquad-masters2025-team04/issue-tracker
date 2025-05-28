@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IssueTabButton from "../components/common/IssueTabButton";
 import styles from "../pages/MilestonePage.module.css";
 import MilestoneElement from "../components/common/MilestoneElement";
 import AddMilestone from "../components/common/AddMilestone";
+import { API_URL } from "../constants/link";
 
 function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
   const [isOpenMilestone, setIsOpenMilestone] = useState(true);
@@ -27,6 +28,19 @@ function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
       closedIssues: 1,
     },
   ]);
+
+  // TODO 추후 주석 제거 예졍
+  // useEffect(() => {
+  //   fetch(`${API_URL}/api/milestones`)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       setMilestoneData(res.data.milestones);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching milestones:", error);
+  //     });
+  // }, []);
+
   return (
     <>
       {addMilestone && <AddMilestone setAddMilestone={setAddMilestone} />}

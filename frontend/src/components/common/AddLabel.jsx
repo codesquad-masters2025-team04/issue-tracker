@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getTextColor } from "../../utils/colorUtils";
 import styles from "./AddLabel.module.css";
+import { API_URL } from "../../constants/link";
 
 function AddLabel({
   labelId = null,
@@ -46,6 +47,54 @@ function AddLabel({
         [name]: value,
       };
     });
+  };
+
+  const handleAddLabelSave = () => {
+    fetch(`${API_URL}/labels`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: inputLabelContent.labelName,
+        description: inputLabelContent.labelDescription,
+        color: inputLabelContent.labelColor,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`서버 오류: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("응답 데이터: ", data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleEditLabelSave = () => {
+    fetch(`${API_URL}/labels/${labelId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: inputLabelContent.labelName,
+        description: inputLabelContent.labelDescription,
+        color: inputLabelContent.labelColor,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`서버 오류: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("응답 데이터: ", data);
+      })
+      .catch((err) => console.error(err));
   };
   return (
     <div
@@ -119,6 +168,7 @@ function AddLabel({
               ? styles.active
               : ""
           }`}
+          onClick={!isLabelEditMode ? handleAddLabelSave : handleEditLabelSave}
         >
           <span className={styles.addIcon} />
           <span className={styles.addText}>완료</span>

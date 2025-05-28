@@ -22,7 +22,7 @@ function IssueList({
   const [issues, setIssues] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/issues?isOpen=${isOpen}`)
+    fetch(`${API_URL}/api/issues?q=state:${isOpen}`)
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
@@ -55,7 +55,7 @@ function IssueList({
 
   return (
     <div className={styles.issueListContainer}>
-      {[...issues].reverse().map((issue) => (
+      {[...issues].map((issue) => (
         <div className={styles.IssueContainer} key={issue.id}>
           <div className={styles.mainInfo}>
             <button className={styles.checkbox} />

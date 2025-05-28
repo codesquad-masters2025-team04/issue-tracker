@@ -11,6 +11,10 @@
   gap: 32px;
 }
 
+.editContainer {
+  border-top: 1px solid var(--neutral-border-default);
+}
+
 .labelColorBox {
   height: 24px;
   padding: 4px 12px;
