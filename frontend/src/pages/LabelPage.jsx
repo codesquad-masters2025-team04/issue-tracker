@@ -1,7 +1,8 @@
 import styles from "./LabelPage.module.css";
 import AddLabel from "../components/common/AddLabel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LabelElement from "../components/common/LabelElement";
+import { API_URL } from "../constants/link";
 
 function LabelPage({ addLabel, setAddLabel }) {
   const [labelsData, setLabelsData] = useState([
@@ -23,20 +24,18 @@ function LabelPage({ addLabel, setAddLabel }) {
       description: "문서화에 대한 설명",
       color: "#0000FF",
     },
-    {
-      id: 4,
-      name: "테스트",
-      description: "테스트에 대한 설명",
-      color: "#FFFF00",
-    },
-    {
-      id: 5,
-      name: "기타",
-      description: "기타에 대한 설명",
-      color: "#00FFFF",
-    },
   ]);
-
+  // TODO GET /api/labels 요청 후 응답받은 레이블 데이터를 적용할 예정
+  // useEffect(() => {
+  //   fetch(`${API_URL}/api/labels`)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       setLabelsData(res.data.labels);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching labels:", error);
+  //     });
+  // }, [labelsData]);
   return (
     <>
       {addLabel && <AddLabel setAddLabel={setAddLabel} />}
