@@ -55,12 +55,13 @@ public class CommentService {
                 .build();
     }
 
+    @Transactional
     public void deleteComment(Long issueId, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
 
         if (!comment.getIssueId().equals(issueId)) {
-            throw new InvalidCommentAccessException(); // 선택사항
+            throw new InvalidCommentAccessException();
         }
 
         commentRepository.deleteById(commentId);
