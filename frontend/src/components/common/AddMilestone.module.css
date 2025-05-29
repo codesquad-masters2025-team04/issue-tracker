@@ -128,3 +128,36 @@
   border-radius: 0;
   margin-top: 0;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* 위로 띄우기 */
+}
+
+.confirmModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--neutral-surface-bold);
+  padding: 20px 30px;
+  border-radius: var(--radius-large);
+  font: var(--display-medium16);
+}
+
+.modalButton {
+  padding: 10px 30px;
+  background-color: var(--brand-surface-default);
+  color: var(--brand-text-default);
+  border-radius: var(--radius-medium);
+  font: var(--available-medium12);
+}

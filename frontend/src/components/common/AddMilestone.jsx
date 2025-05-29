@@ -19,6 +19,7 @@ function AddMilestone({
     description: milestoneDescription,
   });
   const tempMilestoneName = milestoneName;
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,11 +55,12 @@ function AddMilestone({
 
   const handleAddMilestoneSave = () => {
     const isValid = isVaildDate(inputMilestoneContent.dueDate);
-
+    if (!inputMilestoneContent.name) {
+      setShowConfirm(true);
+      return;
+    }
     if (inputMilestoneContent.dueDate && !isValid) {
-      confirm(
-        "날짜 형식이 올바르지 않습니다. YYYY. MM. DD 형식으로 입력해주세요."
-      );
+      setShowConfirm(true);
       return;
     }
 
@@ -188,6 +190,20 @@ function AddMilestone({
           <span className={styles.buttonText}>완료</span>
         </button>
       </div>
+
+      {showConfirm && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.confirmModal}>
+            <p>입력하신 마일스톤 이름, 완료일을 다시 확인해주세요.</p>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowConfirm(false)}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

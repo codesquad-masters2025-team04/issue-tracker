@@ -9,7 +9,7 @@ function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
   const [isOpen, setIsOpen] = useState(true);
   const [closedMilestone, setClosedMilestone] = useState(0);
   const [milestoneData, setMilestoneData] = useState([]);
-  const [reload, setReload] = useState(0);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/api/milestones?isOpen=${isOpen}`)

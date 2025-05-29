@@ -50,12 +50,14 @@ function MilestoneElement({
                   {milestone.name}
                 </span>
               </div>
-              <div className={styles.milestoneDueDate}>
-                <span className={styles.calendarIcon} />
-                <span className={styles.endDateText}>
-                  {milestone.endDate?.replace(/-/g, ". ")}
-                </span>
-              </div>
+              {milestone.endDate && (
+                <div className={styles.milestoneDueDate}>
+                  <span className={styles.calendarIcon} />
+                  <span className={styles.endDateText}>
+                    {milestone.endDate?.replace(/-/g, ". ")}
+                  </span>
+                </div>
+              )}
             </div>
             <div className={styles.milestoneDescription}>
               {milestone.description}
