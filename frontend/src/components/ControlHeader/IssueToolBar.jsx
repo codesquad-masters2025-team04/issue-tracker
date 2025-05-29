@@ -3,7 +3,8 @@ import LabelAndMilestone from "./LabelAndMilestone";
 
 function IssueToolBar({
   onClick,
-  filterData,
+  labelCount,
+  milestoneCount,
   isLabelPage,
   setIsLabelPage,
   isMilestonePage,
@@ -23,7 +24,8 @@ function IssueToolBar({
     <div className={styles.issueToolBar}>
       <div className={styles.issueActionsPanel}>
         <LabelAndMilestone
-          filterData={filterData}
+          labelCount={labelCount}
+          milestoneCount={milestoneCount}
           isLabelPage={isLabelPage}
           setIsLabelPage={setIsLabelPage}
           isMilestonePage={isMilestonePage}

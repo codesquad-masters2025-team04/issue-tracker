@@ -22,6 +22,8 @@ function Home() {
   const [isMilestonePage, setIsMilestonePage] = useState(false);
   const [addLabel, setAddLabel] = useState(false);
   const [addMilestone, setAddMilestone] = useState(false);
+  const [labelCount, setLabelCount] = useState();
+  const [milestoneCount, setMilestoneCount] = useState();
 
   useEffect(() => {
     //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
@@ -39,11 +41,13 @@ function Home() {
           milestones: milestonesData.data.milestones,
           labels: labelsData.data.labels,
         });
+        setLabelCount(filterData.labels.length);
+        setMilestoneCount(filterData.milestones.length);
       })
       .catch((error) => {
         console.error("필터 데이터 로딩 실패:", error);
       });
-  }, []);
+  }, [labelCount, milestoneCount]);
 
   return (
     <>
@@ -56,7 +60,8 @@ function Home() {
       {!writeIssue && !detailIssue ? (
         <IssueToolBar
           onClick={() => setWriteIssue(true)}
-          filterData={filterData}
+          labelCount={labelCount}
+          milestoneCount={milestoneCount}
           isLabelPage={isLabelPage}
           setIsLabelPage={setIsLabelPage}
           isMilestonePage={isMilestonePage}
@@ -82,7 +87,8 @@ function Home() {
         <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
       ) : isMilestonePage ? (
         <MilestonePage
-          milestonesCount={filterData.milestones.length}
+          milestonesCount={milestoneCount}
+          setMilestoneCount={setMilestoneCount}
           addMilestone={addMilestone}
           setAddMilestone={setAddMilestone}
         />
