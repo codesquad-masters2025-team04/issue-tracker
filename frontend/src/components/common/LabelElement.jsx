@@ -11,6 +11,8 @@ function LabelElement({
   labelColor,
   setAddLabel,
   setLabelCount,
+  reload,
+  setReload,
 }) {
   const [isLabelEditMode, setIsLabelEditMode] = useState(false);
   const handleDelete = () => {
@@ -39,6 +41,8 @@ function LabelElement({
             setAddLabel={setAddLabel}
             isLabelEditMode={isLabelEditMode}
             setIsLabelEditMode={setIsLabelEditMode}
+            reload={reload}
+            setReload={setReload}
           />
         </div>
       ) : (

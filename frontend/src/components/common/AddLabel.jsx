@@ -13,7 +13,7 @@ function AddLabel({
   setIsLabelEditMode = () => {},
   setLabelCount,
   reload,
-  setReload,
+  setReload = () => {},
 }) {
   const [inputLabelContent, setInputLabelContent] = useState({
     labelName: labelName,
@@ -58,7 +58,7 @@ function AddLabel({
       setShowConfirm(true);
       return;
     }
-    fetch(`${API_URL}/labels`, {
+    fetch(`${API_URL}/api/labels`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,10 +73,6 @@ function AddLabel({
         if (!res.ok) {
           throw new Error(`서버 오류: ${res.status}`);
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("응답 데이터: ", data);
         setAddLabel(false);
         setLabelCount((prev) => prev + 1);
         setReload(!reload);
@@ -85,7 +81,7 @@ function AddLabel({
   };
 
   const handleEditLabelSave = () => {
-    fetch(`${API_URL}/labels/${labelId}`, {
+    fetch(`${API_URL}/api/labels/${labelId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -100,10 +96,6 @@ function AddLabel({
         if (!res.ok) {
           throw new Error(`서버 오류: ${res.status}`);
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("응답 데이터: ", data);
         setIsLabelEditMode(false);
         setReload(!reload);
       })
