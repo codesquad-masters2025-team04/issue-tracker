@@ -94,9 +94,7 @@ function AddMilestone({
     const isValid = isVaildDate(inputMilestoneContent.dueDate);
 
     if (inputMilestoneContent.dueDate && !isValid) {
-      confirm(
-        "날짜 형식이 올바르지 않습니다. YYYY. MM. DD 형식으로 입력해주세요."
-      );
+      setShowConfirm(true);
       return;
     }
     fetch(`${API_URL}/api/milestones/${milestoneId}`, {
