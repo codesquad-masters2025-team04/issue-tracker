@@ -30,38 +30,38 @@ function Comment({
   );
 
   // TODO 추후 서버 연결 완료 후 주석 제거 예정
-  // const handleSaveComment = () => {
-  //   if (tempComment === content) {
-  //     setIsEditMode(!isEditMode);
-  //     return;
-  //   }
+  const handleSaveComment = () => {
+    if (tempComment === content) {
+      setIsEditMode(!isEditMode);
+      return;
+    }
 
-  //   const updatedComment = {
-  //     content: tempComment,
-  //   };
+    const updatedComment = {
+      content: tempComment,
+    };
 
-  //   fetch(`${API_URL}/api/issues/comments/${commentId}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(updatedComment),
-  //   })
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         throw new Error("댓글 수정 실패"); // 추후 에러 처리 페이지 구현 예정
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("댓글 수정 성공:", data);
-  //       setIsEditMode(false);
-  //       setFetchTrigger((prev) => prev + 1);
-  //     })
-  //     .catch((err) => {
-  //       console.error("댓글 수정 중 오류 발생:", err);
-  //     });
-  // };
+    fetch(`${API_URL}/api/issues/comments/${commentId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedComment),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("댓글 수정 실패"); // 추후 에러 처리 페이지 구현 예정
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("댓글 수정 성공:", data);
+        setIsEditMode(false);
+        setFetchTrigger((prev) => prev + 1);
+      })
+      .catch((err) => {
+        console.error("댓글 수정 중 오류 발생:", err);
+      });
+  };
 
   const handleDeleteComment = () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
@@ -156,7 +156,7 @@ function Comment({
             className={`${styles.saveButton} ${
               content !== tempComment ? styles.saveButtonActive : ""
             }`}
-            // onClick={handleSaveComment}
+            onClick={handleSaveComment}
           >
             <span className={styles.saveEditIcon} />
             <span className={styles.saveButtonText}>편집 완료</span>
