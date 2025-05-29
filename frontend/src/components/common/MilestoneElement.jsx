@@ -13,8 +13,7 @@ function MilestoneElement({
   const [isMilestoneEditMode, setIsMilestoneEditMode] = useState(false);
 
   const handleDelete = () => {
-    if (confirm("해당 마일스톤을 삭제하시겠습니까?")) {
-    }
+    if (!confirm("해당 마일스톤을 삭제하시겠습니까?")) return;
     fetch(`${API_URL}/api/milestones/${milestone.id}`, {
       method: "DELETE",
     })

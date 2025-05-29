@@ -13,8 +13,7 @@ function LabelElement({
 }) {
   const [isLabelEditMode, setIsLabelEditMode] = useState(false);
   const handleDelete = () => {
-    if (confirm("해당 레이블을 삭제하시겠습니까?")) {
-    }
+    if (!confirm("해당 레이블을 삭제하시겠습니까?")) return;
     fetch(`${API_URL}/api/labels/${labelId}`, {
       method: "DELETE",
     })
