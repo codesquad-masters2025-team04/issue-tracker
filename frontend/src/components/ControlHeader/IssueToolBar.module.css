@@ -1,9 +1,65 @@
+.issueToolBar {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  margin-top: 32px;
+}
+
+.issueActionsPanel {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+}
+
 .writeIssueButton {
   width: 128px;
   height: 40px;
   background-color: var(--brand-surface-default);
-  color: var(--brand-text-default);
   border-radius: var(--radius-medium);
-  text-align: center;
-  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.writeIssueIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/plus.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.writeIssueText {
+  font: var(--available-medium12);
+  color: var(--brand-text-default);
+  padding: 0 4px;
+}
+
+.addLabelButton {
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  background-color: var(--brand-surface-default);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addLabelIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/plus.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.addLabelText {
+  font: var(--available-medium12);
+  color: var(--brand-text-default);
+  padding: 0 4px;
+}
+
+.disabled {
+  opacity: 32%;
 }

@@ -1,0 +1,163 @@
+.addMilestoneContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: var(--neutral-surface-strong);
+  margin-top: 24px;
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+  padding: 0 32px 32px 32px;
+  overflow: hidden;
+}
+
+.addMilestoneTitle {
+  margin-top: 36px;
+  font: var(--display-bold20);
+  color: var(--neutral-text-strong);
+}
+
+.inputFields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.milestoneInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.inputArea {
+  width: 50%;
+  height: 40px;
+  background-color: var(--neutral-surface-bold);
+  border-radius: var(--radius-medium);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.tag {
+  width: 64px;
+  font: var(--display-medium12);
+  color: var(--neutral-text-weak);
+}
+
+.inputMilestoneName,
+.inputMilestoneDate {
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+  flex: 1;
+}
+
+.inputDescription {
+  height: 40px;
+  background-color: var(--neutral-surface-bold);
+  border-radius: var(--radius-medium);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.inputMilestoneDescription {
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+  flex: 1;
+}
+
+.buttonsInMilestone {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.cancelButton,
+.saveButton {
+  width: 128px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  font: var(--available-medium12);
+  border-radius: var(--radius-medium);
+}
+
+.cancelButton {
+  border: 1px solid var(--brand-text-weak);
+  color: var(--brand-text-weak);
+}
+
+.cancelIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/xSquare.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.buttonText {
+  padding: 0 4px;
+}
+
+.saveButton {
+  background-color: var(--brand-surface-default);
+  color: var(--brand-text-default);
+  opacity: 32%;
+}
+
+.saveIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/plus.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.active {
+  opacity: 100%;
+}
+
+.editMilestoneContainer {
+  border: none;
+  border-top: 1px solid var(--neutral-border-default);
+  border-radius: 0;
+  margin-top: 0;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* 위로 띄우기 */
+}
+
+.confirmModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--neutral-surface-bold);
+  padding: 20px 30px;
+  border-radius: var(--radius-large);
+  font: var(--display-medium16);
+}
+
+.modalButton {
+  padding: 10px 30px;
+  background-color: var(--brand-surface-default);
+  color: var(--brand-text-default);
+  border-radius: var(--radius-medium);
+  font: var(--available-medium12);
+}

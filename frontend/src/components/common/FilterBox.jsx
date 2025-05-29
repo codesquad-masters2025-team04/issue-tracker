@@ -1,4 +1,5 @@
 import styles from "./FilterBox.module.css";
+import { getTextColor } from "../../utils/colorUtils";
 import PopupList from "./PopupList";
 
 const changeFilterName = {
@@ -17,7 +18,7 @@ function FilterBox({
   return (
     <div className={styles.filtersContainer}>
       {["담당자", "레이블", "마일스톤"].map((filter) => (
-        <div className={styles.filterBox} key={filter}>
+        <div className={styles.filterBox} key={changeFilterName[filter]}>
           <div
             className={styles.filterButton}
             onClick={() => toggleFilter(filter)}
@@ -60,7 +61,7 @@ function FilterBox({
                     }}
                   ></div>
                   <div key={item.id} className={styles.selectedItem}>
-                    {item.title}
+                    {item.nickname}
                   </div>
                 </div>
               ))}
@@ -73,9 +74,12 @@ function FilterBox({
                 <div
                   key={item.id}
                   className={styles.selectedLabelItem}
-                  style={{ backgroundColor: `#${item.color}` }}
+                  style={{
+                    backgroundColor: item.color,
+                    color: getTextColor(item.color),
+                  }}
                 >
-                  {item.title}
+                  {item.name}
                 </div>
               ))}
             </div>

@@ -4,6 +4,7 @@ button {
 }
 
 input,
-textarea {
+textarea,
+h3 {
   all: unset;
 }

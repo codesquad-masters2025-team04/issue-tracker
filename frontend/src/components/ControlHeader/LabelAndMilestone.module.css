@@ -1,0 +1,53 @@
+.labelsAndMilestones {
+  width: 320px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font: var(--available-medium16);
+  color: var(--neutral-text-default);
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-medium);
+  overflow: hidden;
+}
+
+.labels {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid var(--neutral-border-default);
+  gap: 4px;
+}
+
+.labelIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/label.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.milestones {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.milestoneIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/milestone.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.active {
+  background-color: var(--neutral-surface-bold);
+  font: var(--selected-bold16);
+  color: var(--neutral-text-strong);
+}

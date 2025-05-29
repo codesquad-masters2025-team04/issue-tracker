@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/Header/Header";
-import IssueTable from "../../components/Dashboard/IssueTable";
-import IssueToolBar from "../../components/ControlHeader/IssueToolBar";
-import WriteIssue from "../../components/Dashboard/WriteIssue";
-import { API_URL } from "../../constants/link";
-import DetailIssue from "../../components/Dashboard/DetailIssue";
+import Header from "../components/Header/Header";
+import IssueTable from "../components/Dashboard/IssueTable";
+import IssueToolBar from "../components/ControlHeader/IssueToolBar";
+import WriteIssue from "../components/Dashboard/WriteIssue";
+import { API_URL } from "../constants/link";
+import DetailIssue from "../components/Dashboard/DetailIssue";
+import LabelPage from "./LabelPage";
+import MilestonePage from "./MilestonePage"; //
 
 function Home() {
   const [writeIssue, setWriteIssue] = useState(false);
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState({
+    users: [],
+    milestones: [],
+    labels: [],
+  });
   const [detailIssue, setDetailIssue] = useState(false);
   const [issueTitleAndId, setIssueTitleAndId] = useState({});
   const [detailData, setDetailData] = useState({});
+  const [isLabelPage, setIsLabelPage] = useState(false);
+  const [isMilestonePage, setIsMilestonePage] = useState(false);
+  const [addLabel, setAddLabel] = useState(false);
+  const [addMilestone, setAddMilestone] = useState(false);
 
   useEffect(() => {
     //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
@@ -37,9 +47,25 @@ function Home() {
 
   return (
     <>
-      <Header setWriteIssue={setWriteIssue} setDetailIssue={setDetailIssue} />
+      <Header
+        setWriteIssue={setWriteIssue}
+        setDetailIssue={setDetailIssue}
+        setIsLabelPage={setIsLabelPage}
+        setIsMilestonePage={setIsMilestonePage}
+      />
       {!writeIssue && !detailIssue ? (
-        <IssueToolBar onClick={() => setWriteIssue(true)} />
+        <IssueToolBar
+          onClick={() => setWriteIssue(true)}
+          filterData={filterData}
+          isLabelPage={isLabelPage}
+          setIsLabelPage={setIsLabelPage}
+          isMilestonePage={isMilestonePage}
+          setIsMilestonePage={setIsMilestonePage}
+          addLabel={addLabel}
+          setAddLabel={setAddLabel}
+          addMilestone={addMilestone}
+          setAddMilestone={setAddMilestone}
+        />
       ) : (
         ""
       )}
@@ -50,6 +76,15 @@ function Home() {
           filterData={filterData}
           detailData={detailData}
           issueTitleAndId={issueTitleAndId}
+          setDetailIssue={setDetailIssue}
+        />
+      ) : isLabelPage ? (
+        <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
+      ) : isMilestonePage ? (
+        <MilestonePage
+          milestonesCount={filterData.milestones.length}
+          addMilestone={addMilestone}
+          setAddMilestone={setAddMilestone}
         />
       ) : (
         <IssueTable

@@ -56,14 +56,14 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
 
         <div className={styles.issueTabs}>
           <IssueTabButton
-            isActive={isOpen === true}
-            onClick={() => setIsOpen(true)}
+            isActive={isOpen === "open"}
+            onClick={() => setIsOpen("open")}
             iconClassName="openIssueIcon"
             issueName={`열린 이슈(${issueCount.openCount})`}
           />
           <IssueTabButton
-            isActive={isOpen === false}
-            onClick={() => setIsOpen(false)}
+            isActive={isOpen === "close"}
+            onClick={() => setIsOpen("close")}
             iconClassName="closedIssueIcon"
             issueName={`닫힌 이슈(${issueCount.closedCount})`}
           />

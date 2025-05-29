@@ -1,7 +1,13 @@
 import { useRef, useState } from "react";
 import styles from "./CommentInput.module.css";
 
-function CommentInput({ newComment, setNewComment, setFile }) {
+function CommentInput({
+  newComment,
+  setNewComment,
+  setFile,
+  file,
+  isEditMode,
+}) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -14,7 +20,11 @@ function CommentInput({ newComment, setNewComment, setFile }) {
   };
 
   return (
-    <div className={`${styles.wrapper} ${isFocused ? styles.focused : ""}`}>
+    <div
+      className={`${styles.wrapper} ${isFocused ? styles.focused : ""} ${
+        isEditMode ? styles.editMode : styles.readMode
+      }`}
+    >
       <textarea
         className={styles.textarea}
         placeholder="코멘트를 입력하세요"
@@ -33,8 +43,19 @@ function CommentInput({ newComment, setNewComment, setFile }) {
           type="file"
           ref={fileInputRef}
           style={{ display: "none" }}
+          multiple
           onChange={handleFileChange}
         />
+
+        {file.length > 0 && (
+          <div className={styles.fileList}>
+            {file.map((f, index) => (
+              <div key={index} className={styles.fileItem}>
+                {f.name}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,20 @@
+.milestoneContainer {
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.milestoneHeader {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: var(--neutral-surface-default);
+  padding-left: 32px;
+}
+
+.milestoneList {
+  display: flex;
+  flex-direction: column;
+}
