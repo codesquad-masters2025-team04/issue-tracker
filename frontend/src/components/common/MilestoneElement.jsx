@@ -3,7 +3,13 @@ import styles from "./MilestoneElement.module.css";
 import AddMilestone from "./AddMilestone";
 import { API_URL } from "../../constants/link";
 
-function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
+function MilestoneElement({
+  milestone,
+  addMilestone,
+  setAddMilestone,
+  reload,
+  setReload,
+}) {
   const [isMilestoneEditMode, setIsMilestoneEditMode] = useState(false);
 
   const handleDelete = () => {
@@ -16,6 +22,7 @@ function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
         const text = await res.text();
         const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
         console.log("서버 응답:", data);
+        setReload(!reload);
       })
       .catch((error) => console.error("에러:", error));
   };
@@ -24,12 +31,14 @@ function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
       {isMilestoneEditMode ? (
         <AddMilestone
           milestoneId={milestone.id}
-          milestoneName={milestone.title}
+          milestoneName={milestone.name}
           milestoneDate={milestone.endDate}
           milestoneDescription={milestone.description}
           setAddMilestone={setAddMilestone}
           isMilestoneEditMode={isMilestoneEditMode}
           setIsMilestoneEditMode={setIsMilestoneEditMode}
+          reload={reload}
+          setReload={setReload}
         />
       ) : (
         <div key={milestone.id} className={styles.milestoneItem}>
@@ -38,13 +47,13 @@ function MilestoneElement({ milestone, addMilestone, setAddMilestone }) {
               <div className={styles.milestoneTitle}>
                 <span className={styles.milestoneIcon} />
                 <span className={styles.milestoneTitleText}>
-                  {milestone.title}
+                  {milestone.name}
                 </span>
               </div>
               <div className={styles.milestoneDueDate}>
                 <span className={styles.calendarIcon} />
                 <span className={styles.endDateText}>
-                  {milestone.endDate.replace(/-/g, ". ")}
+                  {milestone.endDate?.replace(/-/g, ". ")}
                 </span>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./AddMilestone.module.css";
 import { API_URL } from "../../constants/link";
 
@@ -10,10 +10,12 @@ function AddMilestone({
   setAddMilestone,
   isMilestoneEditMode = false,
   setIsMilestoneEditMode = () => {},
+  reload,
+  setReload = () => {},
 }) {
   const [inputMilestoneContent, setInputMilestoneContent] = useState({
     name: milestoneName,
-    dueDate: milestoneDate.replace(/\-/g, ". "),
+    dueDate: milestoneDate?.replace(/\-/g, ". "),
     description: milestoneDescription,
   });
   const tempMilestoneName = milestoneName;
@@ -35,6 +37,7 @@ function AddMilestone({
   };
 
   const isVaildDate = (dateString) => {
+    if (!dateString) return;
     const trimmedDate = dateString.replace(/\s/g, "");
     const regex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12][0-9]|3[01])$/;
     if (!regex.test(trimmedDate)) return false;
@@ -58,25 +61,29 @@ function AddMilestone({
       );
       return;
     }
-    fetch(`${API_URL}/milestones`, {
+
+    const milestoneData = {
+      name: inputMilestoneContent.name,
+      description: inputMilestoneContent.description || "",
+      endDate:
+        inputMilestoneContent.dueDate.replace(/\./g, "-").replace(/\s/g, "") ||
+        "",
+    };
+
+    fetch(`${API_URL}/api/milestones`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: inputMilestoneContent.name,
-        description: inputMilestoneContent.description,
-        endDate: inputMilestoneContent.dueDate.replace(/\./g, "-"),
-      }),
+      body: JSON.stringify(milestoneData),
     })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`서버 오류: ${res.status}`);
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("응답 데이터: ", data);
+        console.log("응답 데이터: 생성 완료");
+        setAddMilestone(false);
+        setReload(!reload);
       })
       .catch((err) => console.error(err));
   };
@@ -90,7 +97,7 @@ function AddMilestone({
       );
       return;
     }
-    fetch(`${API_URL}/milestones/${milestoneId}`, {
+    fetch(`${API_URL}/api/milestones/${milestoneId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -98,17 +105,18 @@ function AddMilestone({
       body: JSON.stringify({
         name: inputMilestoneContent.name,
         description: inputMilestoneContent.description,
-        endDate: inputMilestoneContent.dueDate.replace(/\./g, "-"),
+        endDate: inputMilestoneContent.dueDate
+          ? inputMilestoneContent.dueDate.replace(/\s/g, "").replace(/\./g, "-")
+          : "",
       }),
     })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`서버 오류: ${res.status}`);
         }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("응답 데이터: ", data);
+        console.log("응답 데이터: 편집 완료");
+        setIsMilestoneEditMode(false);
+        setReload(!reload);
       })
       .catch((err) => console.error(err));
   };
