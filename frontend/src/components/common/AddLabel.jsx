@@ -11,6 +11,9 @@ function AddLabel({
   setAddLabel,
   isLabelEditMode = false,
   setIsLabelEditMode = () => {},
+  setLabelCount,
+  reload,
+  setReload,
 }) {
   const [inputLabelContent, setInputLabelContent] = useState({
     labelName: labelName,
@@ -19,6 +22,7 @@ function AddLabel({
   });
   const tempLabelName = labelName;
   const tempLabelColor = labelColor;
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleCancel = () => {
     if (isLabelEditMode) setIsLabelEditMode(!isLabelEditMode);
@@ -50,6 +54,10 @@ function AddLabel({
   };
 
   const handleAddLabelSave = () => {
+    if (!inputLabelContent.labelName) {
+      setShowConfirm(true);
+      return;
+    }
     fetch(`${API_URL}/labels`, {
       method: "POST",
       headers: {
@@ -69,6 +77,9 @@ function AddLabel({
       })
       .then((data) => {
         console.log("응답 데이터: ", data);
+        setAddLabel(false);
+        setLabelCount((prev) => prev + 1);
+        setReload(!reload);
       })
       .catch((err) => console.error(err));
   };
@@ -93,6 +104,8 @@ function AddLabel({
       })
       .then((data) => {
         console.log("응답 데이터: ", data);
+        setIsLabelEditMode(false);
+        setReload(!reload);
       })
       .catch((err) => console.error(err));
   };
@@ -174,6 +187,19 @@ function AddLabel({
           <span className={styles.addText}>완료</span>
         </button>
       </div>
+      {showConfirm && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.confirmModal}>
+            <p>레이블 이름을 다시 확인해주세요.</p>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowConfirm(false)}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -84,7 +84,12 @@ function Home() {
           setDetailIssue={setDetailIssue}
         />
       ) : isLabelPage ? (
-        <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
+        <LabelPage
+          labelCount={labelCount}
+          setLabelCount={setLabelCount}
+          addLabel={addLabel}
+          setAddLabel={setAddLabel}
+        />
       ) : isMilestonePage ? (
         <MilestonePage
           milestonesCount={milestoneCount}

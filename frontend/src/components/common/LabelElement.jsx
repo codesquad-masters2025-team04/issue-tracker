@@ -10,6 +10,7 @@ function LabelElement({
   labelDescription,
   labelColor,
   setAddLabel,
+  setLabelCount,
 }) {
   const [isLabelEditMode, setIsLabelEditMode] = useState(false);
   const handleDelete = () => {
@@ -21,6 +22,7 @@ function LabelElement({
         const text = await res.text();
         const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
         console.log("서버 응답:", data);
+        setLabelCount((prev) => prev - 1);
       })
       .catch((error) => console.error("에러:", error));
   };
