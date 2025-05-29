@@ -14,9 +14,9 @@ function AddMilestone({
   setReload = () => {},
 }) {
   const [inputMilestoneContent, setInputMilestoneContent] = useState({
-    name: milestoneName,
-    dueDate: milestoneDate?.replace(/\-/g, ". "),
-    description: milestoneDescription,
+    name: milestoneName || "",
+    dueDate: milestoneDate ? milestoneDate.replace(/\-/g, ". ") : "",
+    description: milestoneDescription || "",
   });
   const tempMilestoneName = milestoneName;
   const [showConfirm, setShowConfirm] = useState(false);
@@ -92,7 +92,10 @@ function AddMilestone({
 
   const handleEditMilestoneSave = () => {
     const isValid = isVaildDate(inputMilestoneContent.dueDate);
-
+    if (!inputMilestoneContent.name) {
+      setShowConfirm(true);
+      return;
+    }
     if (inputMilestoneContent.dueDate && !isValid) {
       setShowConfirm(true);
       return;
