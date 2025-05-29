@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import LabelElement from "../components/common/LabelElement";
 import { API_URL } from "../constants/link";
 
-function LabelPage({ addLabel, setAddLabel }) {
+function LabelPage({ labelCount, setLabelCount, addLabel, setAddLabel }) {
   const [labelsData, setLabelsData] = useState([]);
+  const [reload, setReload] = useState(false);
 
   // TODO GET /api/labels 요청 후 응답받은 레이블 데이터를 적용할 예정
   useEffect(() => {
@@ -17,14 +18,19 @@ function LabelPage({ addLabel, setAddLabel }) {
       .catch((error) => {
         console.error("Error fetching labels:", error);
       });
-  }, []);
+  }, [reload]);
   return (
     <>
-      {addLabel && <AddLabel setAddLabel={setAddLabel} />}
+      {addLabel && (
+        <AddLabel
+          setAddLabel={setAddLabel}
+          setLabelCount={setLabelCount}
+          reload={reload}
+          setReload={setReload}
+        />
+      )}
       <div className={styles.labelPage}>
-        <div className={styles.labelPageHeader}>
-          {labelsData.length}개의 레이블
-        </div>
+        <div className={styles.labelPageHeader}>{labelCount}개의 레이블</div>
 
         {labelsData.map((label) => (
           <LabelElement
@@ -34,6 +40,7 @@ function LabelPage({ addLabel, setAddLabel }) {
             labelDescription={label.description}
             labelColor={label.color}
             setAddLabel={setAddLabel}
+            setLabelCount={setLabelCount}
           />
         ))}
       </div>

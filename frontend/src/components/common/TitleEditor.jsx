@@ -13,24 +13,24 @@ function TitleEditor({
   // TODO 추후 수정된 제목 fetch 요청 코드 작성 예정
   const handleSave = () => {
     // TODO 추후 서버 연결 후 주석 제거 예정
-    // fetch(`${API_URL}/api/issues/${issueId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     title: tempTitle,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((res) => {
-    //     console.log("서버 응답:", res);
-    //     setIssueTitle(tempTitle);
-    //     setEditIssueTitle(false);
-    //   })
-    //   .catch((err) => {
-    //     console.error("에러:", err);
-    //   });
+    fetch(`${API_URL}/api/issues/${issueId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: tempTitle,
+      }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("서버 응답:", res);
+        setIssueTitle(tempTitle);
+        setEditIssueTitle(false);
+      })
+      .catch((err) => {
+        console.error("에러:", err);
+      });
     setIssueTitle(tempTitle);
     setEditIssueTitle(false);
   };

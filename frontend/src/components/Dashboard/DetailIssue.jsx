@@ -99,7 +99,7 @@ function DetailIssue({
             setEditIssueTitle={setEditIssueTitle}
             issueTitle={issueTitle}
             setIssueTitle={setIssueTitle}
-            // issueId={issueTitleAndId.id}
+            issueId={issueTitleAndId.id}
           />
         ) : (
           <TitleAndButtons

@@ -1,7 +1,8 @@
 import styles from "./LabelAndMilestone.module.css";
 
 function LabelAndMilestone({
-  filterData,
+  labelCount,
+  milestoneCount,
   isLabelPage,
   setIsLabelPage,
   isMilestonePage,
@@ -30,14 +31,14 @@ function LabelAndMilestone({
           onClick={handleLabelClick}
         >
           <span className={styles.labelIcon} />
-          <span>레이블({filterData.labels.length})</span>
+          <span>레이블({labelCount})</span>
         </button>
         <button
           className={`${styles.milestones} ${isMilestonePage && styles.active}`}
           onClick={handleMilestoneClick}
         >
           <span className={styles.milestoneIcon} />
-          <span>마일스톤({filterData.milestones.length})</span>
+          <span>마일스톤({milestoneCount})</span>
         </button>
       </div>
     </>

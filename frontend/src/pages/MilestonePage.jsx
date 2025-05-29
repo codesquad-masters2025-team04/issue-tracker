@@ -5,7 +5,12 @@ import MilestoneElement from "../components/common/MilestoneElement";
 import AddMilestone from "../components/common/AddMilestone";
 import { API_URL } from "../constants/link";
 
-function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
+function MilestonePage({
+  milestonesCount,
+  setMilestoneCount,
+  addMilestone,
+  setAddMilestone,
+}) {
   const [isOpen, setIsOpen] = useState(true);
   const [closedMilestone, setClosedMilestone] = useState(0);
   const [milestoneData, setMilestoneData] = useState([]);
@@ -29,6 +34,7 @@ function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
           setAddMilestone={setAddMilestone}
           reload={reload}
           setReload={setReload}
+          setMilestoneCount={setMilestoneCount}
         />
       )}
       <div className={styles.milestoneContainer}>
@@ -56,6 +62,7 @@ function MilestonePage({ milestonesCount, addMilestone, setAddMilestone }) {
               setAddMilestone={setAddMilestone}
               reload={reload}
               setReload={setReload}
+              setMilestoneCount={setMilestoneCount}
             />
           ))}
         </div>

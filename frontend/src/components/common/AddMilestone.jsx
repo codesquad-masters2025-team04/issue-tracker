@@ -12,6 +12,7 @@ function AddMilestone({
   setIsMilestoneEditMode = () => {},
   reload,
   setReload = () => {},
+  setMilestoneCount,
 }) {
   const [inputMilestoneContent, setInputMilestoneContent] = useState({
     name: milestoneName || "",
@@ -86,6 +87,7 @@ function AddMilestone({
         console.log("응답 데이터: 생성 완료");
         setAddMilestone(false);
         setReload(!reload);
+        setMilestoneCount((prev) => prev + 1);
       })
       .catch((err) => console.error(err));
   };

@@ -22,27 +22,31 @@ function Home() {
   const [isMilestonePage, setIsMilestonePage] = useState(false);
   const [addLabel, setAddLabel] = useState(false);
   const [addMilestone, setAddMilestone] = useState(false);
+  const [labelCount, setLabelCount] = useState();
+  const [milestoneCount, setMilestoneCount] = useState();
 
-  useEffect(() => {
-    //TODO fetch로 여러번 요청을 보내는 것과 Promise.all로 한번에 요청을 보내는 것을 비교해보기
-    // 각각의 장단점이 명확하므로 추후 회의를 통해 선택할 예정, 우선 불필요한 리렌더링을 줄이기 위해 Promise.all을 사용
-    // Promise.all은 하나의 요청이 실패하면 모두 실패 처리, 결과가 모두 올때까지 기다려야 함
-    // fetch는 setFliterData를 여러번 호출 -> 불필요한 리렌더링 발생, 하지만 우선적으로 받아온 데이터응답을 UI에 드러낼 수 있음
+  const fetchFilterData = async () => {
     Promise.all([
       fetch(`${API_URL}/api/users/filter`).then((res) => res.json()),
       fetch(`${API_URL}/api/milestones/filter`).then((res) => res.json()),
       fetch(`${API_URL}/api/labels/filter`).then((res) => res.json()),
     ])
       .then(([usersData, milestonesData, labelsData]) => {
-        setFilterData({
-          users: usersData.data.users,
-          milestones: milestonesData.data.milestones,
-          labels: labelsData.data.labels,
-        });
+        const users = usersData.data.users;
+        const milestones = milestonesData.data.milestones;
+        const labels = labelsData.data.labels;
+
+        setFilterData({ users, milestones, labels });
+        setLabelCount(labels.length);
+        setMilestoneCount(milestones.length);
       })
       .catch((error) => {
         console.error("필터 데이터 로딩 실패:", error);
       });
+  };
+
+  useEffect(() => {
+    fetchFilterData();
   }, []);
 
   return (
@@ -56,7 +60,8 @@ function Home() {
       {!writeIssue && !detailIssue ? (
         <IssueToolBar
           onClick={() => setWriteIssue(true)}
-          filterData={filterData}
+          labelCount={labelCount}
+          milestoneCount={milestoneCount}
           isLabelPage={isLabelPage}
           setIsLabelPage={setIsLabelPage}
           isMilestonePage={isMilestonePage}
@@ -79,10 +84,16 @@ function Home() {
           setDetailIssue={setDetailIssue}
         />
       ) : isLabelPage ? (
-        <LabelPage addLabel={addLabel} setAddLabel={setAddLabel} />
+        <LabelPage
+          labelCount={labelCount}
+          setLabelCount={setLabelCount}
+          addLabel={addLabel}
+          setAddLabel={setAddLabel}
+        />
       ) : isMilestonePage ? (
         <MilestonePage
-          milestonesCount={filterData.milestones.length}
+          milestonesCount={milestoneCount}
+          setMilestoneCount={setMilestoneCount}
           addMilestone={addMilestone}
           setAddMilestone={setAddMilestone}
         />
