@@ -62,6 +62,7 @@ function MilestonePage({
               setAddMilestone={setAddMilestone}
               reload={reload}
               setReload={setReload}
+              setMilestoneCount={setMilestoneCount}
             />
           ))}
         </div>
