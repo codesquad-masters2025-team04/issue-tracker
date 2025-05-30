@@ -23,7 +23,7 @@ function Comment({
   const [isEditMode, setIsEditMode] = useState(false);
   const [tempComment, setTempComment] = useState(content);
   const [editCommentFile, setEditCommentFile] = useState([]);
-  const userId = 3;
+  // const userId = 3;
   const renderedContent = DOMPurify.sanitize(
     marked(tempComment.replace(/\n/g, "  \n"))
   );
@@ -100,7 +100,8 @@ function Comment({
               ""
             )}
 
-            {Number(authorInfo.id) === userId ? (
+            {Number(authorInfo.id) === Number(commentAuthorId) ||
+            Number(issueAuthorId) === Number(commentAuthorId) ? (
               <button
                 className={styles.editButton}
                 onClick={() => setIsEditMode(!isEditMode)}
@@ -116,7 +117,8 @@ function Comment({
               <span className={styles.commentButtonsText}>반응</span>
             </button>
 
-            {Number(authorInfo.id) === userId ? (
+            {Number(authorInfo.id) === Number(commentAuthorId) ||
+            Number(issueAuthorId) === Number(commentAuthorId) ? (
               <button
                 className={styles.deleteCommentButton}
                 onClick={handleDeleteComment}
