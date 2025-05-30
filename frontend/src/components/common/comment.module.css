@@ -4,6 +4,12 @@
   overflow: hidden;
 }
 
+.editComment {
+  border: 1px solid var(--neutral-border-default-active);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+}
+
 .commentHeader {
   background-color: var(--neutral-surface-default);
   padding: 16px 24px;
@@ -113,4 +119,63 @@
   background-color: var(--neutral-surface-strong);
   font: var(--display-medium16);
   color: var(--neutral-text-default);
+}
+
+.editButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.cancelButton {
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--brand-border-default);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cancelIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/xSquare.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.cancelButtonText {
+  font: var(--available-medium12);
+  color: var(--brand-text-weak);
+  padding: 0 4px;
+}
+
+.saveButton {
+  width: 128px;
+  height: 40px;
+  border-radius: var(--radius-medium);
+  background-color: var(--brand-surface-default);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 32%;
+}
+
+.saveButtonActive {
+  opacity: 100%;
+}
+
+.saveEditIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/edit.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.saveButtonText {
+  font: var(--available-medium12);
+  color: var(--brand-text-default);
+  padding: 0 4px;
 }

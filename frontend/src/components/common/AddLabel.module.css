@@ -1,0 +1,200 @@
+.addLabelContainer {
+  margin-top: 24px;
+  background-color: var(--neutral-surface-strong);
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.editLabelContainer {
+  margin-top: 0;
+  border-radius: 0;
+  border: none;
+}
+
+.addLabelTitle {
+  font: var(--display-bold20);
+  color: var(--neutral-text-strong);
+}
+
+.editLabel {
+  font: var(--display-bold20);
+  color: var(--neutral-text-strong);
+}
+
+.addLabelForm {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.previewLabelBox {
+  width: 288px;
+  height: 153px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+}
+
+.labelColorBox {
+  padding: 4px 12px;
+  border-radius: var(--radius-large);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.inputText {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: var(--neutral-surface-bold);
+  border-radius: var(--radius-medium);
+  gap: 8px;
+}
+
+.inputLabelName,
+.inputLabelDescription {
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+  flex-grow: 1;
+  padding-right: 16px;
+}
+
+.label {
+  width: 64px;
+  font: var(--display-medium12);
+  color: var(--neutral-text-weak);
+  padding-left: 16px;
+}
+
+.inputColor {
+  width: 240px;
+  height: 40px;
+  background-color: var(--neutral-surface-bold);
+  border-radius: var(--radius-medium);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inputLabelColor {
+  width: 112px;
+  font: var(--display-medium16);
+  color: var(--neutral-text-default);
+}
+
+.refreshIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/refreshCcw.svg");
+  mask-size: cover;
+  background-color: var(--neutral-text-default);
+}
+
+.buttonsInAddLabel {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.buttonInAddLabel {
+  display: flex;
+  gap: 16px;
+}
+
+.cancelButton {
+  width: 128px;
+  height: 40px;
+  border: 1px solid var(--brand-border-default);
+  border-radius: var(--radius-medium);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--brand-text-weak);
+  font: var(--available-medium12);
+}
+
+.cancelIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/xSquare.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-weak);
+}
+
+.cancelText {
+  padding: 0 4px;
+}
+
+.addButton {
+  width: 128px;
+  height: 40px;
+  background-color: var(--brand-surface-default);
+  border-radius: var(--radius-medium);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font: var(--available-medium12);
+  color: var(--brand-text-default);
+  opacity: 32%;
+}
+
+.addIcon {
+  width: 16px;
+  height: 16px;
+  mask-image: url("../../assets/icons/plus.svg");
+  mask-size: cover;
+  background-color: var(--brand-text-default);
+}
+
+.addText {
+  padding: 0 4px;
+}
+
+.active {
+  opacity: 100%;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* 위로 띄우기 */
+}
+
+.confirmModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--neutral-surface-bold);
+  padding: 20px 30px;
+  border-radius: var(--radius-large);
+  font: var(--display-medium16);
+}
+
+.modalButton {
+  padding: 10px 30px;
+  background-color: var(--brand-surface-default);
+  color: var(--brand-text-default);
+  border-radius: var(--radius-medium);
+  font: var(--available-medium12);
+}

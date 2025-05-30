@@ -3,25 +3,32 @@ import styles from "./DetailIssue.module.css";
 import FilterBox from "../common/FilterBox";
 import useFilterBox from "../../hooks/useFilterBox";
 import Comment from "../common/Comment";
-import CommentInput from "../common/CommentInput";
 import TitleAndButtons from "./TitleAndButtons";
 import TitleEditor from "../common/TitleEditor";
 import { API_URL } from "../../constants/link";
+import { getTimeAgo } from "../../utils/getTimeAgo";
+import CommentInput from "../common/CommentInput";
 
-function DetailIssue({ filterData, detailData, issueTitleAndId }) {
+function DetailIssue({
+  filterData,
+  detailData,
+  issueTitleAndId,
+  setDetailIssue,
+}) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
+  // labels, milestone은 적용 완료 => assignee 추후 적용 예정
   const { selectedFilters, activeFilter, toggleFilter, selectOption } =
     useFilterBox({
       담당자: [],
-      레이블: [],
-      마일스톤: null,
+      레이블: issueTitleAndId.labels || [],
+      마일스톤: issueTitleAndId.milestone || null,
     });
   const [editIssueTitle, setEditIssueTitle] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);
   const [isOpenIssue, setIsOpenIssue] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(detailData.comments);
-  const [file, setFile] = useState([]);
+  const [newCommentFile, setNewCommentFile] = useState([]);
   const [fatchTrigger, setFetchTrigger] = useState(0);
   const [commentSize, setCommentSize] = useState(detailData.commentSize);
 
@@ -43,7 +50,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
     const newCommentData = {
       content: newComment,
       issueId: issueTitleAndId.id,
-      authorId: 3,
+      authorId: 1,
     };
 
     const formData = new FormData();
@@ -52,8 +59,8 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
       new Blob([JSON.stringify(newCommentData)], { type: "application/json" })
     );
 
-    if (file?.length) {
-      file.forEach((f) => formData.append("file", f));
+    if (newCommentFile) {
+      newCommentFile.forEach((f) => formData.append("file", f));
     }
 
     fetch(`${API_URL}/api/issues/comments`, {
@@ -65,10 +72,25 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
         console.log("서버 응답:", data);
         setFetchTrigger((prev) => prev + 1);
         setNewComment("");
+        setNewCommentFile([]);
       })
       .catch((err) => console.error("에러:", err));
   };
 
+  const handleDeleteIssue = () => {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      fetch(`${API_URL}/api/issues/${issueTitleAndId.id}`, {
+        method: "DELETE",
+      })
+        .then(async (res) => {
+          const text = await res.text();
+          const data = text ? JSON.parse(text) : { message: "삭제되었습니다." };
+          console.log("서버 응답:", data);
+          setDetailIssue(false);
+        })
+        .catch((err) => console.error("에러:", err));
+    }
+  };
   return (
     <>
       <div className={styles.postInformation}>
@@ -77,6 +99,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             setEditIssueTitle={setEditIssueTitle}
             issueTitle={issueTitle}
             setIssueTitle={setIssueTitle}
+            issueId={issueTitleAndId.id}
           />
         ) : (
           <TitleAndButtons
@@ -100,7 +123,8 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
           </div>
           <div className={styles.explainState}>
             <span>
-              이 이슈가 3분 전에 {issueTitleAndId.nickname}님에 의해{" "}
+              이 이슈가 {getTimeAgo(detailData.createdAt)}에{" "}
+              {issueTitleAndId.nickname}님에 의해{" "}
               {isOpenIssue ? "열렸습니다" : "닫혔습니다"}
             </span>
             <span>∙</span>
@@ -113,25 +137,35 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
           <Comment
+            commentId={issueTitleAndId.id}
             authorInfo={issueTitleAndId}
             issueAuthorId={issueTitleAndId.authorId}
             commentAuthorId={issueTitleAndId.authorId}
             content={detailData.content}
+            createdAt={detailData.createdAt}
+            file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
+            setFetchTrigger={setFetchTrigger}
           />
           {comments.map((comment) => (
             <Comment
               key={comment.commentId}
+              commentId={comment.commentId}
               authorInfo={comment.author}
+              issueId={issueTitleAndId.id}
               issueAuthorId={issueTitleAndId.authorId}
               commentAuthorId={comment.author?.id}
               content={comment.content}
+              createdAt={comment.createdAt}
+              file={comment.fileUrl ? comment.fileUrl : ""}
+              setFetchTrigger={setFetchTrigger}
             />
           ))}
 
           <CommentInput
             newComment={newComment}
             setNewComment={setNewComment}
-            setFile={setFile}
+            setNewCommentFile={setNewCommentFile}
+            newCommentFile={newCommentFile}
           />
 
           <button
@@ -152,7 +186,7 @@ function DetailIssue({ filterData, detailData, issueTitleAndId }) {
             selectOption={selectOption}
             filterData={filterData}
           />
-          <button className={styles.issueDelete}>
+          <button className={styles.issueDelete} onClick={handleDeleteIssue}>
             <div className={styles.deleteIcon} />
             <span className={styles.buttonTitle}>이슈 삭제</span>
           </button>

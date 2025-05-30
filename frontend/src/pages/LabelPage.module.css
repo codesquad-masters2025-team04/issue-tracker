@@ -1,0 +1,19 @@
+.labelPage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--neutral-surface-default);
+  border: 1px solid var(--neutral-border-default);
+  border-radius: var(--radius-large);
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.labelPageHeader {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  font: var(--display-bold16);
+  color: var(--neutral-text-default);
+}
