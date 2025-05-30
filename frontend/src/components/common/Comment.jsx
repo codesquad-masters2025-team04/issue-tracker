@@ -18,12 +18,11 @@ function Comment({
   content,
   createdAt,
   file,
-  setFile,
   setFetchTrigger,
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [tempComment, setTempComment] = useState(content);
-
+  const [editCommentFile, setEditCommentFile] = useState([]);
   const userId = 3;
   const renderedContent = DOMPurify.sanitize(
     marked(tempComment.replace(/\n/g, "  \n"))
@@ -35,21 +34,28 @@ function Comment({
       setIsEditMode(!isEditMode);
       return;
     }
-
+    const formData = new FormData();
     const updatedComment = {
       content: tempComment,
     };
 
+    formData.append(
+      "comment",
+      new Blob([JSON.stringify(updatedComment)], {
+        type: "application/json",
+      })
+    );
+
+    if (editCommentFile?.length)
+      editCommentFile.forEach((f) => formData.append("file", f));
+
     fetch(`${API_URL}/api/issues/comments/${commentId}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedComment),
+      body: formData,
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("댓글 수정 실패"); // 추후 에러 처리 페이지 구현 예정
+          throw new Error("댓글 수정 실패");
         }
         return res.json();
       })
@@ -127,17 +133,16 @@ function Comment({
           <CommentInput
             newComment={tempComment}
             setNewComment={setTempComment}
-            setFile={setFile}
-            file={file}
+            setEditCommentFile={setEditCommentFile}
+            editCommentFile={editCommentFile}
             isEditMode={isEditMode}
           />
         ) : (
-          <div
-            className={styles.commentBody}
-            dangerouslySetInnerHTML={{ __html: renderedContent }}
-          />
+          <div className={styles.commentBody}>
+            <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
+            {file && <img src={file} alt="첨부 파일" />}
+          </div>
         )}
-        {file && !isEditMode && <img src={file} alt="첨부 파일" />}
       </div>
       {isEditMode && (
         <div className={styles.editButtons}>

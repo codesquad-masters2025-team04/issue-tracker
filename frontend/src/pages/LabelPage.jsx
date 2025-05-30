@@ -41,6 +41,8 @@ function LabelPage({ labelCount, setLabelCount, addLabel, setAddLabel }) {
             labelColor={label.color}
             setAddLabel={setAddLabel}
             setLabelCount={setLabelCount}
+            reload={reload}
+            setReload={setReload}
           />
         ))}
       </div>
