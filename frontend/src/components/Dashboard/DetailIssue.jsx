@@ -28,7 +28,7 @@ function DetailIssue({
   const [isOpenIssue, setIsOpenIssue] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState(detailData.comments);
-  const [file, setFile] = useState([]);
+  const [newCommentFile, setNewCommentFile] = useState([]);
   const [fatchTrigger, setFetchTrigger] = useState(0);
   const [commentSize, setCommentSize] = useState(detailData.commentSize);
 
@@ -50,7 +50,7 @@ function DetailIssue({
     const newCommentData = {
       content: newComment,
       issueId: issueTitleAndId.id,
-      authorId: 3,
+      authorId: 1,
     };
 
     const formData = new FormData();
@@ -59,8 +59,8 @@ function DetailIssue({
       new Blob([JSON.stringify(newCommentData)], { type: "application/json" })
     );
 
-    if (file?.length) {
-      file.forEach((f) => formData.append("file", f));
+    if (newCommentFile) {
+      newCommentFile.forEach((f) => formData.append("file", f));
     }
 
     fetch(`${API_URL}/api/issues/comments`, {
@@ -72,7 +72,7 @@ function DetailIssue({
         console.log("서버 응답:", data);
         setFetchTrigger((prev) => prev + 1);
         setNewComment("");
-        setFile([]);
+        setNewCommentFile([]);
       })
       .catch((err) => console.error("에러:", err));
   };
@@ -144,7 +144,6 @@ function DetailIssue({
             content={detailData.content}
             createdAt={detailData.createdAt}
             file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
-            setFile={setFile}
             setFetchTrigger={setFetchTrigger}
           />
           {comments.map((comment) => (
@@ -158,7 +157,6 @@ function DetailIssue({
               content={comment.content}
               createdAt={comment.createdAt}
               file={comment.fileUrl ? comment.fileUrl : ""}
-              setFile={setFile}
               setFetchTrigger={setFetchTrigger}
             />
           ))}
@@ -166,8 +164,8 @@ function DetailIssue({
           <CommentInput
             newComment={newComment}
             setNewComment={setNewComment}
-            setFile={setFile}
-            file={file}
+            setNewCommentFile={setNewCommentFile}
+            newCommentFile={newCommentFile}
           />
 
           <button
