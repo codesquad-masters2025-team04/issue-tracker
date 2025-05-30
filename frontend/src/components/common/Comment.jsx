@@ -141,9 +141,10 @@ function Comment({
           <div
             className={styles.commentBody}
             dangerouslySetInnerHTML={{ __html: renderedContent }}
-          />
+          >
+            {file && <img src={file} alt="첨부 파일" />}
+          </div>
         )}
-        {file && !isEditMode && <img src={file} alt="첨부 파일" />}
       </div>
       {isEditMode && (
         <div className={styles.editButtons}>

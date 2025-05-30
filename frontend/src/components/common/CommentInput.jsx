@@ -9,6 +9,7 @@ function CommentInput({
   isEditMode,
   editCommentFile,
   setEditCommentFile,
+  file,
 }) {
   const fileInputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
