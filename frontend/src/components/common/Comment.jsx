@@ -138,10 +138,8 @@ function Comment({
             isEditMode={isEditMode}
           />
         ) : (
-          <div
-            className={styles.commentBody}
-            dangerouslySetInnerHTML={{ __html: renderedContent }}
-          >
+          <div className={styles.commentBody}>
+            <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
             {file && <img src={file} alt="첨부 파일" />}
           </div>
         )}
