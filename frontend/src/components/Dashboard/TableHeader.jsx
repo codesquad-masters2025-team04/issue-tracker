@@ -80,7 +80,7 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
             {activeFilter === name && (
               <PopupList
                 filterName={name}
-                actionLocation={"filterBar"}
+                actionLocation={"tableHeader"}
                 data={filterData?.[changeFilterName[name]] ?? []}
                 onSelect={(item) => handleOptionSelect(name, item)}
                 selectedItems={selectedFilters[name]}
