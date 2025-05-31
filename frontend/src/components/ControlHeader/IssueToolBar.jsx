@@ -1,3 +1,4 @@
+import FilterBar from "./FilterBar";
 import styles from "./IssueToolBar.module.css";
 import LabelAndMilestone from "./LabelAndMilestone";
 
@@ -22,6 +23,7 @@ function IssueToolBar({
   return (
     // TODO 버튼 재사용 컴포넌트로 분리 후 적용시킬 것
     <div className={styles.issueToolBar}>
+      <FilterBar />
       <div className={styles.issueActionsPanel}>
         <LabelAndMilestone
           labelCount={labelCount}
