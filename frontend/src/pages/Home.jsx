@@ -24,6 +24,7 @@ function Home() {
   const [addMilestone, setAddMilestone] = useState(false);
   const [labelCount, setLabelCount] = useState();
   const [milestoneCount, setMilestoneCount] = useState();
+  const [isOpen, setIsOpen] = useState("open");
 
   const fetchFilterData = async () => {
     Promise.all([
@@ -70,6 +71,8 @@ function Home() {
           setAddLabel={setAddLabel}
           addMilestone={addMilestone}
           setAddMilestone={setAddMilestone}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
         />
       ) : (
         ""
@@ -103,6 +106,8 @@ function Home() {
           setDetailIssue={setDetailIssue}
           setDetailData={setDetailData}
           setIssueTitleAndId={setIssueTitleAndId}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
         />
       )}
     </>

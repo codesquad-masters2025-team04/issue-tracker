@@ -11,8 +11,9 @@ function IssueTable({
   setDetailIssue,
   setDetailData,
   setIssueTitleAndId,
+  isOpen,
+  setIsOpen,
 }) {
-  const [isOpen, setIsOpen] = useState("open");
   const [issueCount, setIssueCount] = useState(0);
 
   useEffect(() => {

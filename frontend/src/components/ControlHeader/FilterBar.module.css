@@ -23,6 +23,8 @@
   gap: 8px;
   background-color: var(--neutral-surface-default);
   border-right: 1px solid var(--neutral-border-default);
+  border-top-left-radius: var(--radius-medium);
+  border-bottom-left-radius: var(--radius-medium);
 }
 
 .filterBarButtonText {
