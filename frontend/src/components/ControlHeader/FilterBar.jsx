@@ -1,6 +1,7 @@
-import PopupList from "../common/PopupList";
 import styles from "./FilterBar.module.css";
-import { useState } from "react";
+import PopupList from "../common/PopupList";
+import useFilterBox from "../../hooks/useFilterBox";
+
 const selectList = [
   { id: "open", title: "열린 이슈" },
   { id: "authorMe", title: "내가 작성한 이슈" },
@@ -10,23 +11,36 @@ const selectList = [
 ];
 
 function FilterBar() {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { selectedFilters, activeFilter, toggleFilter, selectOption } =
+    useFilterBox({
+      이슈: [],
+    });
+
+  const handleFilterButtonClick = () => {
+    toggleFilter("이슈");
+  };
+
+  const hanleOptionSelect = (item) => {
+    selectOption("이슈", item);
+  };
 
   return (
     <div className={styles.filterBarContainer}>
       <div className={styles.filterButtonWrapper}>
         <button
           className={styles.filterBarButton}
-          onClick={() => setDropdownOpen(!dropdownOpen)}
+          onClick={handleFilterButtonClick}
         >
           <div className={styles.filterBarButtonText}>필터</div>
           <div className={styles.filterBarButtonIcon} />
         </button>
-        {dropdownOpen && (
+        {activeFilter === "이슈" && (
           <PopupList
             filterName={"이슈"}
             actionLocation={"filterBar"}
             data={selectList}
+            selectedItems={selectedFilters["이슈"]}
+            onSelect={hanleOptionSelect}
           />
         )}
       </div>

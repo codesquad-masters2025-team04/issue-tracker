@@ -8,7 +8,7 @@ function PopupList({
   actionLocation,
   data,
   onSelect = () => {},
-  selectedItems = () => {},
+  selectedItems,
 }) {
   const positionClass =
     actionLocation === "tableHeader"
