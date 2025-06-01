@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./FilterBar.module.css";
 import PopupList from "../common/PopupList";
 import useFilterBox from "../../hooks/useFilterBox";
@@ -12,6 +12,7 @@ const selectList = [
 ];
 
 function FilterBar({ isOpen, setIsOpen }) {
+  const [inputParamValue, setInputParamValue] = useState("");
   const {
     selectedFilters,
     setSelectedFilters,
@@ -34,6 +35,10 @@ function FilterBar({ isOpen, setIsOpen }) {
           ? { id: "close", title: "닫힌 이슈" }
           : {},
     });
+
+    setInputParamValue(
+      isOpen === "open" ? "is:issue is:open" : "is:issue is:close"
+    );
   }, [isOpen]);
 
   const handleFilterButtonClick = () => {
@@ -76,6 +81,8 @@ function FilterBar({ isOpen, setIsOpen }) {
           className={styles.filterBarInput}
           type="text"
           placeholder="검색"
+          value={inputParamValue}
+          readOnly
         />
       </div>
     </div>
