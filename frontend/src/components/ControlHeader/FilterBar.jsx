@@ -11,7 +11,7 @@ const selectList = [
   { id: "close", title: "닫힌 이슈" },
 ];
 
-function FilterBar({ isOpen, setIsOpen }) {
+function FilterBar({ isOpen, setIsOpen, query }) {
   const [inputParamValue, setInputParamValue] = useState("");
   const {
     selectedFilters,
@@ -37,9 +37,9 @@ function FilterBar({ isOpen, setIsOpen }) {
     });
 
     setInputParamValue(
-      isOpen === "open" ? "is:issue is:open" : "is:issue is:close"
+      isOpen === "open" ? `is:issue ${query}` : `is:issue ${query}`
     );
-  }, [isOpen]);
+  }, [isOpen, query]);
 
   const handleFilterButtonClick = () => {
     toggleFilter("이슈");

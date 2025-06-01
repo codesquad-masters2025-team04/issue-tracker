@@ -16,6 +16,7 @@ function IssueToolBar({
   setAddMilestone,
   isOpen,
   setIsOpen,
+  query,
 }) {
   const handleAddClick = () => {
     if (addLabel === false) setAddLabel(true);
@@ -26,7 +27,7 @@ function IssueToolBar({
     // TODO 버튼 재사용 컴포넌트로 분리 후 적용시킬 것
     <div className={styles.issueToolBar}>
       {!isLabelPage && !isMilestonePage && (
-        <FilterBar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <FilterBar isOpen={isOpen} setIsOpen={setIsOpen} query={query} />
       )}
       <div className={styles.issueActionsPanel}>
         <LabelAndMilestone

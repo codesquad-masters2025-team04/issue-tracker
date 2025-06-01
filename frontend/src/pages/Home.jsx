@@ -87,6 +87,7 @@ function Home() {
           setAddMilestone={setAddMilestone}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
+          query={query}
         />
       ) : (
         ""
