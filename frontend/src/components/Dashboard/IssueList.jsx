@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../constants/link";
 import { getTimeAgo } from "../../utils/getTimeAgo";
 import { getTextColor } from "../../utils/colorUtils";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const getIssueIconByStatus = (status) => {
   // 이슈 상태에 따라 아이콘을 반환하는 함수
@@ -20,12 +21,20 @@ function IssueList({
   setIssueTitleAndId,
 }) {
   const [issues, setIssues] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    fetch(`${API_URL}/api/issues?q=state:${isOpen}`)
+    const queryParam = `state:${isOpen}`;
+
+    fetch(`${API_URL}/api/issues?q=${queryParam}`)
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
+
+        const params = new URLSearchParams(location.search);
+        params.set("q", queryParam);
+        navigate(`${location.pathname}?${params.toString()}`);
       })
       .catch((error) => {
         console.error("Error fetching issue data:", error);

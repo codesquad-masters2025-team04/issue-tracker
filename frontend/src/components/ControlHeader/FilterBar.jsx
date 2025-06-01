@@ -30,7 +30,9 @@ function FilterBar({ isOpen, setIsOpen }) {
       이슈:
         isOpen === "open"
           ? { id: "open", title: "열린 이슈" }
-          : { id: "close", title: "닫힌 이슈" },
+          : isOpen === "close"
+          ? { id: "close", title: "닫힌 이슈" }
+          : {},
     });
   }, [isOpen]);
 
