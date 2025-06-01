@@ -36,9 +36,7 @@ function FilterBar({ isOpen, setIsOpen, query }) {
           : {},
     });
 
-    setInputParamValue(
-      isOpen === "open" ? `is:issue ${query}` : `is:issue ${query}`
-    );
+    setInputParamValue(`is:issue ${query}`);
   }, [isOpen, query]);
 
   const handleFilterButtonClick = () => {

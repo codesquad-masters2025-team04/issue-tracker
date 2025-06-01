@@ -41,6 +41,7 @@ export default function useFilterBox(initialFilters) {
     selectedFilters,
     setSelectedFilters,
     activeFilter,
+    setActiveFilter,
     toggleFilter,
     selectOption,
   };
