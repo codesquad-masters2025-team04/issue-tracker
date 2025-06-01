@@ -13,6 +13,8 @@ function IssueTable({
   setIssueTitleAndId,
   isOpen,
   setIsOpen,
+  issues,
+  setIssues,
 }) {
   const [issueCount, setIssueCount] = useState(0);
 
@@ -35,6 +37,7 @@ function IssueTable({
           setIsOpen={setIsOpen}
           issueCount={issueCount}
           filterData={filterData}
+          setIssues={setIssues}
         />
       </div>
       <div className={styles.issueListContainer}>
@@ -43,6 +46,8 @@ function IssueTable({
           setDetailIssue={setDetailIssue}
           setDetailData={setDetailData}
           setIssueTitleAndId={setIssueTitleAndId}
+          issues={issues}
+          setIssues={setIssues}
         />
       </div>
     </div>

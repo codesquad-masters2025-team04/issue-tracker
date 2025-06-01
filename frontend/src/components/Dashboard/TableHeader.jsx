@@ -4,6 +4,8 @@ import FilterTabButton from "../common/FilterTabButton";
 import PopupList from "../common/PopupList";
 import useFilterBox from "../../hooks/useFilterBox";
 import { useRef, useEffect } from "react";
+import { API_URL } from "../../constants/link";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const changeFilterName = {
   담당자: "users",
@@ -19,7 +21,7 @@ const initialFilters = {
   작성자: [],
 };
 
-function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
+function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
   const {
     selectedFilters,
     activeFilter,
@@ -29,6 +31,7 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
   } = useFilterBox(initialFilters);
 
   const filterRef = useRef(null);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,6 +45,43 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const filterParams = [];
+
+    selectedFilters["담당자"].forEach((assignee) =>
+      filterParams.push(`assigneeId:${assignee.id}`)
+    );
+    selectedFilters["레이블"].forEach((label) =>
+      filterParams.push(`labelId:${label.id}`)
+    );
+    if (selectedFilters["마일스톤"]) {
+      filterParams.push(`milestoneId:${selectedFilters["마일스톤"].id}`);
+    }
+    if (selectedFilters["작성자"]) {
+      filterParams.push(`authorId:${selectedFilters["작성자"].id}`);
+    }
+
+    if (filterParams.length > 0) {
+      const appendParams = filterParams.join("+");
+      const currentParams = new URLSearchParams(searchParams.toString()).get(
+        "q"
+      );
+      const fullUrl = `q=${currentParams}+${appendParams}`;
+
+      fetch(`${API_URL}/api/issues?${fullUrl}`)
+        .then((response) => {
+          if (!response.ok) throw new Error("요청 실패");
+          return response.json();
+        })
+        .then((res) => {
+          setIssues(res.data.issues || []);
+        })
+        .catch((err) => console.error("필터 요청 실패:", err));
+    } else {
+      setIssues([]);
+    }
+  }, [selectedFilters]);
 
   return (
     <div className={styles.tableHeader}>

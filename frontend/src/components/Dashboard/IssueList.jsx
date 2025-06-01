@@ -6,7 +6,6 @@ import { getTextColor } from "../../utils/colorUtils";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const getIssueIconByStatus = (status) => {
-  // 이슈 상태에 따라 아이콘을 반환하는 함수
   if (status) {
     return <div className={styles.openIssueIcon}></div>;
   } else {
@@ -19,8 +18,9 @@ function IssueList({
   setDetailIssue,
   setDetailData,
   setIssueTitleAndId,
+  issues,
+  setIssues,
 }) {
-  const [issues, setIssues] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,62 +64,63 @@ function IssueList({
 
   return (
     <div className={styles.issueListContainer}>
-      {[...issues].map((issue) => (
-        <div className={styles.IssueContainer} key={issue.id}>
-          <div className={styles.mainInfo}>
-            <button className={styles.checkbox} />
-            <div className={styles.issueItem}>
-              <div className={styles.issueDetails}>
-                {getIssueIconByStatus(isOpen)}
-                <div
-                  className={styles.issueTitle}
-                  onClick={() =>
-                    handleClickIssueTitle(
-                      issue,
-                      setDetailIssue,
-                      setIssueTitleAndId
-                    )
-                  }
-                >
-                  {issue.title}
-                </div>
+      {Array.isArray(issues) &&
+        issues.map((issue) => (
+          <div className={styles.IssueContainer} key={issue.id}>
+            <div className={styles.mainInfo}>
+              <button className={styles.checkbox} />
+              <div className={styles.issueItem}>
+                <div className={styles.issueDetails}>
+                  {getIssueIconByStatus(isOpen)}
+                  <div
+                    className={styles.issueTitle}
+                    onClick={() =>
+                      handleClickIssueTitle(
+                        issue,
+                        setDetailIssue,
+                        setIssueTitleAndId
+                      )
+                    }
+                  >
+                    {issue.title}
+                  </div>
 
-                {issue.labels &&
-                  issue.labels.map((label) => (
-                    <div
-                      className={styles.issueLabel}
-                      key={label.id}
-                      style={{
-                        backgroundColor: label.color,
-                        color: getTextColor(label.color),
-                        marginRight: "4px",
-                      }}
-                    >
-                      {label.name}
-                    </div>
-                  ))}
-              </div>
-              <div className={styles.issueMetaInfo}>
-                <div>#{issue.id}</div>
-                <div>
-                  {getTimeAgo(issue.createdAt)}, {issue.author.nickname}
-                  {"님에 의해 작성되었습니다"}
+                  {issue.labels &&
+                    issue.labels.map((label) => (
+                      <div
+                        className={styles.issueLabel}
+                        key={label.id}
+                        style={{
+                          backgroundColor: label.color,
+                          color: getTextColor(label.color),
+                          marginRight: "4px",
+                        }}
+                      >
+                        {label.name}
+                      </div>
+                    ))}
                 </div>
-                <div className={styles.milestone}>
-                  {issue.milestone.title !== null && (
-                    <>
-                      <div className={styles.milestoneIcon} alt="milestone" />
-                      <div>{issue.milestone.title}</div>
-                    </>
-                  )}
+                <div className={styles.issueMetaInfo}>
+                  <div>#{issue.id}</div>
+                  <div>
+                    {getTimeAgo(issue.createdAt)}, {issue.author.nickname}
+                    {"님에 의해 작성되었습니다"}
+                  </div>
+                  <div className={styles.milestone}>
+                    {issue.milestone.title !== null && (
+                      <>
+                        <div className={styles.milestoneIcon} alt="milestone" />
+                        <div>{issue.milestone.title}</div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className={styles.userImage} />
-        </div>
-      ))}
+            <div className={styles.userImage} />
+          </div>
+        ))}
     </div>
   );
 }
