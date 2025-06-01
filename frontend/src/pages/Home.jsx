@@ -7,6 +7,7 @@ import { API_URL } from "../constants/link";
 import DetailIssue from "../components/Dashboard/DetailIssue";
 import LabelPage from "./LabelPage";
 import MilestonePage from "./MilestonePage"; //
+import { useSearchParams } from "react-router-dom";
 
 function Home() {
   const [writeIssue, setWriteIssue] = useState(false);
@@ -25,6 +26,19 @@ function Home() {
   const [labelCount, setLabelCount] = useState();
   const [milestoneCount, setMilestoneCount] = useState();
   const [isOpen, setIsOpen] = useState("open");
+  const [searchParam] = useSearchParams();
+
+  const query = searchParam.get("q");
+  // 주소창의 쿼리 값을 가져와서 isOpen의 상태를 open, close 로 변경
+  useEffect(() => {
+    if (query) {
+      if (query.includes("state:open")) {
+        setIsOpen("open");
+      } else if (query.includes("state:close")) {
+        setIsOpen("close");
+      }
+    }
+  }, [query]);
 
   const fetchFilterData = async () => {
     Promise.all([
