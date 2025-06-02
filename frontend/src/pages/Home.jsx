@@ -89,6 +89,7 @@ function Home() {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           query={query}
+          setIssues={setIssues}
         />
       ) : (
         ""

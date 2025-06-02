@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./FilterBar.module.css";
 import PopupList from "../common/PopupList";
 import useFilterBox from "../../hooks/useFilterBox";
+import { API_URL } from "../../constants/link";
 
 const selectList = [
   { id: "open", title: "열린 이슈" },
@@ -11,7 +12,7 @@ const selectList = [
   { id: "close", title: "닫힌 이슈" },
 ];
 
-function FilterBar({ isOpen, setIsOpen, query }) {
+function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
   const [inputParamValue, setInputParamValue] = useState("");
   const {
     selectedFilters,
@@ -25,6 +26,8 @@ function FilterBar({ isOpen, setIsOpen, query }) {
         ? { id: "open", title: "열린 이슈" }
         : { id: "close", title: "닫힌 이슈" },
   });
+
+  const userId = 1;
 
   useEffect(() => {
     setSelectedFilters({
@@ -43,13 +46,62 @@ function FilterBar({ isOpen, setIsOpen, query }) {
     toggleFilter("이슈");
   };
 
+  // 내가 작성한 이슈, 나에게 할당된 이슈, 내가 댓글을 남긴 이슈 fetch 요청 함수
+  const fetchIssuesAboutMe = (userId, selectedOptionId) => {
+    // selectedOption에 따라 다른 API 호출을 하기 위해 조건문 작성
+    let queryParamKey = "";
+    if (selectedOptionId === "authorMe") queryParamKey = "authorId";
+    else if (selectedOptionId === "assigneeMe") queryParamKey = "assigneeId";
+    else if (selectedOptionId === "commentMe")
+      queryParamKey = "commentAuthorId";
+
+    // fetch 요청 로직
+    fetch(`${API_URL}/api/issues?q=state:${isOpen}+${queryParamKey}:${userId}`)
+      .then((response) => response.json())
+      .then((res) => {
+        setIssues(res.data.issues || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const fetchIssueByState = (state) => {
+    fetch(`${API_URL}/api/issues?q=state:${state}`)
+      .then((response) => response.json())
+      .then((res) => {
+        setIssues(res.data.issues || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  // 모든 이슈 fetch 요청 함수
+  const fetchIssueAll = () => {
+    fetch(`${API_URL}/api/issues`)
+      .then((response) => response.json())
+      .then((res) => {
+        setIssues(res.data.issues || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   const handleOptionSelect = (item) => {
     selectOption("이슈", item);
     if (item.id === "open") {
-      setIsOpen("open");
-    } else {
-      setIsOpen("close");
-    }
+      isOpen !== "open" ? setIsOpen("open") : fetchIssueByState("open");
+    } else if (item.id === "close") {
+      isOpen !== "close" ? setIsOpen("close") : fetchIssueByState("close");
+    } else if (
+      item.id === "authorMe" ||
+      item.id === "assigneeMe" ||
+      item.id === "commentMe"
+    )
+      fetchIssuesAboutMe(userId, item.id);
+    // TODO 모든 필털가 적용되지 않았을 경우 모든 이슈 목록을 가져오는 조건 추가할 것
     toggleFilter("이슈");
   };
 

@@ -14,7 +14,12 @@ export default function useFilterBox(initialFilters) {
   // 필터 항목 선택 시 필터 상태 업데이트 함수
   const selectOption = (filter, item) => {
     setSelectedFilters((prev) => {
-      if (filter === "마일스톤" || filter === "이슈" || filter === "작성자") {
+      if (
+        filter === "마일스톤" ||
+        filter === "이슈" ||
+        filter === "담당자" ||
+        filter === "작성자"
+      ) {
         return {
           ...prev,
           [filter]: prev[filter]?.id === item.id ? null : item,
