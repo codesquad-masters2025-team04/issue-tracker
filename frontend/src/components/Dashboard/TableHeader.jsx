@@ -46,6 +46,8 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
     };
   }, []);
 
+  // 오류 발견 : 레이블은 선택했다가 취소하면 이전 필터로 돌아가는데 담당자, 작성자는 안돌아감
+
   useEffect(() => {
     const filterParams = [];
 
@@ -79,7 +81,13 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
         })
         .catch((err) => console.error("필터 요청 실패:", err));
     } else {
-      setIssues([]);
+      // 다른 필터는 잘 작동하지만 담당자, 작성자를 선택하고 취소하면 담당자와 작성자가 없는 이슈가 나옴
+      // 따라서 filterParams가 비어있을 때, isOpen에 따라 요청을 보내도록 수정
+      // TODO 이 요청은 중복되는 요청이기에 추후 fetch 코드 분리 및 최적화 필요
+      fetch(`${API_URL}/api/issues?q=state:${isOpen}`)
+        .then((response) => response.json())
+        .then((res) => setIssues(res.data.issues || []))
+        .catch((err) => console.error("필터 요청 실패:", err));
     }
   }, [selectedFilters]);
 
