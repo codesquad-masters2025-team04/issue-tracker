@@ -30,6 +30,18 @@ function IssueTable({
       });
   }, []);
 
+  const handlePageChange = (index) => {
+    fetch(`${API_URL}/api/issues?q=state:${isOpen}&page=${index - 1}&size=10`)
+      .then((res) => res.json())
+      .then((res) => {
+        setIssues(res.data.issues);
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
+      })
+      .catch((error) => {
+        console.error("Error fetching issue data:", error);
+      });
+  };
+
   return (
     <div className={styles.issueTableContainer}>
       <div className={styles.tableHeader}>
@@ -61,6 +73,7 @@ function IssueTable({
               className={`${styles.pagenationButton} ${
                 pageData.page + 1 === index + 1 && styles.active
               }`}
+              onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}
             </button>
