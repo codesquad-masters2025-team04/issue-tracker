@@ -46,14 +46,12 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
     };
   }, []);
 
-  // 오류 발견 : 레이블은 선택했다가 취소하면 이전 필터로 돌아가는데 담당자, 작성자는 안돌아감
-
   useEffect(() => {
     const filterParams = [];
 
-    selectedFilters["담당자"].forEach((assignee) =>
-      filterParams.push(`assigneeId:${assignee.id}`)
-    );
+    if (selectedFilters["담당자"]) {
+      filterParams.push(`assigneeId:${selectedFilters["담당자"].id}`);
+    }
     selectedFilters["레이블"].forEach((label) =>
       filterParams.push(`labelId:${label.id}`)
     );
@@ -71,7 +69,7 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
       );
       const fullUrl = `q=${currentParams}+${appendParams}`;
 
-      fetch(`${API_URL}/api/issues?${fullUrl}`)
+      fetch(`${API_URL}/api/issues?${fullUrl}&page=0&size=10`)
         .then((response) => {
           if (!response.ok) throw new Error("요청 실패");
           return response.json();

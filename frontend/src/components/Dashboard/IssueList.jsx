@@ -20,6 +20,7 @@ function IssueList({
   setIssueTitleAndId,
   issues,
   setIssues,
+  setPageData,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,10 +28,11 @@ function IssueList({
   useEffect(() => {
     const queryParam = `state:${isOpen}`;
 
-    fetch(`${API_URL}/api/issues?q=${queryParam}`)
+    fetch(`${API_URL}/api/issues?q=${queryParam}&page=0&size=10`)
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
 
         const params = new URLSearchParams(location.search);
         params.set("q", queryParam);

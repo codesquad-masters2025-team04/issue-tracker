@@ -56,7 +56,9 @@ function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
       queryParamKey = "commentAuthorId";
 
     // fetch 요청 로직
-    fetch(`${API_URL}/api/issues?q=state:${isOpen}+${queryParamKey}:${userId}`)
+    fetch(
+      `${API_URL}/api/issues?q=state:${isOpen}+${queryParamKey}:${userId}&page=0&size=10`
+    )
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
@@ -67,7 +69,7 @@ function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
   };
 
   const fetchIssueByState = (state) => {
-    fetch(`${API_URL}/api/issues?q=state:${state}`)
+    fetch(`${API_URL}/api/issues?q=state:${state}&page=0&size=10`)
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);

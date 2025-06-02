@@ -17,6 +17,7 @@ function IssueTable({
   setIssues,
 }) {
   const [issueCount, setIssueCount] = useState(0);
+  const [pageData, setPageData] = useState({});
 
   useEffect(() => {
     fetch(`${API_URL}/api/issues/count`)
@@ -48,7 +49,22 @@ function IssueTable({
           setIssueTitleAndId={setIssueTitleAndId}
           issues={issues}
           setIssues={setIssues}
+          setPageData={setPageData}
         />
+      </div>
+      <div className={styles.pagenationContainer}>
+        {Array(pageData.totalPages)
+          .fill()
+          .map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.pagenationButton} ${
+                pageData.page + 1 === index + 1 && styles.active
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
       </div>
     </div>
   );
