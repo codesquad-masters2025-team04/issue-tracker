@@ -15,7 +15,7 @@ const changeFilterName = {
 };
 
 const initialFilters = {
-  담당자: null,
+  담당자: [],
   레이블: [],
   마일스톤: null,
   작성자: null,
@@ -58,8 +58,10 @@ function TableHeader({
   const buildQueryString = () => {
     const filterParams = [];
 
-    if (selectedFilters["담당자"])
-      filterParams.push(`assigneeId:${selectedFilters["담당자"].id}`);
+    selectedFilters["담당자"].forEach((assignee) =>
+      filterParams.push(`assigneeId:${assignee.id}`)
+    );
+
     selectedFilters["레이블"].forEach((label) =>
       filterParams.push(`labelId:${label.id}`)
     );
