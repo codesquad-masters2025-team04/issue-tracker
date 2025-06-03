@@ -117,11 +117,9 @@ function FilterBar({
     const result = selectOption("이슈", item);
 
     if (!result) {
-      // 열린 이슈일 경우 에는 필터링이 해제 되면 열린 이슈 리스트를 다시 불러옴
-      // 닫힌 이슈일 경우 에는 필터링이 해제 되면 닫힌 이슈 리스트를 다시 불러옴
-      if (isOpen === "open") fetchIssueByState("open");
-      else fetchIssueByState("close");
-
+      // 필터 적용 후 적용된 필터 해지시 open 이슈로 변경
+      if (isOpen === "close") setIsOpen("open");
+      fetchIssueByState("open");
       toggleFilter("이슈");
       return;
     }
