@@ -19,9 +19,9 @@ function IssueTable({
   setIssueCount,
   pageData,
   setPageData,
+  queryString,
+  setQueryString,
 }) {
-  const [queryString, setQueryString] = useState("state:open");
-
   useEffect(() => {
     setQueryString(`state:${isOpen}`);
   }, [isOpen]);

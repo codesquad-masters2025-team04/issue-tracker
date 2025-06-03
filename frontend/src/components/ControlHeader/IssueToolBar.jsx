@@ -20,6 +20,7 @@ function IssueToolBar({
   setIssues,
   setIssueCount,
   setPageData,
+  setQueryString,
 }) {
   const handleAddClick = () => {
     if (addLabel === false) setAddLabel(true);
@@ -37,6 +38,7 @@ function IssueToolBar({
           setIssues={setIssues}
           setIssueCount={setIssueCount}
           setPageData={setPageData}
+          setQueryString={setQueryString}
         />
       )}
       <div className={styles.issueActionsPanel}>

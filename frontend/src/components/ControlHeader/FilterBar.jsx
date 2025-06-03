@@ -19,6 +19,7 @@ function FilterBar({
   setIssues,
   setIssueCount,
   setPageData,
+  setQueryString,
 }) {
   const [inputParamValue, setInputParamValue] = useState("");
   const {
@@ -62,6 +63,7 @@ function FilterBar({
     else if (selectedOptionId === "commentMe")
       queryParamKey = "commentAuthorId";
 
+    setQueryString(`state:${isOpen}+${queryParamKey}:${userId}`);
     // fetch 요청 로직
     fetch(
       `${API_URL}/api/issues?q=state:${isOpen}+${queryParamKey}:${userId}&page=0&size=10`
@@ -81,6 +83,8 @@ function FilterBar({
   };
 
   const fetchIssueByState = (state) => {
+    setQueryString(`state:${state}`);
+
     fetch(`${API_URL}/api/issues?q=state:${state}&page=0&size=10`)
       .then((response) => response.json())
       .then((res) => {
