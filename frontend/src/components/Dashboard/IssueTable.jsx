@@ -15,26 +15,26 @@ function IssueTable({
   setIsOpen,
   issues,
   setIssues,
+  issueCount,
+  setIssueCount,
+  pageData,
+  setPageData,
 }) {
-  const [issueCount, setIssueCount] = useState(0);
-  const [pageData, setPageData] = useState({});
+  const [queryString, setQueryString] = useState("state:open");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/issues/count`)
-      .then((response) => response.json())
-      .then((res) => {
-        setIssueCount(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching issue count data:", error);
-      });
-  }, []);
+    setQueryString(`state:${isOpen}`);
+  }, [isOpen]);
 
   const handlePageChange = (index) => {
-    fetch(`${API_URL}/api/issues?q=state:${isOpen}&page=${index - 1}&size=10`)
+    fetch(`${API_URL}/api/issues?q=${queryString}&page=${index - 1}&size=10`)
       .then((res) => res.json())
       .then((res) => {
         setIssues(res.data.issues);
+        setIssueCount({
+          openCount: res.data.openCount,
+          closeCount: res.data.closeCount,
+        });
         setPageData({ page: res.data.page, totalPages: res.data.totalPages });
       })
       .catch((error) => {
@@ -43,26 +43,31 @@ function IssueTable({
   };
 
   return (
-    <div className={styles.issueTableContainer}>
-      <div className={styles.tableHeader}>
-        <TableHeader
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          issueCount={issueCount}
-          filterData={filterData}
-          setIssues={setIssues}
-        />
-      </div>
-      <div className={styles.issueListContainer}>
-        <IssueList
-          isOpen={isOpen}
-          setDetailIssue={setDetailIssue}
-          setDetailData={setDetailData}
-          setIssueTitleAndId={setIssueTitleAndId}
-          issues={issues}
-          setIssues={setIssues}
-          setPageData={setPageData}
-        />
+    <>
+      <div className={styles.issueTableContainer}>
+        <div className={styles.tableHeader}>
+          <TableHeader
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            issueCount={issueCount}
+            filterData={filterData}
+            setIssues={setIssues}
+            setIssueCount={setIssueCount}
+            setPageData={setPageData}
+            setQueryString={setQueryString}
+          />
+        </div>
+        <div className={styles.issueListContainer}>
+          <IssueList
+            isOpen={isOpen}
+            setDetailIssue={setDetailIssue}
+            setDetailData={setDetailData}
+            setIssueTitleAndId={setIssueTitleAndId}
+            issues={issues}
+            setIssues={setIssues}
+            setPageData={setPageData}
+          />
+        </div>
       </div>
       <div className={styles.pagenationContainer}>
         {Array(pageData.totalPages)
@@ -79,7 +84,7 @@ function IssueTable({
             </button>
           ))}
       </div>
-    </div>
+    </>
   );
 }
 

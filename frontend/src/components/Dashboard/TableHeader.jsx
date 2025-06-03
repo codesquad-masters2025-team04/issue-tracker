@@ -15,13 +15,22 @@ const changeFilterName = {
 };
 
 const initialFilters = {
-  담당자: [],
+  담당자: null,
   레이블: [],
   마일스톤: null,
-  작성자: [],
+  작성자: null,
 };
 
-function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
+function TableHeader({
+  isOpen,
+  setIsOpen,
+  issueCount,
+  filterData,
+  setIssues,
+  setIssueCount,
+  setPageData,
+  setQueryString,
+}) {
   const {
     selectedFilters,
     activeFilter,
@@ -46,47 +55,39 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
     };
   }, []);
 
-  useEffect(() => {
+  const buildQueryString = () => {
     const filterParams = [];
 
-    if (selectedFilters["담당자"]) {
+    if (selectedFilters["담당자"])
       filterParams.push(`assigneeId:${selectedFilters["담당자"].id}`);
-    }
     selectedFilters["레이블"].forEach((label) =>
       filterParams.push(`labelId:${label.id}`)
     );
-    if (selectedFilters["마일스톤"]) {
+    if (selectedFilters["마일스톤"])
       filterParams.push(`milestoneId:${selectedFilters["마일스톤"].id}`);
-    }
-    if (selectedFilters["작성자"]) {
+    if (selectedFilters["작성자"])
       filterParams.push(`authorId:${selectedFilters["작성자"].id}`);
-    }
 
-    if (filterParams.length > 0) {
-      const appendParams = filterParams.join("+");
-      const currentParams = new URLSearchParams(searchParams.toString()).get(
-        "q"
-      );
-      const fullUrl = `q=${currentParams}+${appendParams}`;
+    return (
+      `state:${isOpen}` +
+      (filterParams.length > 0 ? "+" + filterParams.join("+") : "")
+    );
+  };
 
-      fetch(`${API_URL}/api/issues?${fullUrl}&page=0&size=10`)
-        .then((response) => {
-          if (!response.ok) throw new Error("요청 실패");
-          return response.json();
-        })
-        .then((res) => {
-          setIssues(res.data.issues || []);
-        })
-        .catch((err) => console.error("필터 요청 실패:", err));
-    } else {
-      // 다른 필터는 잘 작동하지만 담당자, 작성자를 선택하고 취소하면 담당자와 작성자가 없는 이슈가 나옴
-      // 따라서 filterParams가 비어있을 때, isOpen에 따라 요청을 보내도록 수정
-      // TODO 이 요청은 중복되는 요청이기에 추후 fetch 코드 분리 및 최적화 필요
-      fetch(`${API_URL}/api/issues?q=state:${isOpen}`)
-        .then((response) => response.json())
-        .then((res) => setIssues(res.data.issues || []))
-        .catch((err) => console.error("필터 요청 실패:", err));
-    }
+  useEffect(() => {
+    const q = buildQueryString();
+    setQueryString(q);
+
+    fetch(`${API_URL}/api/issues?q=${q}&page=0&size=10`)
+      .then((res) => res.json())
+      .then((res) => {
+        setIssues(res.data.issues);
+        setIssueCount({
+          openCount: res.data.openCount,
+          closeCount: res.data.closeCount,
+        });
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
+      });
   }, [selectedFilters]);
 
   return (
@@ -105,7 +106,7 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData, setIssues }) {
             isActive={isOpen === "close"}
             onClick={() => setIsOpen("close")}
             iconClassName="closedIssueIcon"
-            issueName={`닫힌 이슈(${issueCount.closedCount})`}
+            issueName={`닫힌 이슈(${issueCount.closeCount})`}
           />
         </div>
       </div>

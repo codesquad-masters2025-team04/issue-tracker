@@ -12,7 +12,14 @@ const selectList = [
   { id: "close", title: "닫힌 이슈" },
 ];
 
-function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
+function FilterBar({
+  isOpen,
+  setIsOpen,
+  query,
+  setIssues,
+  setIssueCount,
+  setPageData,
+}) {
   const [inputParamValue, setInputParamValue] = useState("");
   const {
     selectedFilters,
@@ -62,6 +69,11 @@ function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
+        setIssueCount({
+          openCount: res.data.openCount,
+          closeCount: res.data.closeCount,
+        });
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -73,6 +85,11 @@ function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
       .then((response) => response.json())
       .then((res) => {
         setIssues(res.data.issues || []);
+        setIssueCount({
+          openCount: res.data.openCount,
+          closeCount: res.data.closeCount,
+        });
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -80,30 +97,46 @@ function FilterBar({ isOpen, setIsOpen, query, setIssues }) {
   };
 
   // 모든 이슈 fetch 요청 함수
-  const fetchIssueAll = () => {
-    fetch(`${API_URL}/api/issues`)
-      .then((response) => response.json())
-      .then((res) => {
-        setIssues(res.data.issues || []);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+  // const fetchIssueAll = () => {
+  //   fetch(`${API_URL}/api/issues?q=state:${isOpen}&page=0&size=10`)
+  //     .then((response) => response.json())
+  //     .then((res) => {
+  //       setIssues(res.data.issues || []);
+  //       setIssueCount({
+  //         openCount: res.data.openCount,
+  //         closeCount: res.data.closeCount,
+  //       });
+  //       setPageData({ page: res.data.page, totalPages: res.data.totalPages });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // };
 
   const handleOptionSelect = (item) => {
-    selectOption("이슈", item);
-    if (item.id === "open") {
+    const result = selectOption("이슈", item);
+
+    if (!result) {
+      // 열린 이슈일 경우 에는 필터링이 해제 되면 열린 이슈 리스트를 다시 불러옴
+      // 닫힌 이슈일 경우 에는 필터링이 해제 되면 닫힌 이슈 리스트를 다시 불러옴
+      if (isOpen === "open") fetchIssueByState("open");
+      else fetchIssueByState("close");
+
+      toggleFilter("이슈");
+      return;
+    }
+    if (result.id === "open") {
       isOpen !== "open" ? setIsOpen("open") : fetchIssueByState("open");
-    } else if (item.id === "close") {
+    } else if (result.id === "close") {
       isOpen !== "close" ? setIsOpen("close") : fetchIssueByState("close");
     } else if (
-      item.id === "authorMe" ||
-      item.id === "assigneeMe" ||
-      item.id === "commentMe"
-    )
-      fetchIssuesAboutMe(userId, item.id);
-    // TODO 모든 필털가 적용되지 않았을 경우 모든 이슈 목록을 가져오는 조건 추가할 것
+      result.id === "authorMe" ||
+      result.id === "assigneeMe" ||
+      result.id === "commentMe"
+    ) {
+      fetchIssuesAboutMe(userId, result.id);
+    }
+
     toggleFilter("이슈");
   };
 

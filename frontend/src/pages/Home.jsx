@@ -28,6 +28,8 @@ function Home() {
   const [isOpen, setIsOpen] = useState("open");
   const [searchParam] = useSearchParams();
   const [issues, setIssues] = useState([]);
+  const [issueCount, setIssueCount] = useState({});
+  const [pageData, setPageData] = useState({});
 
   const query = searchParam.get("q");
   // 주소창의 쿼리 값을 가져와서 isOpen의 상태를 open, close 로 변경
@@ -90,6 +92,8 @@ function Home() {
           setIsOpen={setIsOpen}
           query={query}
           setIssues={setIssues}
+          setIssueCount={setIssueCount}
+          setPageData={setPageData}
         />
       ) : (
         ""
@@ -127,6 +131,10 @@ function Home() {
           setIsOpen={setIsOpen}
           issues={issues}
           setIssues={setIssues}
+          issueCount={issueCount}
+          setIssueCount={setIssueCount}
+          pageData={pageData}
+          setPageData={setPageData}
         />
       )}
     </>
