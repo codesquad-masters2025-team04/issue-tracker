@@ -21,8 +21,9 @@ function IssueTable({
   setPageData,
   queryString,
   setQueryString,
+  pageGroup,
+  setPageGroup,
 }) {
-  const [pageGroup, setPageGroup] = useState(0);
   const PAGE_GROUP_SIZE = 5;
 
   useEffect(() => {

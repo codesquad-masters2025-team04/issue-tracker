@@ -31,6 +31,7 @@ function Home() {
   const [issueCount, setIssueCount] = useState({});
   const [pageData, setPageData] = useState({});
   const [queryString, setQueryString] = useState("state:open");
+  const [pageGroup, setPageGroup] = useState(0);
 
   const query = searchParam.get("q");
   // 주소창의 쿼리 값을 가져와서 isOpen의 상태를 open, close 로 변경
@@ -75,6 +76,9 @@ function Home() {
         setDetailIssue={setDetailIssue}
         setIsLabelPage={setIsLabelPage}
         setIsMilestonePage={setIsMilestonePage}
+        setIssues={setIssues}
+        setPageData={setPageData}
+        setPageGroup={setPageGroup}
       />
       {!writeIssue && !detailIssue ? (
         <IssueToolBar
@@ -139,6 +143,8 @@ function Home() {
           setPageData={setPageData}
           queryString={queryString}
           setQueryString={setQueryString}
+          pageGroup={pageGroup}
+          setPageGroup={setPageGroup}
         />
       )}
     </>
