@@ -123,6 +123,11 @@ function IssueList({
             <div className={styles.userImage} />
           </div>
         ))}
+      {issues.length === 0 && (
+        <div className={`${styles.IssueContainer} ${styles.noIssue}`}>
+          등록된 이슈가 없습니다.
+        </div>
+      )}
     </div>
   );
 }
