@@ -22,6 +22,9 @@ function IssueTable({
   queryString,
   setQueryString,
 }) {
+  const [pageGroup, setPageGroup] = useState(0);
+  const PAGE_GROUP_SIZE = 5;
+
   useEffect(() => {
     setQueryString(`state:${isOpen}`);
   }, [isOpen]);
@@ -70,19 +73,49 @@ function IssueTable({
         </div>
       </div>
       <div className={styles.pagenationContainer}>
-        {Array(pageData.totalPages)
+        {pageGroup > 0 && (
+          <button
+            className={styles.arrowButton}
+            onClick={() => {
+              const newGroup = pageGroup - 1;
+              const newPage = (newGroup + 1) * PAGE_GROUP_SIZE;
+              setPageGroup(newGroup);
+              handlePageChange(newPage);
+            }}
+          >
+            &lt;
+          </button>
+        )}
+        {Array(PAGE_GROUP_SIZE)
           .fill()
-          .map((_, index) => (
-            <button
-              key={index}
-              className={`${styles.pagenationButton} ${
-                pageData.page + 1 === index + 1 && styles.active
-              }`}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
+          .map((_, index) => {
+            const pageNumber = pageGroup * PAGE_GROUP_SIZE + index + 1;
+            if (pageNumber > pageData.totalPages) return null;
+            return (
+              <button
+                key={pageNumber}
+                className={`${styles.pagenationButton} ${
+                  pageData.page + 1 === pageNumber ? styles.active : ""
+                }`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+        {(pageGroup + 1) * PAGE_GROUP_SIZE < pageData.totalPages && (
+          <button
+            className={styles.arrowButton}
+            onClick={() => {
+              const nextGroup = pageGroup + 1;
+              setPageGroup(nextGroup);
+              const nextPage = nextGroup * PAGE_GROUP_SIZE + 1;
+              handlePageChange(nextPage);
+            }}
+          >
+            &gt;
+          </button>
+        )}
       </div>
     </>
   );
