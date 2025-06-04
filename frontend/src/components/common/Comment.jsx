@@ -19,14 +19,13 @@ function Comment({
   createdAt,
   file,
   setFetchTrigger,
+  isIssue = false,
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [tempComment, setTempComment] = useState(content);
   const [editCommentFile, setEditCommentFile] = useState([]);
-  // const userId = 3;
-  const renderedContent = DOMPurify.sanitize(
-    marked(tempComment.replace(/\n/g, "  \n"))
-  );
+
+  const renderedContent = DOMPurify.sanitize(`<pre>${tempComment}</pre>`);
 
   // TODO 추후 서버 연결 완료 후 주석 제거 예정
   const handleSaveComment = () => {
@@ -35,37 +34,49 @@ function Comment({
       return;
     }
     const formData = new FormData();
-    const updatedComment = {
-      content: tempComment,
-    };
 
-    formData.append(
-      "comment",
-      new Blob([JSON.stringify(updatedComment)], {
-        type: "application/json",
-      })
-    );
+    if (isIssue) {
+      const updatedIssue = { content: tempComment };
+      formData.append(
+        "issue",
+        new Blob([JSON.stringify(updatedIssue)], {
+          type: "application/json",
+        })
+      );
+    } else {
+      const updatedComment = { content: tempComment };
+      formData.append(
+        "comment",
+        new Blob([JSON.stringify(updatedComment)], {
+          type: "application/json",
+        })
+      );
+    }
 
     if (editCommentFile?.length)
       editCommentFile.forEach((f) => formData.append("file", f));
 
-    fetch(`${API_URL}/api/issues/comments/${commentId}`, {
+    const url = isIssue
+      ? `${API_URL}/api/issues/${issueId}` // 이슈 수정
+      : `${API_URL}/api/issues/comments/${commentId}`; // 댓글 수정
+
+    fetch(url, {
       method: "PATCH",
       body: formData,
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("댓글 수정 실패");
+          throw new Error(isIssue ? "이슈 수정 실패" : "댓글 수정 실패");
         }
         return res.json();
       })
       .then((data) => {
-        console.log("댓글 수정 성공:", data);
+        console.log(isIssue ? "이슈 수정 성공:" : "댓글 수정 성공:", data);
         setIsEditMode(false);
         setFetchTrigger((prev) => prev + 1);
       })
       .catch((err) => {
-        console.error("댓글 수정 중 오류 발생:", err);
+        console.error("수정 중 오류 발생:", err);
       });
   };
 

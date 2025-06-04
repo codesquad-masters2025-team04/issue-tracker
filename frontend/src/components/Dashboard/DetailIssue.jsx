@@ -14,15 +14,21 @@ function DetailIssue({
   detailData,
   issueTitleAndId,
   setDetailIssue,
+  detailIssue,
 }) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
   // labels, milestone은 적용 완료 => assignee 추후 적용 예정
-  const { selectedFilters, activeFilter, toggleFilter, selectOption } =
-    useFilterBox({
-      담당자: [],
-      레이블: issueTitleAndId.labels || [],
-      마일스톤: issueTitleAndId.milestone || null,
-    });
+  const {
+    selectedFilters,
+    activeFilter,
+    setActiveFilter,
+    toggleFilter,
+    selectOption,
+  } = useFilterBox({
+    담당자: issueTitleAndId.assignees || [],
+    레이블: issueTitleAndId.labels || [],
+    마일스톤: issueTitleAndId.milestone || null,
+  });
   const [editIssueTitle, setEditIssueTitle] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issueTitleAndId.title);
   const [isOpenIssue, setIsOpenIssue] = useState(true);
@@ -137,6 +143,8 @@ function DetailIssue({
       <div className={styles.commentsAreaAndFilterBox}>
         <div className={styles.commentsArea}>
           <Comment
+            isIssue={true}
+            issueId={issueTitleAndId.id}
             commentId={issueTitleAndId.id}
             authorInfo={issueTitleAndId}
             issueAuthorId={issueTitleAndId.authorId}
@@ -146,7 +154,7 @@ function DetailIssue({
             file={detailData.contentFileUrl ? detailData.contentFileUrl : ""}
             setFetchTrigger={setFetchTrigger}
           />
-          {comments.map((comment) => (
+          {comments?.map((comment) => (
             <Comment
               key={comment.commentId}
               commentId={comment.commentId}
@@ -185,6 +193,9 @@ function DetailIssue({
             toggleFilter={toggleFilter}
             selectOption={selectOption}
             filterData={filterData}
+            setActiveFilter={setActiveFilter}
+            issueId={issueTitleAndId.id}
+            detailIssue={detailIssue}
           />
           <button className={styles.issueDelete} onClick={handleDeleteIssue}>
             <div className={styles.deleteIcon} />

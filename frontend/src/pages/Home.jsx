@@ -112,6 +112,7 @@ function Home() {
           detailData={detailData}
           issueTitleAndId={issueTitleAndId}
           setDetailIssue={setDetailIssue}
+          detailIssue={detailIssue}
         />
       ) : isLabelPage ? (
         <LabelPage

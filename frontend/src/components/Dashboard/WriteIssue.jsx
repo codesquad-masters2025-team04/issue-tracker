@@ -10,7 +10,7 @@ const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
     title,
     content,
     authorId: 1,
-    assigneeIds: selectedFilters["담당자"]?.id || null,
+    assigneeIds: selectedFilters["담당자"].map((item) => item.id),
     labelIds: selectedFilters["레이블"].map((item) => item.id),
     milestoneId: selectedFilters["마일스톤"]?.id || null,
   };
@@ -47,12 +47,17 @@ function WriteIssue({ setWriteIssue, filterData }) {
   }); // 에러 표시용 상태
 
   // 커스텀 훅으로 필터 상태 및 함수 추출
-  const { selectedFilters, activeFilter, toggleFilter, selectOption } =
-    useFilterBox({
-      담당자: [],
-      레이블: [],
-      마일스톤: null,
-    });
+  const {
+    selectedFilters,
+    activeFilter,
+    toggleFilter,
+    selectOption,
+    setActiveFilter,
+  } = useFilterBox({
+    담당자: [],
+    레이블: [],
+    마일스톤: null,
+  });
 
   // 첨부파일 변경 핸들러
   const handleFileChange = (e) => {
@@ -122,6 +127,7 @@ function WriteIssue({ setWriteIssue, filterData }) {
           toggleFilter={toggleFilter}
           selectOption={selectOption}
           filterData={filterData}
+          setActiveFilter={setActiveFilter}
         />
       </div>
 

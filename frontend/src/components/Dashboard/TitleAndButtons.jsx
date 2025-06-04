@@ -1,3 +1,4 @@
+import { API_URL } from "../../constants/link";
 import styles from "./TitleAndButtons.module.css";
 
 function TitleAndButtons({
@@ -23,7 +24,29 @@ function TitleAndButtons({
         </button>
         <button
           className={styles.outLineS}
-          onClick={() => setIsOpenIssue(!isOpenIssue)} // TODO 추후 fetch요청 추가 예정
+          onClick={() => {
+            setIsOpenIssue(!isOpenIssue);
+            const formData = new FormData();
+            const issueStatus = { isOpen: isOpenIssue ? "false" : "true" };
+            formData.append(
+              "issue",
+              new Blob([JSON.stringify(issueStatus)], {
+                type: "application/json",
+              })
+            );
+
+            fetch(`${API_URL}/api/issues/${issueId}`, {
+              method: "PATCH",
+              body: formData,
+            })
+              .then((response) => response.json())
+              .then((res) => {
+                console.log("서버 응답:", res);
+              })
+              .catch((err) => {
+                console.error("에러:", err);
+              });
+          }}
         >
           <div
             className={
