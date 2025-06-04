@@ -1,0 +1,75 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 90vh;
+}
+
+.logo {
+  width: 342px;
+  height: 72px;
+  background-image: url("../assets/images/logoLarge.svg");
+}
+
+.githubLogin {
+  margin-top: 64px;
+  width: 320px;
+  height: 56px;
+  border: 1px solid var(--brand-border-default);
+  border-radius: var(--radius-large);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-text-weak);
+  font: var(--available-medium20);
+}
+
+.or {
+  margin-top: 14px;
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+}
+
+.inputContainer {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 320px;
+  gap: 16px;
+}
+
+.input {
+  width: 100%;
+  height: 56px;
+  background-color: var(--neutral-surface-bold);
+  border-radius: var(--radius-large);
+  display: flex;
+  align-items: center;
+}
+
+.inputText {
+  width: 100%;
+  padding: 16px;
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+}
+
+.submitButton {
+  width: 100%;
+  height: 56px;
+  background-color: var(--brand-surface-default);
+  font: var(--available-medium20);
+  color: var(--brand-text-default);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-large);
+}
+
+.signUp {
+  font: var(--available-medium16);
+  color: var(--neutral-text-default);
+}
