@@ -10,7 +10,7 @@ const handleClick = (title, content, file, setWriteIssue, selectedFilters) => {
     title,
     content,
     authorId: 1,
-    assigneeIds: selectedFilters["담당자"].map((item) => item.id),
+    assigneeIds: selectedFilters["담당자"]?.id || null,
     labelIds: selectedFilters["레이블"].map((item) => item.id),
     milestoneId: selectedFilters["마일스톤"]?.id || null,
   };

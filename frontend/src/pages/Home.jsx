@@ -7,6 +7,7 @@ import { API_URL } from "../constants/link";
 import DetailIssue from "../components/Dashboard/DetailIssue";
 import LabelPage from "./LabelPage";
 import MilestonePage from "./MilestonePage"; //
+import { useSearchParams } from "react-router-dom";
 
 function Home() {
   const [writeIssue, setWriteIssue] = useState(false);
@@ -24,6 +25,25 @@ function Home() {
   const [addMilestone, setAddMilestone] = useState(false);
   const [labelCount, setLabelCount] = useState();
   const [milestoneCount, setMilestoneCount] = useState();
+  const [isOpen, setIsOpen] = useState("open");
+  const [searchParam] = useSearchParams();
+  const [issues, setIssues] = useState([]);
+  const [issueCount, setIssueCount] = useState({});
+  const [pageData, setPageData] = useState({});
+  const [queryString, setQueryString] = useState("state:open");
+  const [pageGroup, setPageGroup] = useState(0);
+
+  const query = searchParam.get("q");
+  // 주소창의 쿼리 값을 가져와서 isOpen의 상태를 open, close 로 변경
+  useEffect(() => {
+    if (query) {
+      if (query.includes("state:open")) {
+        setIsOpen("open");
+      } else if (query.includes("state:close")) {
+        setIsOpen("close");
+      }
+    }
+  }, [query]);
 
   const fetchFilterData = async () => {
     Promise.all([
@@ -56,6 +76,9 @@ function Home() {
         setDetailIssue={setDetailIssue}
         setIsLabelPage={setIsLabelPage}
         setIsMilestonePage={setIsMilestonePage}
+        setIssues={setIssues}
+        setPageData={setPageData}
+        setPageGroup={setPageGroup}
       />
       {!writeIssue && !detailIssue ? (
         <IssueToolBar
@@ -70,6 +93,13 @@ function Home() {
           setAddLabel={setAddLabel}
           addMilestone={addMilestone}
           setAddMilestone={setAddMilestone}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          query={query}
+          setIssues={setIssues}
+          setIssueCount={setIssueCount}
+          setPageData={setPageData}
+          setQueryString={setQueryString}
         />
       ) : (
         ""
@@ -103,6 +133,18 @@ function Home() {
           setDetailIssue={setDetailIssue}
           setDetailData={setDetailData}
           setIssueTitleAndId={setIssueTitleAndId}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          issues={issues}
+          setIssues={setIssues}
+          issueCount={issueCount}
+          setIssueCount={setIssueCount}
+          pageData={pageData}
+          setPageData={setPageData}
+          queryString={queryString}
+          setQueryString={setQueryString}
+          pageGroup={pageGroup}
+          setPageGroup={setPageGroup}
         />
       )}
     </>

@@ -110,3 +110,11 @@
   mask-repeat: no-repeat;
   background-color: var(--neutral-text-weak);
 }
+
+.noIssue {
+  font: var(--display-medium16);
+  color: var(--neutral-text-weak);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

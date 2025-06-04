@@ -13,27 +13,36 @@ export default function useFilterBox(initialFilters) {
 
   // 필터 항목 선택 시 필터 상태 업데이트 함수
   const selectOption = (filter, item) => {
-    setSelectedFilters((prev) => {
-      if (filter === "마일스톤") {
-        return {
-          ...prev,
-          [filter]: prev[filter]?.id === item.id ? null : item,
-        };
-      }
+    if (filter === "마일스톤" || filter === "이슈" || filter === "작성자") {
+      const isSame = selectedFilters[filter]?.id === item.id;
+      const newValue = isSame ? null : item;
 
-      const alreadySelected = prev[filter].some((el) => el.id === item.id);
-      if (alreadySelected) {
-        return {
-          ...prev,
-          [filter]: prev[filter].filter((el) => el.id !== item.id),
-        };
-      }
-
-      return {
+      setSelectedFilters((prev) => ({
         ...prev,
-        [filter]: [...prev[filter], item],
-      };
-    });
+        [filter]: newValue,
+      }));
+
+      return newValue; // ← 선택 해제이면 null, 선택이면 item
+    }
+
+    const alreadySelected = selectedFilters[filter]?.some(
+      (el) => el.id === item.id
+    );
+
+    let newValue;
+
+    if (alreadySelected) {
+      newValue = selectedFilters[filter].filter((el) => el.id !== item.id);
+    } else {
+      newValue = [...(selectedFilters[filter] || []), item];
+    }
+
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filter]: newValue,
+    }));
+
+    return newValue;
   };
 
   // 필요한 값들과 함수들을 반환
@@ -41,6 +50,7 @@ export default function useFilterBox(initialFilters) {
     selectedFilters,
     setSelectedFilters,
     activeFilter,
+    setActiveFilter,
     toggleFilter,
     selectOption,
   };
