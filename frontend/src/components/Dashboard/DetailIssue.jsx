@@ -15,6 +15,7 @@ function DetailIssue({
   issueTitleAndId,
   setDetailIssue,
   detailIssue,
+  isOpen,
 }) {
   // TODO 추후 서버에서 받아온 데이터를 기반으로 필터박스의 옵션을 설정할 예정
   // labels, milestone은 적용 완료 => assignee 추후 적용 예정
@@ -97,6 +98,7 @@ function DetailIssue({
         .catch((err) => console.error("에러:", err));
     }
   };
+
   return (
     <>
       <div className={styles.postInformation}>
@@ -114,6 +116,7 @@ function DetailIssue({
             isOpenIssue={isOpenIssue}
             setIsOpenIssue={setIsOpenIssue}
             issueId={issueTitleAndId.id}
+            isOpen={isOpen}
           />
         )}
         <div className={styles.statesInfo}>
@@ -124,7 +127,7 @@ function DetailIssue({
               }
             />
             <span className={styles.state}>
-              {isOpenIssue ? "열린 " : "닫힌 "}이슈
+              {isOpen === "open" ? "열린 " : "닫힌 "}이슈
             </span>
           </div>
           <div className={styles.explainState}>

@@ -7,7 +7,9 @@ function TitleAndButtons({
   isOpenIssue,
   setIsOpenIssue,
   issueId,
+  isOpen,
 }) {
+  isOpenIssue = isOpen === "open" ? true : false;
   return (
     <div className={styles.titleAndButtons}>
       <div className={styles.issueTitleAndIssueId}>

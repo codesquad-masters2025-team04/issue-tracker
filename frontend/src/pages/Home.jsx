@@ -113,6 +113,7 @@ function Home() {
           issueTitleAndId={issueTitleAndId}
           setDetailIssue={setDetailIssue}
           detailIssue={detailIssue}
+          isOpen={isOpen}
         />
       ) : isLabelPage ? (
         <LabelPage
