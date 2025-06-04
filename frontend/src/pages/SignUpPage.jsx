@@ -1,13 +1,13 @@
+import styles from "./SignUpPage.module.css";
 import { useNavigate } from "react-router-dom";
-import styles from "./LoginPage.module.css";
 
-function LoginPage() {
+function SignUpPage() {
   const navigate = useNavigate();
+
   return (
-    <div className={styles.loginContainer}>
-      <h1 className={styles.logo} />
-      <button className={styles.githubLogin}>GitHub로그인</button>
-      <span className={styles.or}>or</span>
+    <div className={styles.signUpContainer}>
+      <h1 className={styles.logo} onClick={() => navigate("/")} />
+      <h1>Sign Up</h1>
       <div className={styles.inputContainer}>
         <div className={styles.input}>
           <input
@@ -23,13 +23,17 @@ function LoginPage() {
             placeholder="비밀번호"
           />
         </div>
-        <button className={styles.submitButton}>아이디로 로그인</button>
-        <button className={styles.signUp} onClick={() => navigate("/signUp")}>
-          회원가입
-        </button>
+        <div className={styles.input}>
+          <input
+            type="text"
+            className={styles.inputText}
+            placeholder="닉네임"
+          />
+        </div>
+        <button className={styles.submitButton}>회원 가입 완료</button>
       </div>
     </div>
   );
 }
 
-export default LoginPage;
+export default SignUpPage;
