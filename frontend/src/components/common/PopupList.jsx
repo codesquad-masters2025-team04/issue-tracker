@@ -7,23 +7,25 @@ function PopupList({
   filterName,
   actionLocation,
   data,
-  onSelect,
+  onSelect = () => {},
   selectedItems,
 }) {
   const positionClass =
-    actionLocation === "filterBar"
-      ? styles.filterBarPosition
+    actionLocation === "tableHeader"
+      ? styles.tableHeaderPosition
       : styles.sideBarPosition;
 
   return (
     <div className={`${styles.dropdownPanel} ${positionClass}`}>
       <div className={styles.dropdownPanelTitle}>
-        {actionLocation === "filterBar"
+        {actionLocation === "tableHeader"
+          ? `${filterName} 필터`
+          : actionLocation === "filterBar"
           ? `${filterName} 필터`
           : `${filterName} 정렬`}
       </div>
       <div className={styles.dropdownPanelOptions}>
-        {actionLocation === "filterBar" ? (
+        {actionLocation === "tableHeader" ? (
           <button className={styles.option}>
             <span>{filterName} 없는 이슈</span>
             <img src={checkOffIcon} alt="checkOff" />

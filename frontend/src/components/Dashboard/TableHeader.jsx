@@ -1,8 +1,11 @@
-import { useState } from "react";
 import styles from "./TableHeader.module.css";
 import IssueTabButton from "../common/IssueTabButton";
 import FilterTabButton from "../common/FilterTabButton";
 import PopupList from "../common/PopupList";
+import useFilterBox from "../../hooks/useFilterBox";
+import { useRef, useEffect } from "react";
+import { API_URL } from "../../constants/link";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const changeFilterName = {
   담당자: "users",
@@ -10,44 +13,84 @@ const changeFilterName = {
   마일스톤: "milestones",
   작성자: "users", // TODO 추후 담당자와 구분지을 예정
 };
-// TODO 추후 컴포넌트 분리 예정
-function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
-  const [activeFilter, setActiveFilter] = useState(null);
-  const [selectedFilters, setSelectedFilters] = useState({
-    담당자: [],
-    레이블: [],
-    마일스톤: null,
-    작성자: [], // 작성자도 추가
-  });
 
-  const handleFilterClick = (filterName) => {
-    setActiveFilter((prev) => (prev === filterName ? null : filterName));
+const initialFilters = {
+  담당자: [],
+  레이블: [],
+  마일스톤: null,
+  작성자: null,
+};
+
+function TableHeader({
+  isOpen,
+  setIsOpen,
+  issueCount,
+  filterData,
+  setIssues,
+  setIssueCount,
+  setPageData,
+  setQueryString,
+}) {
+  const {
+    selectedFilters,
+    activeFilter,
+    setActiveFilter,
+    toggleFilter,
+    selectOption,
+  } = useFilterBox(initialFilters);
+
+  const filterRef = useRef(null);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setActiveFilter(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const buildQueryString = () => {
+    const filterParams = [];
+
+    selectedFilters["담당자"].forEach((assignee) =>
+      filterParams.push(`assigneeId:${assignee.id}`)
+    );
+
+    selectedFilters["레이블"].forEach((label) =>
+      filterParams.push(`labelId:${label.id}`)
+    );
+    if (selectedFilters["마일스톤"])
+      filterParams.push(`milestoneId:${selectedFilters["마일스톤"].id}`);
+    if (selectedFilters["작성자"])
+      filterParams.push(`authorId:${selectedFilters["작성자"].id}`);
+
+    return (
+      `state:${isOpen}` +
+      (filterParams.length > 0 ? "+" + filterParams.join("+") : "")
+    );
   };
 
-  const handleOptionSelect = (filter, item) => {
-    setSelectedFilters((prev) => {
-      if (filter === "마일스톤") {
-        return {
-          ...prev,
-          [filter]: prev[filter]?.id === item.id ? null : item,
-        };
-      }
+  useEffect(() => {
+    const q = buildQueryString();
+    setQueryString(q);
 
-      const alreadySelected = prev[filter].some((el) => el.id === item.id);
-      if (alreadySelected) {
-        return {
-          ...prev,
-          [filter]: prev[filter].filter((el) => el.id !== item.id),
-        };
-      }
-
-      return {
-        ...prev,
-        [filter]: [...prev[filter], item],
-      };
-    });
-    // TODO 추후 setActiveFilter(null); 을 넣을지 말지 고민해보기
-  };
+    fetch(`${API_URL}/api/issues?q=${q}&page=0&size=10`)
+      .then((res) => res.json())
+      .then((res) => {
+        setIssues(res.data.issues);
+        setIssueCount({
+          openCount: res.data.openCount,
+          closeCount: res.data.closeCount,
+        });
+        setPageData({ page: res.data.page, totalPages: res.data.totalPages });
+      });
+  }, [selectedFilters]);
 
   return (
     <div className={styles.tableHeader}>
@@ -65,24 +108,24 @@ function TableHeader({ isOpen, setIsOpen, issueCount, filterData }) {
             isActive={isOpen === "close"}
             onClick={() => setIsOpen("close")}
             iconClassName="closedIssueIcon"
-            issueName={`닫힌 이슈(${issueCount.closedCount})`}
+            issueName={`닫힌 이슈(${issueCount.closeCount})`}
           />
         </div>
       </div>
 
-      <div className={styles.filterBar}>
+      <div className={styles.filterBar} ref={filterRef}>
         {["담당자", "레이블", "마일스톤", "작성자"].map((name) => (
           <div key={name} className={styles.filterTabWrapper}>
             <FilterTabButton
               filterName={name}
-              onClick={() => handleFilterClick(name)}
+              onClick={() => toggleFilter(name)}
             />
             {activeFilter === name && (
               <PopupList
                 filterName={name}
-                actionLocation={"filterBar"}
+                actionLocation={"tableHeader"}
                 data={filterData?.[changeFilterName[name]] ?? []}
-                onSelect={(item) => handleOptionSelect(name, item)}
+                onSelect={(item) => selectOption(name, item)}
                 selectedItems={selectedFilters[name]}
               />
             )}

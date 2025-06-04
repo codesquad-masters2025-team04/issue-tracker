@@ -1,5 +1,5 @@
 .issueTableContainer {
-  min-width: 1280px;
+  /* min-width: 1280px; */
   border: 1px solid var(--neutral-border-default);
   border-bottom: none;
   margin-top: 24px;
@@ -12,4 +12,25 @@
   font: var(--available-medium16);
   color: var(--neutral-text-default);
   border-bottom: 1px solid var(--neutral-border-default);
+}
+
+.pagenationContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  gap: 10px;
+}
+
+.pagenationButton {
+  padding: 5px 15px;
+  font: var(--available-medium16);
+  color: var(--neutral-text-default);
+}
+
+.active {
+  font: var(--selected-bold20);
+  color: var(--brand-text-default);
+  background-color: var(--brand-surface-default);
+  border-radius: var(--radius-large);
 }
