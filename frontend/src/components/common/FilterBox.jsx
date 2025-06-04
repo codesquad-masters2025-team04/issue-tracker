@@ -30,8 +30,9 @@ function FilterBox({
       ) {
         setActiveFilter(null);
         if (!detailIssue) return;
-        if (selectedFilters["담당자"] && selectedFilters["담당자"].length > 0) {
-          const assignees = selectedFilters["담당자"].map((user) => user.id);
+        if (selectedFilters["담당자"]) {
+          const assignees =
+            selectedFilters["담당자"].map((user) => user.id) || [];
           fetch(`${API_URL}/api/issues/${issueId}/assignees`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -39,8 +40,9 @@ function FilterBox({
           });
         }
 
-        if (selectedFilters["레이블"] && selectedFilters["레이블"].length > 0) {
-          const labels = selectedFilters["레이블"].map((label) => label.id);
+        if (selectedFilters["레이블"]) {
+          const labels =
+            selectedFilters["레이블"].map((label) => label.id) || [];
           fetch(`${API_URL}/api/issues/${issueId}/labels`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -50,7 +52,9 @@ function FilterBox({
 
         if (selectedFilters["마일스톤"]) {
           const formData = new FormData();
-          const milestone = { milestoneId: selectedFilters["마일스톤"].id };
+          const milestone = {
+            milestoneId: selectedFilters["마일스톤"].id || null,
+          };
           formData.append(
             "issue",
             new Blob([JSON.stringify(milestone)], {
