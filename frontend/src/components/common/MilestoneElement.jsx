@@ -27,6 +27,23 @@ function MilestoneElement({
       })
       .catch((error) => console.error("에러:", error));
   };
+  const handleCloseMilestone = () => {
+    if (!confirm("이 마일스톤을 닫으시겠습니까?")) return;
+
+    fetch(`${API_URL}/api/milestones/${milestone.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isOpen: false }), // or status: "CLOSED" depending on your API
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("마일스톤 닫기 성공:", data);
+        setReload((prev) => !prev);
+      })
+      .catch((error) => console.error("닫기 요청 에러:", error));
+  };
   return (
     <>
       {isMilestoneEditMode ? (
@@ -66,7 +83,10 @@ function MilestoneElement({
           </div>
           <div className={styles.milestoneMetaData}>
             <div className={styles.rightButtons}>
-              <button className={styles.closedMilestoneButton}>
+              <button
+                className={styles.closedMilestoneButton}
+                onClick={handleCloseMilestone}
+              >
                 <span className={styles.closedIcon} />
                 <span className={styles.closedText}>닫기</span>
               </button>

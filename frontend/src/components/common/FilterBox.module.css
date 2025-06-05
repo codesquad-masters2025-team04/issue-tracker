@@ -12,6 +12,7 @@
   border: 1px solid var(--neutral-border-default);
   background-color: var(--neutral-surface-strong);
   padding: 32px;
+  position: relative;
 }
 
 .filterButton {
@@ -21,9 +22,9 @@
   cursor: pointer;
 }
 
-.filterButtonTitle {
+/* .filterButtonTitle {
   position: relative;
-}
+} */
 
 .plusIcon {
   width: 16px;
