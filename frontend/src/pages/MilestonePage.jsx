@@ -27,6 +27,18 @@ function MilestonePage({
       });
   }, [isOpen, reload]);
 
+  useEffect(() => {
+    fetch(`${API_URL}/api/milestones/count`)
+      .then((response) => response.json())
+      .then((res) => {
+        setMilestoneCount(res.data.openCount);
+        setClosedMilestone(res.data.closedCount);
+      })
+      .catch((error) => {
+        console.error("Error fetching milestone count:", error);
+      });
+  }, [reload]);
+
   return (
     <>
       {addMilestone && (
